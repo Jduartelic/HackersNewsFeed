@@ -2,16 +2,18 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen} from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../navigationContainer/navigationStack';
-
+import {NewsContextProvider} from '../stores/entities';
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
 
 const HackerNewsFeedNavigator = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NewsContextProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NewsContextProvider>
   );
 };
 
