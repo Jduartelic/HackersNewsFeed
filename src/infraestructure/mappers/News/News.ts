@@ -15,7 +15,6 @@ const getHighlightResults = (
     storyUrl: highlightResults?.story_url,
   };
 };
-
 export const newsMap = (response: NewsDto): News => {
   return {
     data: response.hits.map((dto: NewsDtoData): NewsData => {

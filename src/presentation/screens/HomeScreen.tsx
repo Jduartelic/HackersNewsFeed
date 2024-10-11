@@ -4,116 +4,78 @@
  *
  * @format
  */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useEffect, useContext, useCallback} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Platform,
 } from 'react-native';
+import {useNews} from '../hooks';
+import {NewsContext, NewsKind} from '../stores/entities';
+import {NewsFeed} from '../components/organisms';
+import {SkeletonCardContainer} from '../components/molecules';
+import styles from './HomeScreen.styles';
+import {constants} from '../constants';
+import uuid from 'react-native-uuid';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const HomeScreen = (): React.JSX.Element => {
+  const {getNewsList} = useNews();
+  const {HOME} = constants;
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  const {state, loading, fetched} = stateNewsData;
+  console.log(`${Platform.OS} - state state`, state);
 
-function HomeScreen(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const onFetchingNews = useCallback(() => {
+    dispatchNewsData({
+      type: NewsKind.FETCHING,
+      payload: {...state},
+    });
+  }, [dispatchNewsData]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  useEffect(() => {
+    if (loading && !fetched) {
+      getNewsList('mobile');
+    }
+  }, [loading, fetched, getNewsList]);
+
+  useEffect(() => {
+    if (!loading && !fetched) {
+      onFetchingNews();
+    }
+  }, [onFetchingNews, loading, fetched]);
+
+  const renderSkeleton = () => {
+    let skeletonArray = Array.from(
+      {length: HOME.NUMBER_SKELETON},
+      (_, index) => index,
+    );
+    return (
+      <ScrollView
+        contentContainerStyle={styles.scrollViewSkeleton}
+        scrollEnabled={false}>
+        {skeletonArray.map(() => {
+          return (
+            <View style={{flex: 1}} key={uuid.v4().toString()}>
+              <SkeletonCardContainer isLoading={loading} />
+            </View>
+          );
+        })}
+      </ScrollView>
+    );
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.mainContainer}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      {loading && renderSkeleton()}
+      {!loading && <NewsFeed />}
+      <SafeAreaView style={{backgroundColor: 'transparent'}} />
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    backgroundColor: 'lime',
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default HomeScreen;

@@ -22,8 +22,8 @@ export interface NewsActions {
 
 export interface StateStoreNewsData {
   state: NewsEntity;
-  loading?: boolean;
-  fetched?: boolean;
+  loading: boolean;
+  fetched: boolean;
   error?: Error;
 }
 
