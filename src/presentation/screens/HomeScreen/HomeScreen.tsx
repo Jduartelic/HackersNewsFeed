@@ -60,7 +60,8 @@ const HomeScreen = (): React.JSX.Element => {
     return (
       <ScrollView
         contentContainerStyle={styles.scrollViewSkeleton}
-        scrollEnabled={false}>
+        scrollEnabled={false}
+        showsVerticalScrollIndicator={false}>
         {skeletonArray.map(() => {
           return (
             <View style={{flex: 1}} key={uuid.v4().toString()}>

@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   cardFooterContainer: {
     flex: 0.2,
+    marginTop: 8,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },

@@ -34,9 +34,11 @@ export function NewsDataReducer(
       };
     case NewsKind.FETCHED:
       const deletedNewsList = state.state.deletedNewsList;
-      const listFiltered = action.payload.newsList.data.filter(item => {
-        const exist = !deletedNewsList?.includes(item.storyId);
-        if (exist) return item;
+      const listFiltered = action.payload.newsList.data.filter(newsListItem => {
+        const exist = deletedNewsList?.some(
+          item => item === newsListItem.storyId,
+        );
+        if (!exist) return newsListItem;
       });
       return {
         ...state,

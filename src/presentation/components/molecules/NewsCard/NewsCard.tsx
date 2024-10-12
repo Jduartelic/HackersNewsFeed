@@ -1,5 +1,5 @@
-import React, {useContext, useMemo, useCallback} from 'react';
-import {View, Text, Image, PanResponder, LayoutChangeEvent} from 'react-native';
+import React, {useContext, useMemo} from 'react';
+import {View, Text, Image, LayoutChangeEvent} from 'react-native';
 import {NewsData, images} from '../../../../domain';
 import styles from './NewsCard.styles';
 import {
@@ -93,21 +93,6 @@ export const NewsCard = (newsData: NewsData) => {
     return state.favoritesNewsList.some(item => item === newsData.storyId);
   }, [state.favoritesNewsList, newsData.storyId]);
 
-  // const existInFavoritesList = () => {
-  //   console.log('isSelected', isSelected);
-  //   if (isSelected) {
-  //     return 'none';
-  //   } else return 'auto';
-  // };
-
-  const existInFavoritesList = useCallback(() => {
-    if (isSelected) {
-      return 'none';
-    } else {
-      return 'auto';
-    }
-  }, [isSelected]);
-
   return (
     <GestureHandlerRootView style={styles.cardContainer}>
       <>
@@ -121,12 +106,11 @@ export const NewsCard = (newsData: NewsData) => {
                   type: NewsKind.REMOVE_NEWS,
                   payload: {
                     newsList: state.newsList,
-                    // favoritesNewsId: undefined,
                     deletedNewsId: newsData.storyId,
                   },
                 });
               }}>
-              <Icon name="trash" size={30} color="#df1b1b" />
+              <Icon name="trash" size={30} color="#D3D3D3" />
             </Pressable>
           </View>
         </Animated.View>
@@ -154,9 +138,7 @@ export const NewsCard = (newsData: NewsData) => {
               </Pressable>
             </View>
 
-            <View
-              pointerEvents={existInFavoritesList()}
-              style={styles.containerFavoritesbutton}>
+            <View style={styles.containerFavoritesbutton}>
               <Pressable
                 hitSlop={30}
                 onPress={() => {

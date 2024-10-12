@@ -12,7 +12,10 @@ const HackerNewsFeedNavigator = () => {
   return (
     <NewsContextProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            gestureEnabled: false,
+          }}>
           <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
@@ -29,7 +32,6 @@ const HackerNewsFeedNavigator = () => {
               headerShown: true,
               headerStyle: {backgroundColor: '#f5f5f5'},
               headerShadowVisible: true,
-              //'#FFE04B' : '#b58df1' '#5ce1e6'
             }}
           />
           <Stack.Screen
