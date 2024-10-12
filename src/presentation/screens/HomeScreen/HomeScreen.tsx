@@ -27,11 +27,14 @@ const HomeScreen = (): React.JSX.Element => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
 
   const {state, loading, fetched} = stateNewsData;
+  // console.log('state', state.deletedNewsList);
 
   const onFetchingNews = useCallback(() => {
     dispatchNewsData({
       type: NewsKind.FETCHING,
-      payload: {...state},
+      payload: {
+        newsList: state.newsList,
+      },
     });
   }, [dispatchNewsData]);
 

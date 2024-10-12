@@ -12,7 +12,7 @@ export interface NewsData {
   createdAtI?: number;
   objectID?: string;
   parentId?: number;
-  storyId?: number;
+  storyId: number;
   storyTitle?: string;
   storyUrl?: string;
   updatedAt?: string;

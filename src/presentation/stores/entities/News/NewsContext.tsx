@@ -13,8 +13,8 @@ export const defaultNewsContextValues: NewsContextType = {
     return NewsDataReducer(
       {
         state: data?.payload,
-        loading: data?.loading,
-        fetched: data?.fetched,
+        loading: data?.loading ?? false,
+        fetched: data?.fetched ?? false,
         error: data?.error,
       },
       {

@@ -88,7 +88,9 @@ const NewsFeed = () => {
   const onRefresh = React.useCallback(() => {
     dispatchNewsData({
       type: NewsKind.FETCHING,
-      payload: {...state},
+      payload: {
+        newsList: state.newsList,
+      },
     });
   }, [dispatchNewsData, state]);
 
@@ -104,7 +106,7 @@ const NewsFeed = () => {
     // const randomColor = '#000000'.replace(/0/g, function () {
     //   return (~~(Math.random() * 16)).toString(16);
     // });
-    console.log('item', news);
+    // console.log('item', news);
     return (
       <View
         key={uuid.v4().toString()}

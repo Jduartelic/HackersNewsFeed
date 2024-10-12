@@ -96,7 +96,7 @@ export const NewsCard = (newsData: NewsData) => {
               onPress={() => {
                 offset.value = withTiming(0);
               }}>
-              <Icon name="trash" size={30} color="#000" />
+              <Icon name="trash" size={30} color="#df1b1b" />
             </Pressable>
           </View>
         </Animated.View>

@@ -3,6 +3,8 @@ import {HomeScreen, WebViewScreen} from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../navigationContainer/navigationStack';
 import {NewsContextProvider} from '../stores/entities';
+import {MainHeader} from '../components/molecules';
+import {images} from '../../domain';
 
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
 
@@ -14,7 +16,21 @@ const HackerNewsFeedNavigator = () => {
           <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
-            options={{gestureEnabled: false, animation: 'slide_from_right'}}
+            options={{
+              gestureEnabled: false,
+              animation: 'slide_from_right',
+              header: () => (
+                <MainHeader
+                  iconLeft={{name: 'bars'}}
+                  imageSource={images.logoInitials}
+                  iconRight={{name: 'heart'}}
+                />
+              ),
+              headerShown: true,
+              headerStyle: {backgroundColor: '#f5f5f5'},
+              headerShadowVisible: true,
+              //'#FFE04B' : '#b58df1' '#5ce1e6'
+            }}
           />
           <Stack.Screen
             name="WebViewScreen"

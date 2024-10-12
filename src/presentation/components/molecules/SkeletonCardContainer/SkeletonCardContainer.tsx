@@ -17,7 +17,6 @@ const SkeletonCardContainer = ({isLoading}: {isLoading: boolean}) => {
               key: 'someId',
               width: 50,
               height: 50,
-              // marginBottom: 0,
               borderRadius: 100,
             },
           ]}
