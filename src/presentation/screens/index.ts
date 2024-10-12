@@ -1,3 +1,4 @@
-import HomeScreen from './HomeScreen';
+import HomeScreen from './HomeScreen/HomeScreen';
+import WebViewScreen from './WebViewScreen/WebViewScreen';
 
-export {HomeScreen};
+export {HomeScreen, WebViewScreen};

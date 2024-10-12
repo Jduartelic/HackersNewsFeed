@@ -12,12 +12,12 @@ import {
   View,
   Platform,
 } from 'react-native';
-import {useNews} from '../hooks';
-import {NewsContext, NewsKind} from '../stores/entities';
-import {NewsFeed} from '../components/organisms';
-import {SkeletonCardContainer} from '../components/molecules';
+import {useNews} from '../../hooks';
+import {NewsContext, NewsKind} from '../../stores/entities';
+import {NewsFeed} from '../../components/organisms';
+import {SkeletonCardContainer} from '../../components/molecules';
 import styles from './HomeScreen.styles';
-import {constants} from '../constants';
+import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
 const HomeScreen = (): React.JSX.Element => {
@@ -27,7 +27,6 @@ const HomeScreen = (): React.JSX.Element => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
 
   const {state, loading, fetched} = stateNewsData;
-  console.log(`${Platform.OS} - state state`, state);
 
   const onFetchingNews = useCallback(() => {
     dispatchNewsData({

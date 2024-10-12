@@ -1,4 +1,3 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
 import React, {useContext, useRef, useState} from 'react';
 import {
   Animated,
@@ -15,20 +14,11 @@ import {
 import {NewsCard} from '../../molecules';
 import styles from './NewsFeed.styles';
 import {NewsContext, NewsKind} from '../../../stores/entities';
-import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {NewsData} from '../../../../domain';
 import uuid from 'react-native-uuid';
 
-type HackerNewsFeedNavigationProp =
-  NativeStackNavigationProp<HackerNewsFeedStack>;
-
 const NewsFeed = () => {
-  const isFocused = useIsFocused();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
-
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
-
   const {state, loading} = stateNewsData;
   const {data} = state.newsList;
   // const [fadeAnim] = useState(new Animated.Value(0));
