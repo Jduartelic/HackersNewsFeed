@@ -1,10 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-import React, {useEffect, useContext, useCallback} from 'react';
+import React, {useEffect, useContext, useCallback, useMemo} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -27,7 +21,16 @@ const HomeScreen = (): React.JSX.Element => {
 
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
 
-  const {loading, fetched} = stateNewsData;
+  const {loading, fetched, state} = stateNewsData;
+
+  const filteredListNews = useMemo(() => {
+    const {deletedNewsList, newsList} = state;
+    return {
+      data: newsList.data.filter(
+        item => !deletedNewsList.includes(item.storyId),
+      ),
+    };
+  }, [state]);
 
   const onFetchingNews = useCallback(async () => {
     let dataPayload: NewsPayloadEntity = {
@@ -94,7 +97,7 @@ const HomeScreen = (): React.JSX.Element => {
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       {loading && renderSkeleton()}
-      {!loading && <NewsFeed />}
+      {!loading && <NewsFeed newsDataList={filteredListNews} />}
       <SafeAreaView style={{backgroundColor: 'transparent'}} />
     </SafeAreaView>
   );

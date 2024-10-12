@@ -1,5 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen, WebViewScreen, FavoritesScreen} from '../screens';
+import {
+  HomeScreen,
+  WebViewScreen,
+  FavoritesScreen,
+  CemeteryNewsScreen,
+} from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   HackerNewsFeedStack,
@@ -20,8 +25,24 @@ function HackerNewsFeedNavigator() {
         <Drawer.Navigator
           screenOptions={{
             headerShown: false,
+            swipeEnabled: false,
           }}>
           <Drawer.Screen name="MainScreen" component={HackerNewsFeedScreens} />
+          <Drawer.Screen
+            name="CemeteryNewsScreen"
+            component={CemeteryNewsScreen}
+            options={{
+              header: () => (
+                <MainHeader
+                  iconLeft={{name: 'chevron-left'}}
+                  imageSource={images.logoInitials}
+                />
+              ),
+              headerShown: true,
+              headerStyle: {backgroundColor: '#f5f5f5'},
+              headerShadowVisible: true,
+            }}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </NewsContextProvider>

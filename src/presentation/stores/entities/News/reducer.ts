@@ -65,18 +65,8 @@ export function NewsDataReducer(
       if (action.payload.deletedNewsId) {
         deletedList?.push(action.payload.deletedNewsId);
       }
-
-      const listFilteredByFetching = action.payload.newsList.data.filter(
-        item => {
-          const exist = !deletedList?.includes(item.storyId);
-
-          if (exist) {
-            return item;
-          }
-        },
-      );
       dataPayload = JSON.stringify({
-        newsList: {data: listFilteredByFetching},
+        newsList: state.state.newsList,
         deletedNewsList: deletedList,
         favoritesNewsList: state.state.favoritesNewsList,
       });
@@ -86,7 +76,7 @@ export function NewsDataReducer(
         ...state,
         state: {
           ...state.state,
-          newsList: {data: listFilteredByFetching},
+          newsList: state.state.newsList,
           deletedNewsList: deletedList,
           favoritesNewsList: state.state.favoritesNewsList,
         },

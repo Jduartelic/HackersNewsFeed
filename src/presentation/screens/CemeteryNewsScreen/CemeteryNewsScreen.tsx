@@ -1,30 +1,25 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import React, {useContext, useMemo} from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import {NewsContext} from '../../stores/entities';
 import {NewsFeed} from '../../components/organisms';
 import {SkeletonCardContainer} from '../../components/molecules';
-import styles from './FavoritesScreen.styles';
+import styles from './CemeteryNewsScreen.styles';
 import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
-const FavoritesScreen = (): React.JSX.Element => {
+const CemeteryNewsScreen = (): React.JSX.Element => {
   const {HOME} = constants;
 
   const {stateNewsData} = useContext(NewsContext);
 
   const {loading, state} = stateNewsData;
 
-  const favoritesNews = useMemo(() => {
-    const {favoritesNewsList, newsList} = state;
+  const deletedNews = useMemo(() => {
+    const {deletedNewsList, newsList} = state;
+
     return {
       data: newsList.data.filter(item =>
-        favoritesNewsList.includes(item.storyId),
+        deletedNewsList.includes(item.storyId),
       ),
     };
   }, [state]);
@@ -54,10 +49,10 @@ const FavoritesScreen = (): React.JSX.Element => {
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       {loading && renderSkeleton()}
-      {!loading && <NewsFeed newsDataList={favoritesNews} />}
+      {!loading && <NewsFeed newsDataList={deletedNews} />}
       <SafeAreaView style={{backgroundColor: 'transparent'}} />
     </SafeAreaView>
   );
 };
 
-export default FavoritesScreen;
+export default CemeteryNewsScreen;

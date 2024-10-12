@@ -8,6 +8,7 @@ type HackerNewsFeedStack = {
 
 type HackerNewsFeedDrawer = {
   MainScreen: HackerNewsFeedStack;
+  CemeteryNewsScreen: undefined;
 };
 
 export type {HackerNewsFeedStack, HackerNewsFeedDrawer};

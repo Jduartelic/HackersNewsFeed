@@ -24,6 +24,7 @@ import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack'
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {NewsContext, NewsKind} from '../../../stores/entities';
+import RenderHtml from 'react-native-render-html';
 
 const SIZE = 120;
 const BOUNDARY_OFFSET = 50;
@@ -141,13 +142,28 @@ export const NewsCard = (newsData: NewsData) => {
               <Pressable onPress={navigateWebView}>
                 <Text>{newsData.storyTitle}</Text>
               </Pressable>
+              {/*   <Pressable onPress={navigateWebView}>
+                <Text>{'See full commentary'}</Text>
+              </Pressable>
+         <Animated.View
+                style={{
+                  flex: 1,
+                  // flexGrow: 0,
+                  // height: '0%',
+                  width: '100%',
+                  backgroundColor: 'blue',
+                }}>
+                <RenderHtml
+                  contentWidth={width.value}
+                  source={{html: newsData.commentText!!}}
+                />
+              </Animated.View>     */}
             </View>
 
             <View style={styles.containerFavoritesbutton}>
               <Pressable
                 hitSlop={30}
                 onPress={() => {
-                  console.log('presione heart');
                   offset.value = withTiming(0);
                   dispatchNewsData({
                     type: NewsKind.ADD_FAVORITES,

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   cardHeaderContainer: {
     flex: 0.25,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexDirection: 'row',
     gap: 16,
   },

@@ -2,19 +2,13 @@ import React, {useContext} from 'react';
 import {View, FlatList, RefreshControl} from 'react-native';
 import {NewsCard} from '../../molecules';
 import styles from './NewsFeed.styles';
-import {
-  NewsContext,
-  NewsKind,
-  NewsPayloadEntity,
-} from '../../../stores/entities';
-import {NewsData} from '../../../../domain';
+import {NewsContext, NewsKind} from '../../../stores/entities';
+import {News, NewsData} from '../../../../domain';
 import uuid from 'react-native-uuid';
-import {getSavedData} from '../../../functions';
 
-const NewsFeed = () => {
+const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {state, loading} = stateNewsData;
-  const {data} = state.newsList;
 
   const onRefresh = React.useCallback(async () => {
     dispatchNewsData({
@@ -46,7 +40,7 @@ const NewsFeed = () => {
     <View style={styles.container}>
       <FlatList
         testID="container-content-order-confirmation"
-        data={data}
+        data={newsDataList.data}
         style={{
           flex: 1,
           height: '100%',

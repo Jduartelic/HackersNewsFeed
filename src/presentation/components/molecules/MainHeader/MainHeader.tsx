@@ -1,24 +1,22 @@
-import React, {Fragment, useRef, useState} from 'react';
-import {
-  View,
-  ImageSourcePropType,
-  Text,
-  Image,
-  PanResponder,
-  LayoutChangeEvent,
-} from 'react-native';
-import {NewsData, images} from '../../../../domain';
+import React, {useMemo} from 'react';
+import {View, ImageSourcePropType, Image} from 'react-native';
 import styles from './MainHeader.styles';
 import Icon, {
   FontAwesome5IconProps,
 } from 'react-native-vector-icons/FontAwesome5';
-import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
+import {
+  HackerNewsFeedStack,
+  HackerNewsFeedDrawer,
+} from '../../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
+type HackerNewsFeedDrawerNavigationProp =
+  DrawerNavigationProp<HackerNewsFeedDrawer>;
 
 export const MainHeader = ({
   iconLeft,
@@ -29,26 +27,57 @@ export const MainHeader = ({
   imageSource?: ImageSourcePropType;
   iconRight?: FontAwesome5IconProps;
 }) => {
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {navigate, getState, goBack} =
+    useNavigation<HackerNewsFeedNavigationProp>();
+  const {toggleDrawer} = useNavigation<HackerNewsFeedDrawerNavigationProp>();
+
+  const routeStateScreen = useMemo(() => {
+    const state = getState();
+    return state.routes[state.index].name;
+  }, [getState()]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.innerContainer}>
-        <Icon name={iconLeft.name} size={30} color="#000" solid={false} />
-        {imageSource && (
-          <Image
-            source={imageSource}
-            style={{
-              height: 60,
-              width: 60,
-              borderRadius: 100,
+        <View>
+          <Icon
+            name={iconLeft.name}
+            size={30}
+            color="#000"
+            solid={false}
+            onPress={() => {
+              if (routeStateScreen === 'HomeScreen') {
+                toggleDrawer();
+              } else {
+                goBack();
+              }
             }}
-            resizeMode="cover"
           />
-        )}
-        {iconRight && (
-          <Icon name={iconRight.name} size={30} color="#5ce1e6" solid={true} />
-        )}
+        </View>
+        <View>
+          {imageSource && (
+            <Image
+              source={imageSource}
+              style={{
+                height: 60,
+                width: 60,
+                borderRadius: 100,
+              }}
+              resizeMode="cover"
+            />
+          )}
+        </View>
+        <View>
+          {iconRight && (
+            <Icon
+              name={iconRight.name}
+              size={30}
+              color="#5ce1e6"
+              solid={true}
+              onPress={() => navigate('FavoritesScreen')}
+            />
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
