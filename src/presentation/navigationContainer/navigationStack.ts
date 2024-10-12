@@ -3,6 +3,11 @@ type HackerNewsFeedStack = {
   WebViewScreen: {
     url: string;
   };
+  FavoritesScreen: undefined;
 };
 
-export type {HackerNewsFeedStack};
+type HackerNewsFeedDrawer = {
+  MainScreen: HackerNewsFeedStack;
+};
+
+export type {HackerNewsFeedStack, HackerNewsFeedDrawer};

@@ -1,47 +1,93 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen, WebViewScreen} from '../screens';
+import {HomeScreen, WebViewScreen, FavoritesScreen} from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
-import {HackerNewsFeedStack} from '../navigationContainer/navigationStack';
+import {
+  HackerNewsFeedStack,
+  HackerNewsFeedDrawer,
+} from '../navigationContainer/navigationStack';
 import {NewsContextProvider} from '../stores/entities';
 import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
+const Drawer = createDrawerNavigator<HackerNewsFeedDrawer>();
 
-const HackerNewsFeedNavigator = () => {
+function HackerNewsFeedNavigator() {
   return (
     <NewsContextProvider>
       <NavigationContainer>
-        <Stack.Navigator
+        <Drawer.Navigator
           screenOptions={{
-            gestureEnabled: false,
+            headerShown: false,
           }}>
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{
-              gestureEnabled: false,
-              animation: 'slide_from_right',
-              header: () => (
-                <MainHeader
-                  iconLeft={{name: 'bars'}}
-                  imageSource={images.logoInitials}
-                  iconRight={{name: 'star'}}
-                />
-              ),
-              headerShown: true,
-              headerStyle: {backgroundColor: '#f5f5f5'},
-              headerShadowVisible: true,
-            }}
-          />
-          <Stack.Screen
-            name="WebViewScreen"
-            component={WebViewScreen}
-            options={{gestureEnabled: false, animation: 'slide_from_right'}}
-          />
-        </Stack.Navigator>
+          <Drawer.Screen name="MainScreen" component={HackerNewsFeedScreens} />
+        </Drawer.Navigator>
       </NavigationContainer>
     </NewsContextProvider>
+  );
+}
+
+const HackerNewsFeedScreens = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: false,
+      }}>
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_right',
+          header: () => (
+            <MainHeader
+              iconLeft={{name: 'bars'}}
+              imageSource={images.logoInitials}
+              iconRight={{name: 'star'}}
+            />
+          ),
+          headerShown: true,
+          headerStyle: {backgroundColor: '#f5f5f5'},
+          headerShadowVisible: true,
+        }}
+      />
+      <Stack.Screen
+        name="WebViewScreen"
+        component={WebViewScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_right',
+          header: () => (
+            <MainHeader
+              iconLeft={{name: 'chevron-left'}}
+              imageSource={images.logoInitials}
+            />
+          ),
+          headerShown: true,
+          headerStyle: {backgroundColor: '#f5f5f5'},
+          headerShadowVisible: true,
+        }}
+      />
+
+      <Stack.Screen
+        name="FavoritesScreen"
+        component={FavoritesScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_right',
+          header: () => (
+            <MainHeader
+              iconLeft={{name: 'chevron-left'}}
+              imageSource={images.logoInitials}
+            />
+          ),
+          headerShown: true,
+          headerStyle: {backgroundColor: '#f5f5f5'},
+          headerShadowVisible: true,
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
