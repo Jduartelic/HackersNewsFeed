@@ -13,12 +13,13 @@ import {
   Platform,
 } from 'react-native';
 import {useNews} from '../../hooks';
-import {NewsContext, NewsKind} from '../../stores/entities';
+import {NewsContext, NewsKind, NewsPayloadEntity} from '../../stores/entities';
 import {NewsFeed} from '../../components/organisms';
 import {SkeletonCardContainer} from '../../components/molecules';
 import styles from './HomeScreen.styles';
 import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
+import {getSavedData} from '../../functions';
 
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
@@ -26,16 +27,32 @@ const HomeScreen = (): React.JSX.Element => {
 
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
 
-  const {state, loading, fetched} = stateNewsData;
-  // console.log('state', state.deletedNewsList);
+  const {loading, fetched} = stateNewsData;
 
-  const onFetchingNews = useCallback(() => {
+  const onFetchingNews = useCallback(async () => {
+    let dataPayload: NewsPayloadEntity = {
+      newsList: {data: []},
+      deletedNewsList: [],
+      favoritesNewsList: [],
+    };
+
+    const dataFromStorage = await getSavedData();
+
+    if (dataFromStorage) {
+      const data = JSON.parse(dataFromStorage);
+      dataPayload.newsList = data.newsList;
+      dataPayload.deletedNewsList = data.deletedNewsList ?? [];
+      dataPayload.favoritesNewsList = data.favoritesNewsList ?? [];
+    }
+
     dispatchNewsData({
       type: NewsKind.FETCHING,
       payload: {
-        newsList: state.newsList,
+        newsList: dataPayload.newsList,
         favoritesNewsId: undefined,
         deletedNewsId: undefined,
+        deletedNewsList: dataPayload.deletedNewsList,
+        favoritesNewsList: dataPayload.favoritesNewsList,
       },
     });
   }, [dispatchNewsData]);

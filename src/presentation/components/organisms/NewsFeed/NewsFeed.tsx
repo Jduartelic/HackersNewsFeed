@@ -1,24 +1,30 @@
 import React, {useContext} from 'react';
 import {View, FlatList, RefreshControl} from 'react-native';
-
 import {NewsCard} from '../../molecules';
 import styles from './NewsFeed.styles';
-import {NewsContext, NewsKind} from '../../../stores/entities';
+import {
+  NewsContext,
+  NewsKind,
+  NewsPayloadEntity,
+} from '../../../stores/entities';
 import {NewsData} from '../../../../domain';
 import uuid from 'react-native-uuid';
+import {getSavedData} from '../../../functions';
 
 const NewsFeed = () => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {state, loading} = stateNewsData;
   const {data} = state.newsList;
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     dispatchNewsData({
       type: NewsKind.FETCHING,
       payload: {
         newsList: state.newsList,
         favoritesNewsId: undefined,
         deletedNewsId: undefined,
+        deletedNewsList: state.deletedNewsList,
+        favoritesNewsList: state.favoritesNewsList,
       },
     });
   }, [dispatchNewsData, state]);
@@ -54,7 +60,7 @@ const NewsFeed = () => {
             testID="refresh-control"
             progressBackgroundColor={'white'}
             colors={['#5ce1e6']}
-            tintColor={'white'}
+            tintColor={'#5ce1e6'}
             refreshing={loading}
             onRefresh={onRefresh}
           />

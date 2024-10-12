@@ -16,10 +16,12 @@ type NewsEntity = {
   deletedNewsList: number[];
 };
 
-type NewsPayloadEntity = {
+export type NewsPayloadEntity = {
   newsList: News;
   favoritesNewsId?: number;
   deletedNewsId?: number;
+  favoritesNewsList: number[];
+  deletedNewsList: number[];
 };
 
 export interface NewsActions {

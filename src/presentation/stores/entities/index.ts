@@ -3,6 +3,7 @@ import {
   NewsContextType,
   NewsKind,
   StateStoreNewsData,
+  NewsPayloadEntity,
 } from './News/types';
 import {NewsDataReducer} from './News/reducer';
 import {
@@ -14,8 +15,9 @@ import {
 export {
   type NewsActions,
   type NewsContextType,
-  NewsKind,
+  type NewsPayloadEntity,
   type StateStoreNewsData,
+  NewsKind,
   NewsContext,
   NewsContextProvider,
   defaultNewsContextValues,

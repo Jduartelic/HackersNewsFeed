@@ -90,7 +90,10 @@ export const NewsCard = (newsData: NewsData) => {
   };
 
   const isSelected = useMemo(() => {
-    return state.favoritesNewsList.some(item => item === newsData.storyId);
+    if (state.favoritesNewsList.length) {
+      return state.favoritesNewsList.some(item => item === newsData.storyId);
+    }
+    return false;
   }, [state.favoritesNewsList, newsData.storyId]);
 
   return (
@@ -106,6 +109,8 @@ export const NewsCard = (newsData: NewsData) => {
                   type: NewsKind.REMOVE_NEWS,
                   payload: {
                     newsList: state.newsList,
+                    deletedNewsList: state.deletedNewsList,
+                    favoritesNewsList: state.favoritesNewsList,
                     deletedNewsId: newsData.storyId,
                   },
                 });
@@ -148,6 +153,8 @@ export const NewsCard = (newsData: NewsData) => {
                     type: NewsKind.ADD_FAVORITES,
                     payload: {
                       newsList: state.newsList,
+                      deletedNewsList: state.deletedNewsList,
+                      favoritesNewsList: state.favoritesNewsList,
                       favoritesNewsId: newsData.storyId,
                     },
                   });

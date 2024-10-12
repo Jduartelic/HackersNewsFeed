@@ -1,11 +1,12 @@
 import {NewsKind, NewsActions, StateStoreNewsData} from '../../entities';
-import {News} from '../../../../domain';
+import {setSavedData} from '../../../functions';
 
 export function NewsDataReducer(
   state: StateStoreNewsData,
   action: NewsActions,
 ) {
   const {type, error} = action;
+  let dataPayload: string = '';
 
   switch (type) {
     case NewsKind.INITIAL_STATE:
@@ -24,9 +25,10 @@ export function NewsDataReducer(
       return {
         ...state,
         state: {
-          newsList: {data: []},
-          favoritesNewsList: state.state.favoritesNewsList,
-          deletedNewsList: state.state.deletedNewsList,
+          ...state.state,
+          newsList: action.payload.newsList,
+          favoritesNewsList: action.payload.favoritesNewsList,
+          deletedNewsList: action.payload.deletedNewsList,
         },
         loading: true,
         fetched: false,
@@ -40,6 +42,13 @@ export function NewsDataReducer(
         );
         if (!exist) return newsListItem;
       });
+      dataPayload = JSON.stringify({
+        newsList: {data: listFiltered},
+        favoritesNewsList: state.state.favoritesNewsList,
+        deletedNewsList: state.state.deletedNewsList,
+      });
+      setSavedData(dataPayload);
+
       return {
         ...state,
         state: {
@@ -66,6 +75,13 @@ export function NewsDataReducer(
           }
         },
       );
+      dataPayload = JSON.stringify({
+        newsList: {data: listFilteredByFetching},
+        deletedNewsList: deletedList,
+        favoritesNewsList: state.state.favoritesNewsList,
+      });
+
+      setSavedData(dataPayload);
       return {
         ...state,
         state: {
@@ -93,6 +109,13 @@ export function NewsDataReducer(
           favoritesList?.push(action.payload.favoritesNewsId);
         }
       }
+
+      dataPayload = JSON.stringify({
+        ...state.state,
+        favoritesNewsList: favoritesList,
+      });
+      setSavedData(dataPayload);
+
       return {
         ...state,
         state: {
