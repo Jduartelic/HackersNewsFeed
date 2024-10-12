@@ -15,6 +15,8 @@ const useNews = () => {
           type: NewsKind.FETCHED,
           payload: {
             newsList: response,
+            favoritesNewsId: undefined,
+            deletedNewsId: undefined,
           },
         });
       } catch (err: unknown) {
@@ -22,6 +24,8 @@ const useNews = () => {
           type: NewsKind.FETCHED,
           payload: {
             newsList: {data: []},
+            favoritesNewsId: undefined,
+            deletedNewsId: undefined,
           },
           error: err as Error,
         });

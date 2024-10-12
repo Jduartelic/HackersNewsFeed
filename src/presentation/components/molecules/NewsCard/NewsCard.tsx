@@ -1,4 +1,4 @@
-import React, {Fragment, useRef, useState} from 'react';
+import React, {useContext, useMemo, useCallback} from 'react';
 import {View, Text, Image, PanResponder, LayoutChangeEvent} from 'react-native';
 import {NewsData, images} from '../../../../domain';
 import styles from './NewsCard.styles';
@@ -23,6 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import {NewsContext, NewsKind} from '../../../stores/entities';
 
 const SIZE = 120;
 const BOUNDARY_OFFSET = 50;
@@ -31,7 +32,9 @@ type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
 export const NewsCard = (newsData: NewsData) => {
+  const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {state, loading} = stateNewsData;
   const newsDate = newsData.createdAt ?? newsData.createdAtI;
   const date = newsDate ? new Date(newsDate) : '';
   const currentDate = new Date();
@@ -73,7 +76,7 @@ export const NewsCard = (newsData: NewsData) => {
   }));
 
   const animatedWidthTapStyles = useAnimatedStyle(() => ({
-    width: -70 > offset.value ? '100%' : '15%',
+    width: -70 > offset.value ? '100%' : '7%',
   }));
 
   const animatedStylesZindexRight = useAnimatedStyle(() => ({
@@ -86,6 +89,25 @@ export const NewsCard = (newsData: NewsData) => {
     }
   };
 
+  const isSelected = useMemo(() => {
+    return state.favoritesNewsList.some(item => item === newsData.storyId);
+  }, [state.favoritesNewsList, newsData.storyId]);
+
+  // const existInFavoritesList = () => {
+  //   console.log('isSelected', isSelected);
+  //   if (isSelected) {
+  //     return 'none';
+  //   } else return 'auto';
+  // };
+
+  const existInFavoritesList = useCallback(() => {
+    if (isSelected) {
+      return 'none';
+    } else {
+      return 'auto';
+    }
+  }, [isSelected]);
+
   return (
     <GestureHandlerRootView style={styles.cardContainer}>
       <>
@@ -94,7 +116,15 @@ export const NewsCard = (newsData: NewsData) => {
           <View style={styles.trashButton}>
             <Pressable
               onPress={() => {
-                offset.value = withTiming(0);
+                offset.value = withTiming(100);
+                dispatchNewsData({
+                  type: NewsKind.REMOVE_NEWS,
+                  payload: {
+                    newsList: state.newsList,
+                    // favoritesNewsId: undefined,
+                    deletedNewsId: newsData.storyId,
+                  },
+                });
               }}>
               <Icon name="trash" size={30} color="#df1b1b" />
             </Pressable>
@@ -112,31 +142,46 @@ export const NewsCard = (newsData: NewsData) => {
           />
         </GestureDetector>
         <Animated.View style={[styles.innerCardContainer, animatedStyles]}>
-          <Pressable onPress={navigateWebView}>
-            <View style={styles.cardHeaderContainer}>
-              <Image
-                source={images.logoImageIcon}
-                style={{height: 50, width: 50, borderRadius: 100}}
-              />
+          <View style={styles.cardHeaderContainer}>
+            <Image
+              source={images.logoImageIcon}
+              style={{height: 50, width: 50, borderRadius: 100}}
+            />
 
-              <View style={{flex: 1}}>
+            <View style={{flex: 1}}>
+              <Pressable onPress={navigateWebView}>
                 <Text>{newsData.storyTitle}</Text>
-              </View>
+              </Pressable>
+            </View>
 
-              <View style={styles.containerFavoritesbutton}>
-                <Pressable
-                  style={{zIndex: 200}}
-                  onPress={() => {
-                    offset.value = withTiming(0);
-                  }}>
-                  <Icon name="heart" size={30} color="#000" />
-                </Pressable>
-              </View>
+            <View
+              pointerEvents={existInFavoritesList()}
+              style={styles.containerFavoritesbutton}>
+              <Pressable
+                hitSlop={30}
+                onPress={() => {
+                  console.log('presione heart');
+                  offset.value = withTiming(0);
+                  dispatchNewsData({
+                    type: NewsKind.ADD_FAVORITES,
+                    payload: {
+                      newsList: state.newsList,
+                      favoritesNewsId: newsData.storyId,
+                    },
+                  });
+                }}>
+                <Icon
+                  name="heart"
+                  size={30}
+                  color={isSelected ? '#df1b1b' : '#000'}
+                  solid={isSelected ? true : false}
+                />
+              </Pressable>
             </View>
-            <View style={styles.cardFooterContainer}>
-              <Text>{`${newsData.author} - ${resultInDays}`}</Text>
-            </View>
-          </Pressable>
+          </View>
+          <View style={styles.cardFooterContainer}>
+            <Text>{`${newsData.author} - ${resultInDays}`}</Text>
+          </View>
         </Animated.View>
       </View>
     </GestureHandlerRootView>

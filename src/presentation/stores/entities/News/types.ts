@@ -6,15 +6,25 @@ export enum NewsKind {
   FETCHING = 'FETCHING',
   INITIAL_STATE = 'INITIAL_STATE',
   DEFAULT = 'DEFAULT',
+  REMOVE_NEWS = 'REMOVE_NEWS',
+  ADD_FAVORITES = 'ADD_FAVORITES',
 }
 
 type NewsEntity = {
   newsList: News;
+  favoritesNewsList: number[];
+  deletedNewsList: number[];
+};
+
+type NewsPayloadEntity = {
+  newsList: News;
+  favoritesNewsId?: number;
+  deletedNewsId?: number;
 };
 
 export interface NewsActions {
   type: NewsKind;
-  payload: NewsEntity;
+  payload: NewsPayloadEntity;
   loading?: boolean;
   fetched?: boolean;
   error?: Error;

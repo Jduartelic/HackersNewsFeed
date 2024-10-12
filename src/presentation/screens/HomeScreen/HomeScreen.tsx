@@ -34,6 +34,8 @@ const HomeScreen = (): React.JSX.Element => {
       type: NewsKind.FETCHING,
       payload: {
         newsList: state.newsList,
+        favoritesNewsId: undefined,
+        deletedNewsId: undefined,
       },
     });
   }, [dispatchNewsData]);

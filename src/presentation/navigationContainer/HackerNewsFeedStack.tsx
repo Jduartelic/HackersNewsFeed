@@ -23,7 +23,7 @@ const HackerNewsFeedNavigator = () => {
                 <MainHeader
                   iconLeft={{name: 'bars'}}
                   imageSource={images.logoInitials}
-                  iconRight={{name: 'heart'}}
+                  iconRight={{name: 'star'}}
                 />
               ),
               headerShown: true,
