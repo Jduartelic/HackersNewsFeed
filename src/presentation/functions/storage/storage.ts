@@ -1,5 +1,4 @@
 import {MMKV} from 'react-native-mmkv';
-import {constants} from '../../constants';
 
 const storage = new MMKV({
   id: 'user-storage',

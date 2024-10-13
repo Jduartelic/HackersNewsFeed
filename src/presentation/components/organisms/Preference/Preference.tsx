@@ -1,70 +1,37 @@
 import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  Text,
-  useWindowDimensions,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, View, Text} from 'react-native';
 import {UserActivityContext, UserActivityKind} from '../../../stores/entities';
 import styles from './Preference.styles';
 import {constants} from '../../../constants';
 import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const OnboardingScreen = (): React.JSX.Element => {
+const Preference = ({
+  hideOnboarding = false,
+}: {
+  hideOnboarding: boolean;
+}): React.JSX.Element => {
   const {ONBOARDING, USER_ACTIVITY} = constants;
   const {SELECT_INTEREST_FACETS, PREFERENCE} = ONBOARDING;
-  const {keywords} = USER_ACTIVITY.FACETS;
+  const {keywords: KEY_WORDS} = USER_ACTIVITY.FACETS;
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
-  const {facetsSelectedByUser} = stateUserActivityData.state;
+  const {facetsSelectedByUser, facets, userName} = stateUserActivityData.state;
 
   const renderItem = (keywords: string[], title: string) => {
     return (
-      <View
-        key={uuid.v4().toString()}
-        style={{
-          flex: 1,
-          width: '100%',
-          flexDirection: 'column',
-          paddingHorizontal: 16,
-          paddingTop: 16,
-        }}>
-        <Text
-          style={{
-            fontWeight: '400',
-            fontSize: 18,
-            color: '#000',
-          }}>
-          {title}
-        </Text>
+      <View key={uuid.v4().toString()} style={styles.mainContainerFacets}>
+        <Text style={styles.textTitleFacet}>{title}</Text>
 
         {keywords.map(keyword => {
           const isSelected = facetsSelectedByUser?.some(
             facet => facet === keyword,
           );
           return (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingHorizontal: 32,
-              }}>
-              <Text
-                style={{
-                  fontWeight: '400',
-                  fontSize: 14,
-                  color: '#000',
-                }}>
-                {keyword}
-              </Text>
+            <View style={styles.innerContainerFacets}>
+              <Text style={styles.keywordText}>{keyword}</Text>
               <Icon
                 onPress={() => {
-                  const {facetsSelectedByUser, facets, userName} =
-                    stateUserActivityData.state;
                   const facetsData = facetsSelectedByUser;
                   if (!isSelected) {
                     facetsData?.push(keyword);
@@ -81,10 +48,11 @@ const OnboardingScreen = (): React.JSX.Element => {
                   dispatchUserActivityData({
                     type: UserActivityKind.FETCHED,
                     payload: {
+                      ...stateUserActivityData.state,
                       facets: facets,
                       facetsSelectedByUser: facetsData,
-                      hasSeenOnboarding: false,
-                      querySearch: [],
+                      hasSeenOnboarding: true,
+                      querySearch: '',
                       userName: userName,
                     },
                   });
@@ -102,37 +70,23 @@ const OnboardingScreen = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      {hideOnboarding && (
+        <>
+          <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+          <View style={styles.paddingContainer}>
+            <Text style={styles.textFacetsInterest}>
+              {SELECT_INTEREST_FACETS}
+            </Text>
+          </View>
 
-      <View style={{paddingHorizontal: 16}}>
-        <Text
-          style={{
-            fontWeight: '600',
-            fontSize: 20,
-            color: '#000',
-          }}>
-          {SELECT_INTEREST_FACETS}
-        </Text>
-      </View>
-
-      <View
-        style={{
-          paddingHorizontal: 16,
-          // borderBottomColor: '#000',
-          // borderBottomWidth: 1,
-        }}>
-        <Text
-          style={{
-            fontWeight: '400',
-            fontSize: 20,
-            color: '#000',
-          }}>
-          {PREFERENCE}
-        </Text>
-      </View>
+          <View style={styles.paddingContainer}>
+            <Text style={styles.textFacetsPreferences}>{PREFERENCE}</Text>
+          </View>
+        </>
+      )}
       <ScrollView showsVerticalScrollIndicator={false}>
-        {Object.values(keywords).map((item, index) => {
-          const title = Object.keys(keywords)[index];
+        {Object.values(KEY_WORDS).map((item, index) => {
+          const title = Object.keys(KEY_WORDS)[index];
           return renderItem(item, title);
         })}
       </ScrollView>
@@ -140,4 +94,4 @@ const OnboardingScreen = (): React.JSX.Element => {
   );
 };
 
-export default OnboardingScreen;
+export default Preference;

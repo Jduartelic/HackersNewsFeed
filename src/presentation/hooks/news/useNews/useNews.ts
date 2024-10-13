@@ -36,7 +36,7 @@ const useNews = () => {
         });
       }
     },
-    [dispatchNewsData],
+    [dispatchNewsData, state.deletedNewsList, state.favoritesNewsList],
   );
 
   useEffect(() => {

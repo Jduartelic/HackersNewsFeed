@@ -25,13 +25,7 @@ const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
 
   const renderItem = ({item: news}: {item: NewsData}) => {
     return (
-      <View
-        key={uuid.v4().toString()}
-        style={{
-          flex: 1,
-          width: '100%',
-          backgroundColor: 'transparent',
-        }}>
+      <View key={uuid.v4().toString()} style={styles.containerNewsCards}>
         <NewsCard {...news} />
       </View>
     );
@@ -41,11 +35,7 @@ const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
       <FlatList
         testID="container-content-order-confirmation"
         data={newsDataList.data}
-        style={{
-          flex: 1,
-          height: '100%',
-          width: '100%',
-        }}
+        style={styles.containerFlatlist}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         bounces={true}

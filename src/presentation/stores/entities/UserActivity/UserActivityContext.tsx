@@ -1,14 +1,19 @@
 import React, {ReactNode, useMemo, useReducer} from 'react';
 import {UserActivityDataReducer, UserActivityContextType} from '../../entities';
-
+import {Platform} from 'react-native';
 export const defaultUserActivityContextValues: UserActivityContextType = {
   stateUserActivityData: {
     state: {
       facets: [],
       facetsSelectedByUser: [],
-      querySearch: [],
+      querySearch: '',
       hasSeenOnboarding: true,
       userName: '',
+      pushNotifications: {
+        appStateActivity: Platform.OS === 'ios' ? 'active' : '',
+        sentPushNotification: false,
+        timeForNextPush: 6000,
+      },
     },
     loading: false,
     fetched: false,
@@ -19,8 +24,13 @@ export const defaultUserActivityContextValues: UserActivityContextType = {
         state: {
           facets: [],
           facetsSelectedByUser: [],
-          querySearch: [],
+          querySearch: '',
           userName: '',
+          pushNotifications: {
+            appStateActivity: 'active',
+            sentPushNotification: false,
+            timeForNextPush: 6000,
+          },
         },
         loading: data?.loading ?? false,
         fetched: data?.fetched ?? false,
@@ -46,17 +56,11 @@ export const UserActivityContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  //  await localStorageActivityUser();
-
   const [stateUserActivityData, dispatchUserActivityData] = useReducer(
     UserActivityDataReducer,
     {
       state: {
-        facets: [],
-        facetsSelectedByUser: [],
-        querySearch: [],
-        hasSeenOnboarding: true,
-        userName: '',
+        ...defaultUserActivityContextValues.stateUserActivityData.state,
       },
       loading: false,
       fetched: false,

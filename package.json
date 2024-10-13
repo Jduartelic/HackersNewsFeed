@@ -12,6 +12,7 @@
     "clean:ios": "cd ios && xcodebuild clean && cd ../"
   },
   "dependencies": {
+    "@notifee/react-native": "^9.1.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/drawer": "^6.7.2",
@@ -22,6 +23,7 @@
     "date-fns": "^4.1.0",
     "react": "18.3.1",
     "react-native": "0.75.4",
+    "react-native-background-timer-android": "^1.0.4",
     "react-native-config": "^1.5.3",
     "react-native-gesture-handler": "^2.20.0",
     "react-native-linear-gradient": "^2.8.3",
@@ -43,6 +45,7 @@
     "@react-native/eslint-config": "0.75.4",
     "@react-native/metro-config": "0.75.4",
     "@react-native/typescript-config": "0.75.4",
+    "@testing-library/react-native": "^12.7.2",
     "@types/react": "^18.2.6",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",

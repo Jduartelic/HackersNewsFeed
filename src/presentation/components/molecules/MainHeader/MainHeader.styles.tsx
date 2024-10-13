@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     minHeight: 70,
+  },
+  imageContainer: {
+    height: 60,
+    width: 60,
+    borderRadius: 100,
   },
 });
 

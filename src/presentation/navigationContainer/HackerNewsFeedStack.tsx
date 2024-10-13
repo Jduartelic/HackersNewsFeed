@@ -1,3 +1,4 @@
+import React, {useCallback} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   HomeScreen,
@@ -18,11 +19,23 @@ import {
 import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {FontAwesome5IconProps} from 'react-native-vector-icons/FontAwesome5';
+import {ImageSourcePropType} from 'react-native';
 
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
 const Drawer = createDrawerNavigator<HackerNewsFeedDrawer>();
 
 function HackerNewsFeedNavigator() {
+  const MainHeaderComponent = useCallback(
+    () => (
+      <MainHeader
+        iconLeft={{name: 'chevron-left'}}
+        imageSource={images.logoInitials}
+      />
+    ),
+    [],
+  );
+
   return (
     <UserActivityContextProvider>
       <NewsContextProvider>
@@ -40,12 +53,7 @@ function HackerNewsFeedNavigator() {
               name="CemeteryNewsScreen"
               component={CemeteryNewsScreen}
               options={{
-                header: () => (
-                  <MainHeader
-                    iconLeft={{name: 'chevron-left'}}
-                    imageSource={images.logoInitials}
-                  />
-                ),
+                header: () => MainHeaderComponent(),
                 headerShown: true,
                 headerStyle: {backgroundColor: '#f5f5f5'},
                 headerShadowVisible: true,
@@ -59,6 +67,25 @@ function HackerNewsFeedNavigator() {
 }
 
 const HackerNewsFeedScreens = () => {
+  const HeaderHackerNewsFeedScreens = useCallback(
+    ({
+      iconLeft,
+      imageSource,
+      iconRight,
+    }: {
+      iconLeft: FontAwesome5IconProps;
+      imageSource?: ImageSourcePropType;
+      iconRight?: FontAwesome5IconProps;
+    }) => (
+      <MainHeader
+        iconLeft={iconLeft}
+        imageSource={imageSource}
+        iconRight={iconRight}
+      />
+    ),
+    [],
+  );
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -70,13 +97,12 @@ const HackerNewsFeedScreens = () => {
         options={{
           gestureEnabled: false,
           animation: 'slide_from_right',
-          header: () => (
-            <MainHeader
-              iconLeft={{name: 'bars'}}
-              imageSource={images.logoInitials}
-              iconRight={{name: 'star'}}
-            />
-          ),
+          header: () =>
+            HeaderHackerNewsFeedScreens({
+              iconLeft: {name: 'bars'},
+              iconRight: {name: 'star'},
+              imageSource: images.logoInitials,
+            }),
           headerShown: true,
           headerStyle: {backgroundColor: '#f5f5f5'},
           headerShadowVisible: true,
@@ -88,12 +114,11 @@ const HackerNewsFeedScreens = () => {
         options={{
           gestureEnabled: false,
           animation: 'slide_from_right',
-          header: () => (
-            <MainHeader
-              iconLeft={{name: 'chevron-left'}}
-              imageSource={images.logoInitials}
-            />
-          ),
+          header: () =>
+            HeaderHackerNewsFeedScreens({
+              iconLeft: {name: 'chevron-left'},
+              imageSource: images.logoInitials,
+            }),
           headerShown: true,
           headerStyle: {backgroundColor: '#f5f5f5'},
           headerShadowVisible: true,
@@ -106,12 +131,11 @@ const HackerNewsFeedScreens = () => {
         options={{
           gestureEnabled: false,
           animation: 'slide_from_right',
-          header: () => (
-            <MainHeader
-              iconLeft={{name: 'chevron-left'}}
-              imageSource={images.logoInitials}
-            />
-          ),
+          header: () =>
+            HeaderHackerNewsFeedScreens({
+              iconLeft: {name: 'chevron-left'},
+              imageSource: images.logoInitials,
+            }),
           headerShown: true,
           headerStyle: {backgroundColor: '#f5f5f5'},
           headerShadowVisible: true,

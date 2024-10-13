@@ -11,5 +11,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  bottomTabBarContainer: {
+    backgroundColor: '#4682B4',
+    padding: 8,
+    borderRadius: 24,
+  },
+  titleButton: {
+    fontWeight: '600',
+    fontSize: 20,
+    color: '#fff',
+    textAlign: 'center',
+  },
+  containerPadding: {padding: 16},
 });
 export default styles;

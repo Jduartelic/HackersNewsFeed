@@ -41,7 +41,9 @@ export function NewsDataReducer(
         const exist = deletedNewsList?.some(
           item => item === newsListItem.storyId,
         );
-        if (!exist) return newsListItem;
+        if (!exist) {
+          return newsListItem;
+        }
       });
       dataPayload = JSON.stringify({
         newsList: {data: listFiltered},

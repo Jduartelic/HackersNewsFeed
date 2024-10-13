@@ -14,6 +14,7 @@ import {
   UserActivityContext,
   UserActivityEntity,
   UserActivityKind,
+  defaultUserActivityContextValues,
 } from '../../stores/entities';
 import {NewsFeed} from '../../components/organisms';
 import {SkeletonCardContainer} from '../../components/molecules';
@@ -24,6 +25,7 @@ import {getSavedData} from '../../functions';
 import {useNavigation} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {PushNotificationsHandler} from '../../components/HOC/';
 
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
@@ -31,7 +33,7 @@ type HackerNewsFeedNavigationProp =
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
   const {HOME} = constants;
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {navigate, replace} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
@@ -81,16 +83,14 @@ const HomeScreen = (): React.JSX.Element => {
 
   const onFetchingUserActivity = useCallback(async () => {
     getSavedData(constants.USER_ACTIVITY.STORAGE_KEY).then(savedData => {
-      console.log('savedData', savedData);
       const parseLocalFacets: UserActivityEntity = savedData
         ? JSON.parse(savedData)
         : {
             facets: constants.USER_ACTIVITY.FACETS,
             facetsSelectedByUser: [],
-            querySearch: [],
+            querySearch: '',
             hasSeenOnboarding: false,
           };
-      console.log('parseLocalFacets', parseLocalFacets);
       dispatchUserActivityData({
         type: UserActivityKind.FETCHED,
         payload: {
@@ -99,6 +99,13 @@ const HomeScreen = (): React.JSX.Element => {
           hasSeenOnboarding: parseLocalFacets.hasSeenOnboarding,
           querySearch: parseLocalFacets.querySearch,
           userName: parseLocalFacets.userName,
+          pushNotifications: {
+            appStateActivity:
+              defaultUserActivityContextValues.stateUserActivityData.state
+                .pushNotifications.appStateActivity,
+            sentPushNotification: false,
+            timeForNextPush: 6000,
+          },
         },
       });
     });
@@ -106,14 +113,10 @@ const HomeScreen = (): React.JSX.Element => {
     dispatchUserActivityData({
       type: UserActivityKind.FETCHING,
       payload: {
-        facets: [],
-        facetsSelectedByUser: [],
-        hasSeenOnboarding: true,
-        querySearch: [],
-        userName: '',
+        ...defaultUserActivityContextValues.stateUserActivityData.state,
       },
     });
-  }, [dispatchNewsData]);
+  }, [dispatchUserActivityData]);
 
   useEffect(() => {
     if (!loadingUserActivity && !fetchedUserActivity) {
@@ -123,9 +126,9 @@ const HomeScreen = (): React.JSX.Element => {
 
   useEffect(() => {
     if (loading && !fetched) {
-      getNewsList('mobile');
+      getNewsList(stateUserActivity.querySearch ?? '');
     }
-  }, [loading, fetched, getNewsList]);
+  }, [loading, fetched, getNewsList, stateUserActivity.querySearch]);
 
   useEffect(() => {
     if (
@@ -147,10 +150,15 @@ const HomeScreen = (): React.JSX.Element => {
   ]);
 
   useEffect(() => {
-    if (!stateUserActivity.hasSeenOnboarding) {
-      navigate('OnboardingScreen');
+    if (!stateUserActivity.hasSeenOnboarding && fetchedUserActivity) {
+      replace('OnboardingScreen');
     }
-  }, [navigate, stateUserActivity.hasSeenOnboarding]);
+  }, [
+    navigate,
+    stateUserActivity.hasSeenOnboarding,
+    fetchedUserActivity,
+    replace,
+  ]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
@@ -164,7 +172,7 @@ const HomeScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator={false}>
         {skeletonArray.map(() => {
           return (
-            <View style={{flex: 1}} key={uuid.v4().toString()}>
+            <View style={styles.mainContainer} key={uuid.v4().toString()}>
               <SkeletonCardContainer isLoading={loading} />
             </View>
           );
@@ -175,10 +183,11 @@ const HomeScreen = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
-      {loading && renderSkeleton()}
-      {!loading && <NewsFeed newsDataList={filteredListNews} />}
-      <SafeAreaView style={{backgroundColor: 'transparent'}} />
+      <PushNotificationsHandler>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#f5f5f5'} />
+        {loading && renderSkeleton()}
+        {!loading && <NewsFeed newsDataList={filteredListNews} />}
+      </PushNotificationsHandler>
     </SafeAreaView>
   );
 };

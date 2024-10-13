@@ -14,6 +14,18 @@ export default {
     STORAGE_KEY: 'StorageKeys::STORAGE_SAVED_DATA',
   },
   USER_ACTIVITY: {
+    TITLE_PUSH_NOTIFICATIONS: [
+      'New article just dropped! Don’t miss out—read now:',
+      'Your next read is waiting! Tap to dive in:',
+      'Ready for something new? Check out the latest:',
+      'Fresh content for you! Open up and start reading:',
+      'Time for a quick read? Click here to begin!',
+    ],
+
+    RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION_TITLE:
+      'We’ve got news updates waiting for you!',
+    RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION:
+      'Missed something important? Customize your notifications to only receive updates on topics you care about. Would you like to turn them back on?',
     STORAGE_KEY: 'StorageKeys::USER_ACTIVITY_HACKER_NEWS_SAVED_DATA',
     FACETS: {
       keywords: {
@@ -40,6 +52,8 @@ export default {
           'Comparison',
           'Features',
           'Security',
+          'Android',
+          'iOS',
         ],
         health_and_wellness: [
           'Symptoms',

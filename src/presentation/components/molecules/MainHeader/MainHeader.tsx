@@ -34,7 +34,7 @@ export const MainHeader = ({
   const routeStateScreen = useMemo(() => {
     const state = getState();
     return state.routes[state.index].name;
-  }, [getState()]);
+  }, [getState]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -58,11 +58,7 @@ export const MainHeader = ({
           {imageSource && (
             <Image
               source={imageSource}
-              style={{
-                height: 60,
-                width: 60,
-                borderRadius: 100,
-              }}
+              style={styles.imageContainer}
               resizeMode="cover"
             />
           )}

@@ -41,7 +41,7 @@ const FavoritesScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator={false}>
         {skeletonArray.map(() => {
           return (
-            <View style={{flex: 1}} key={uuid.v4().toString()}>
+            <View style={styles.mainContainer} key={uuid.v4().toString()}>
               <SkeletonCardContainer isLoading={loading} />
             </View>
           );
@@ -55,7 +55,6 @@ const FavoritesScreen = (): React.JSX.Element => {
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       {loading && renderSkeleton()}
       {!loading && <NewsFeed newsDataList={favoritesNews} />}
-      <SafeAreaView style={{backgroundColor: 'transparent'}} />
     </SafeAreaView>
   );
 };

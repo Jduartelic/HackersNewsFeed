@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
     flex: 0.2,
     flexDirection: 'row',
   },
+  skeletonAvatar: {flex: 0.2, paddingVertical: 16, paddingLeft: 16},
+  skeletonTitle: {flex: 0.8, paddingRight: 16},
+  skeletonDescription: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
 });
 
 export default styles;

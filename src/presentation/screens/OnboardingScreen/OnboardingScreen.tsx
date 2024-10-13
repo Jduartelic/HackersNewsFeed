@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useCallback} from 'react';
 import {SafeAreaView, View, Text, Pressable} from 'react-native';
 import {UserActivityContext, UserActivityKind} from '../../stores/entities';
 import {Preference, Onboarding} from '../../components/organisms';
@@ -24,50 +24,45 @@ const OnboardingScreen = (): React.JSX.Element => {
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
 
+  const BottomTabBar = useCallback(
+    (props: BottomTabBarProps) => (
+      <View style={styles.containerPadding}>
+        <Pressable
+          style={styles.bottomTabBarContainer}
+          onPress={() => {
+            if (props.state.index < 1) {
+              props.navigation.navigate(
+                props.state.routeNames[props.state.index + 1],
+              );
+            } else {
+              const {facetsSelectedByUser, facets, userName} =
+                stateUserActivityData.state;
+              dispatchUserActivityData({
+                type: UserActivityKind.FETCHED,
+                payload: {
+                  ...stateUserActivityData.state,
+                  facets: facets,
+                  facetsSelectedByUser: facetsSelectedByUser,
+                  hasSeenOnboarding: true,
+                  querySearch: '',
+                  userName: userName,
+                },
+              });
+              navigate('HomeScreen');
+            }
+          }}>
+          <Text style={styles.titleButton}>
+            {constants.ONBOARDING.CONTINUE}
+          </Text>
+        </Pressable>
+      </View>
+    ),
+    [dispatchUserActivityData, navigate, stateUserActivityData.state],
+  );
+
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <Tab.Navigator
-        tabBar={(props: BottomTabBarProps) => (
-          <View style={{padding: 16}}>
-            <Pressable
-              style={{
-                backgroundColor: '#4682B4',
-                padding: 8,
-                borderRadius: 24,
-              }}
-              onPress={() => {
-                if (props.state.index < 1) {
-                  props.navigation.navigate(
-                    props.state.routeNames[props.state.index + 1],
-                  );
-                } else {
-                  const {facetsSelectedByUser, facets, userName} =
-                    stateUserActivityData.state;
-                  dispatchUserActivityData({
-                    type: UserActivityKind.FETCHED,
-                    payload: {
-                      facets: facets,
-                      facetsSelectedByUser: facetsSelectedByUser,
-                      hasSeenOnboarding: true,
-                      querySearch: [],
-                      userName: userName,
-                    },
-                  });
-                  navigate('HomeScreen');
-                }
-              }}>
-              <Text
-                style={{
-                  fontWeight: '600',
-                  fontSize: 20,
-                  color: '#fff',
-                  textAlign: 'center',
-                }}>
-                {constants.ONBOARDING.CONTINUE}
-              </Text>
-            </Pressable>
-          </View>
-        )}>
+      <Tab.Navigator tabBar={props => BottomTabBar(props)}>
         <Tab.Screen
           name="HomeScreen"
           component={Onboarding}
