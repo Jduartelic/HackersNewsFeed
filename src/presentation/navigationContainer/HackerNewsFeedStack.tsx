@@ -4,13 +4,17 @@ import {
   WebViewScreen,
   FavoritesScreen,
   CemeteryNewsScreen,
+  OnboardingScreen,
 } from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   HackerNewsFeedStack,
   HackerNewsFeedDrawer,
 } from '../navigationContainer/navigationStack';
-import {NewsContextProvider} from '../stores/entities';
+import {
+  NewsContextProvider,
+  UserActivityContextProvider,
+} from '../stores/entities';
 import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -20,32 +24,37 @@ const Drawer = createDrawerNavigator<HackerNewsFeedDrawer>();
 
 function HackerNewsFeedNavigator() {
   return (
-    <NewsContextProvider>
-      <NavigationContainer>
-        <Drawer.Navigator
-          screenOptions={{
-            headerShown: false,
-            swipeEnabled: false,
-          }}>
-          <Drawer.Screen name="MainScreen" component={HackerNewsFeedScreens} />
-          <Drawer.Screen
-            name="CemeteryNewsScreen"
-            component={CemeteryNewsScreen}
-            options={{
-              header: () => (
-                <MainHeader
-                  iconLeft={{name: 'chevron-left'}}
-                  imageSource={images.logoInitials}
-                />
-              ),
-              headerShown: true,
-              headerStyle: {backgroundColor: '#f5f5f5'},
-              headerShadowVisible: true,
-            }}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </NewsContextProvider>
+    <UserActivityContextProvider>
+      <NewsContextProvider>
+        <NavigationContainer>
+          <Drawer.Navigator
+            screenOptions={{
+              headerShown: false,
+              swipeEnabled: false,
+            }}>
+            <Drawer.Screen
+              name="MainScreen"
+              component={HackerNewsFeedScreens}
+            />
+            <Drawer.Screen
+              name="CemeteryNewsScreen"
+              component={CemeteryNewsScreen}
+              options={{
+                header: () => (
+                  <MainHeader
+                    iconLeft={{name: 'chevron-left'}}
+                    imageSource={images.logoInitials}
+                  />
+                ),
+                headerShown: true,
+                headerStyle: {backgroundColor: '#f5f5f5'},
+                headerShadowVisible: true,
+              }}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </NewsContextProvider>
+    </UserActivityContextProvider>
   );
 }
 
@@ -106,6 +115,16 @@ const HackerNewsFeedScreens = () => {
           headerShown: true,
           headerStyle: {backgroundColor: '#f5f5f5'},
           headerShadowVisible: true,
+        }}
+      />
+
+      <Stack.Screen
+        name="OnboardingScreen"
+        component={OnboardingScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_right',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

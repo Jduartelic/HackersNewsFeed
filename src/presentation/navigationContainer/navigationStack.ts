@@ -4,6 +4,7 @@ type HackerNewsFeedStack = {
     url: string;
   };
   FavoritesScreen: undefined;
+  OnboardingScreen: undefined;
 };
 
 type HackerNewsFeedDrawer = {
@@ -11,4 +12,13 @@ type HackerNewsFeedDrawer = {
   CemeteryNewsScreen: undefined;
 };
 
-export type {HackerNewsFeedStack, HackerNewsFeedDrawer};
+type HackerNewsOnboardingScreens = {
+  HomeScreen: undefined;
+  PreferenceScreen: undefined;
+};
+
+export type {
+  HackerNewsFeedStack,
+  HackerNewsFeedDrawer,
+  HackerNewsOnboardingScreens,
+};

@@ -1,5 +1,6 @@
 import {NewsKind, NewsActions, StateStoreNewsData} from '../../entities';
 import {setSavedData} from '../../../functions';
+import {constants} from '../../../constants';
 
 export function NewsDataReducer(
   state: StateStoreNewsData,
@@ -47,7 +48,7 @@ export function NewsDataReducer(
         favoritesNewsList: state.state.favoritesNewsList,
         deletedNewsList: state.state.deletedNewsList,
       });
-      setSavedData(dataPayload);
+      setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
 
       return {
         ...state,
@@ -71,7 +72,7 @@ export function NewsDataReducer(
         favoritesNewsList: state.state.favoritesNewsList,
       });
 
-      setSavedData(dataPayload);
+      setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
       return {
         ...state,
         state: {
@@ -104,7 +105,7 @@ export function NewsDataReducer(
         ...state.state,
         favoritesNewsList: favoritesList,
       });
-      setSavedData(dataPayload);
+      setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
 
       return {
         ...state,
