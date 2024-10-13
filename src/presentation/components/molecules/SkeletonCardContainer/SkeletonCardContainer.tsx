@@ -10,7 +10,7 @@ const SkeletonCardContainer = ({isLoading}: {isLoading: boolean}) => {
       <View style={styles.skeletonHeaderContainer}>
         <Skeleton
           animationDirection="horizontalRight"
-          containerStyle={{flex: 0.2, paddingVertical: 16, paddingLeft: 16}}
+          containerStyle={styles.skeletonAvatar}
           isLoading={isLoading}
           layout={[
             {
@@ -23,7 +23,7 @@ const SkeletonCardContainer = ({isLoading}: {isLoading: boolean}) => {
         />
         <Skeleton
           animationDirection="horizontalRight"
-          containerStyle={{flex: 0.8, paddingRight: 16}}
+          containerStyle={styles.skeletonTitle}
           isLoading={isLoading}
           layout={[{key: 'someOtherId', width: '100%', height: '40%'}]}
         />
@@ -31,11 +31,7 @@ const SkeletonCardContainer = ({isLoading}: {isLoading: boolean}) => {
       <View style={styles.skeletonFooterContainer}>
         <Skeleton
           animationDirection="horizontalRight"
-          containerStyle={{
-            flex: 1,
-            paddingHorizontal: 16,
-            paddingBottom: 16,
-          }}
+          containerStyle={styles.skeletonDescription}
           isLoading={isLoading}
           layout={[
             {

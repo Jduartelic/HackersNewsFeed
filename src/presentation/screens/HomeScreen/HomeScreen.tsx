@@ -108,7 +108,7 @@ const HomeScreen = (): React.JSX.Element => {
         ...defaultUserActivityContextValues.stateUserActivityData.state,
       },
     });
-  }, [dispatchNewsData]);
+  }, [dispatchUserActivityData]);
 
   useEffect(() => {
     if (!loadingUserActivity && !fetchedUserActivity) {
@@ -145,7 +145,12 @@ const HomeScreen = (): React.JSX.Element => {
     if (!stateUserActivity.hasSeenOnboarding && fetchedUserActivity) {
       replace('OnboardingScreen');
     }
-  }, [navigate, stateUserActivity.hasSeenOnboarding]);
+  }, [
+    navigate,
+    stateUserActivity.hasSeenOnboarding,
+    fetchedUserActivity,
+    replace,
+  ]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
@@ -159,7 +164,7 @@ const HomeScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator={false}>
         {skeletonArray.map(() => {
           return (
-            <View style={{flex: 1}} key={uuid.v4().toString()}>
+            <View style={styles.mainContainer} key={uuid.v4().toString()}>
               <SkeletonCardContainer isLoading={loading} />
             </View>
           );
@@ -174,7 +179,6 @@ const HomeScreen = (): React.JSX.Element => {
         <StatusBar barStyle={'dark-content'} backgroundColor={'#f5f5f5'} />
         {loading && renderSkeleton()}
         {!loading && <NewsFeed newsDataList={filteredListNews} />}
-        <SafeAreaView style={{backgroundColor: 'transparent'}} />
       </PushNotificationsHandler>
     </SafeAreaView>
   );

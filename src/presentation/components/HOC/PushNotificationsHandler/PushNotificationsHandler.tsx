@@ -2,36 +2,17 @@ import React, {
   useEffect,
   useContext,
   useCallback,
-  useMemo,
   useRef,
   useState,
 } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  AppState,
-  Platform,
-  Modal,
-  Text,
-  Pressable,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, AppState, Platform, Modal, Text, Pressable} from 'react-native';
 import {useNews} from '../../../hooks';
 import {
   NewsContext,
-  NewsKind,
-  NewsPayloadEntity,
   UserActivityContext,
-  UserActivityEntity,
   UserActivityKind,
 } from '../../../stores/entities';
-import {NewsFeed} from '../../organisms';
 import {constants} from '../../../constants';
-import uuid from 'react-native-uuid';
-import {getSavedData} from '../../../functions';
 import {useNavigation} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -150,10 +131,11 @@ const PushNotificationsHandler = ({
   }, [onRequestingPremission]);
 
   useEffect(() => {
-    console.log(
-      ' timeout appStateActivity.match(/background/)',
-      stateUserActivity.pushNotifications,
-    );
+    console.log(' timeout appStateActivity.match(/background/)', {
+      appStateActivity,
+      sentPushNotification,
+      timeForNextPush,
+    });
 
     if (appStateActivity.match(/background/) && sentPushNotification) {
       console.log('ciclada en appStateActivity');
@@ -165,12 +147,10 @@ const PushNotificationsHandler = ({
     }
   }, [appStateActivity, sentPushNotification, timeForNextPush]);
 
-  const appState = useRef(AppState.currentState);
-
-  function getRandomNumber(min: number, max: number): number {
+  const getRandomNumber = useCallback((min: number, max: number): number => {
     const time = Math.floor(Math.random() * (max - min + 1)) + min;
     return time * 1000;
-  }
+  }, []);
 
   const onFetchingUserActivity = useCallback(
     async ({appState, sentPush}: {appState: string; sentPush: boolean}) => {
@@ -202,25 +182,25 @@ const PushNotificationsHandler = ({
   );
 
   // useEffect(() => {
-  notifee.onBackgroundEvent(async ({type, detail}) => {
-    console.log('onBackgroundEvent', type, detail);
-    if (type === EventType.PRESS) {
-      console.log('User pressed the notification.', detail.pressAction?.id);
-    }
-  });
+  // notifee.onBackgroundEvent(async ({type, detail}) => {
+  //   console.log('onBackgroundEvent', type, detail);
+  //   if (type === EventType.PRESS) {
+  //     console.log('User pressed the notification.', detail.pressAction?.id);
+  //   }
+  // });
 
-  notifee.registerForegroundService(notification => {
-    return new Promise(() => {
-      notifee.onForegroundEvent(async ({type, detail}) => {
-        if (
-          type === EventType.ACTION_PRESS &&
-          detail.pressAction?.id === 'stop'
-        ) {
-          await notifee.stopForegroundService();
-        }
-      });
-    });
-  });
+  // notifee.registerForegroundService(notification => {
+  //   return new Promise(() => {
+  //     notifee.onForegroundEvent(async ({type, detail}) => {
+  //       if (
+  //         type === EventType.ACTION_PRESS &&
+  //         detail.pressAction?.id === 'stop'
+  //       ) {
+  //         await notifee.stopForegroundService();
+  //       }
+  //     });
+  //   });
+  // });
 
   // }, []);
 
@@ -325,10 +305,6 @@ const PushNotificationsHandler = ({
       }
     });
 
-    // appState.current = nextAppState;
-    // setAppStateVisible(appState.current);
-    // console.log('AppState', appState.current);
-
     return () => {
       subscription.remove();
     };
@@ -341,10 +317,8 @@ const PushNotificationsHandler = ({
       <Modal
         animationType="slide"
         transparent={true}
-        style={{backgroundColor: 'transparent'}}
         visible={modalVisible}
         onRequestClose={() => {
-          console.log('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>

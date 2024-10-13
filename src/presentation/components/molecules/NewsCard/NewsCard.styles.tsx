@@ -1,13 +1,13 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const SHADOW_COLOR = '#000';
 const ANDROID_ELEVATION = 4;
 const SHADOW_OFFSET_PROPS = {width: 0, height: -4};
 const SHADOW_OPACITY = 0.1;
 const SHADOW_RADIUS = 16;
-const {width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
+  container: {flex: 1},
   cardContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  imageContainer: {height: 50, width: 50, borderRadius: 100},
 });
 
 export default styles;

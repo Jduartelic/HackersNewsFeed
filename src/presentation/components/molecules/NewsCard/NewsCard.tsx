@@ -35,7 +35,7 @@ type HackerNewsFeedNavigationProp =
 export const NewsCard = (newsData: NewsData) => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
-  const {state, loading} = stateNewsData;
+  const {state} = stateNewsData;
   const newsDate = newsData.createdAt ?? newsData.createdAtI;
   const date = newsDate ? new Date(newsDate) : '';
   const currentDate = new Date();
@@ -121,7 +121,7 @@ export const NewsCard = (newsData: NewsData) => {
           </View>
         </Animated.View>
       </>
-      <View onLayout={onLayout} style={{zIndex: 0}}>
+      <View onLayout={onLayout}>
         <GestureDetector gesture={pan}>
           <Animated.View
             style={[
@@ -135,10 +135,10 @@ export const NewsCard = (newsData: NewsData) => {
           <View style={styles.cardHeaderContainer}>
             <Image
               source={images.logoImageIcon}
-              style={{height: 50, width: 50, borderRadius: 100}}
+              style={styles.imageContainer}
             />
 
-            <View style={{flex: 1}}>
+            <View style={styles.container}>
               <Pressable onPress={navigateWebView}>
                 <Text>{newsData.storyTitle}</Text>
               </Pressable>
