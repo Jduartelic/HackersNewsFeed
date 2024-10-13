@@ -6,7 +6,11 @@ import {constants} from '../../../constants';
 import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const OnboardingScreen = (): React.JSX.Element => {
+const Preference = ({
+  hideOnboarding = false,
+}: {
+  hideOnboarding: boolean;
+}): React.JSX.Element => {
   const {ONBOARDING, USER_ACTIVITY} = constants;
   const {SELECT_INTEREST_FACETS, PREFERENCE} = ONBOARDING;
   const {keywords: KEY_WORDS} = USER_ACTIVITY.FACETS;
@@ -48,7 +52,7 @@ const OnboardingScreen = (): React.JSX.Element => {
                       facets: facets,
                       facetsSelectedByUser: facetsData,
                       hasSeenOnboarding: true,
-                      querySearch: [],
+                      querySearch: '',
                       userName: userName,
                     },
                   });
@@ -66,15 +70,20 @@ const OnboardingScreen = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      {hideOnboarding && (
+        <>
+          <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+          <View style={styles.paddingContainer}>
+            <Text style={styles.textFacetsInterest}>
+              {SELECT_INTEREST_FACETS}
+            </Text>
+          </View>
 
-      <View style={styles.paddingContainer}>
-        <Text style={styles.textFacetsInterest}>{SELECT_INTEREST_FACETS}</Text>
-      </View>
-
-      <View style={styles.paddingContainer}>
-        <Text style={styles.textFacetsPreferences}>{PREFERENCE}</Text>
-      </View>
+          <View style={styles.paddingContainer}>
+            <Text style={styles.textFacetsPreferences}>{PREFERENCE}</Text>
+          </View>
+        </>
+      )}
       <ScrollView showsVerticalScrollIndicator={false}>
         {Object.values(KEY_WORDS).map((item, index) => {
           const title = Object.keys(KEY_WORDS)[index];
@@ -85,4 +94,4 @@ const OnboardingScreen = (): React.JSX.Element => {
   );
 };
 
-export default OnboardingScreen;
+export default Preference;

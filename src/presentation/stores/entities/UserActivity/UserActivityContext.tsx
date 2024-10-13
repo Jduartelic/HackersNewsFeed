@@ -6,7 +6,7 @@ export const defaultUserActivityContextValues: UserActivityContextType = {
     state: {
       facets: [],
       facetsSelectedByUser: [],
-      querySearch: [],
+      querySearch: '',
       hasSeenOnboarding: true,
       userName: '',
       pushNotifications: {
@@ -24,7 +24,7 @@ export const defaultUserActivityContextValues: UserActivityContextType = {
         state: {
           facets: [],
           facetsSelectedByUser: [],
-          querySearch: [],
+          querySearch: '',
           userName: '',
           pushNotifications: {
             appStateActivity: 'active',

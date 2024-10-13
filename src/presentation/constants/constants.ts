@@ -14,6 +14,14 @@ export default {
     STORAGE_KEY: 'StorageKeys::STORAGE_SAVED_DATA',
   },
   USER_ACTIVITY: {
+    TITLE_PUSH_NOTIFICATIONS: [
+      'New article just dropped! Don’t miss out—read now:',
+      'Your next read is waiting! Tap to dive in:',
+      'Ready for something new? Check out the latest:',
+      'Fresh content for you! Open up and start reading:',
+      'Time for a quick read? Click here to begin!',
+    ],
+
     RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION_TITLE:
       'We’ve got news updates waiting for you!',
     RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION:
@@ -44,6 +52,8 @@ export default {
           'Comparison',
           'Features',
           'Security',
+          'Android',
+          'iOS',
         ],
         health_and_wellness: [
           'Symptoms',

@@ -11,7 +11,7 @@ export enum UserActivityKind {
 export type UserActivityEntity = {
   facets?: string[];
   facetsSelectedByUser?: string[];
-  querySearch?: string[];
+  querySearch?: string;
   hasSeenOnboarding?: boolean;
   userName: string;
   pushNotifications: PushNotificationActivityEntity;
@@ -26,7 +26,7 @@ export type PushNotificationActivityEntity = {
 export type UserActivityPayloadEntity = {
   facets?: string[];
   facetsSelectedByUser?: string[];
-  querySearch?: string[];
+  querySearch?: string;
   hasSeenOnboarding?: boolean;
   userName: string;
   pushNotifications: PushNotificationActivityEntity;

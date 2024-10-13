@@ -44,7 +44,7 @@ const OnboardingScreen = (): React.JSX.Element => {
                   facets: facets,
                   facetsSelectedByUser: facetsSelectedByUser,
                   hasSeenOnboarding: true,
-                  querySearch: [],
+                  querySearch: '',
                   userName: userName,
                 },
               });

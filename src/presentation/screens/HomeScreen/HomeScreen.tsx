@@ -88,7 +88,7 @@ const HomeScreen = (): React.JSX.Element => {
         : {
             facets: constants.USER_ACTIVITY.FACETS,
             facetsSelectedByUser: [],
-            querySearch: [],
+            querySearch: '',
             hasSeenOnboarding: false,
           };
       dispatchUserActivityData({
@@ -126,9 +126,9 @@ const HomeScreen = (): React.JSX.Element => {
 
   useEffect(() => {
     if (loading && !fetched) {
-      getNewsList('');
+      getNewsList(stateUserActivity.querySearch ?? '');
     }
-  }, [loading, fetched, getNewsList]);
+  }, [loading, fetched, getNewsList, stateUserActivity.querySearch]);
 
   useEffect(() => {
     if (
