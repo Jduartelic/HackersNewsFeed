@@ -4,7 +4,8 @@ import {NewsContext, NewsKind} from '../../../stores/entities';
 
 const useNews = () => {
   const mountedRef = useRef(true);
-  const {dispatchNewsData} = useContext(NewsContext);
+  const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
+  const {state} = stateNewsData;
 
   const getNewsList = useCallback(
     async (typePlatform: string) => {
@@ -15,6 +16,10 @@ const useNews = () => {
           type: NewsKind.FETCHED,
           payload: {
             newsList: response,
+            deletedNewsList: state.deletedNewsList,
+            favoritesNewsList: state.favoritesNewsList,
+            favoritesNewsId: undefined,
+            deletedNewsId: undefined,
           },
         });
       } catch (err: unknown) {
@@ -22,12 +27,16 @@ const useNews = () => {
           type: NewsKind.FETCHED,
           payload: {
             newsList: {data: []},
+            deletedNewsList: state.deletedNewsList,
+            favoritesNewsList: state.favoritesNewsList,
+            favoritesNewsId: undefined,
+            deletedNewsId: undefined,
           },
           error: err as Error,
         });
       }
     },
-    [dispatchNewsData],
+    [dispatchNewsData, state.deletedNewsList, state.favoritesNewsList],
   );
 
   useEffect(() => {

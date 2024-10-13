@@ -1,5 +1,5 @@
 import type {NewsResponse} from './types/repositories';
-import RequestConfig from './types/requestConfig';
+import images from './assets/images';
 
 export * from './entities';
-export {NewsResponse};
+export {NewsResponse, images};
