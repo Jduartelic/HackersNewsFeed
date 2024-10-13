@@ -21,14 +21,21 @@ import notifee, {
   AndroidVisibility,
   AuthorizationStatus,
   EventType,
+  TimestampTrigger,
+  TriggerType,
+  IntervalTrigger,
+  TimeUnit,
+  AndroidNotificationSetting,
 } from '@notifee/react-native';
 import {Linking} from 'react-native';
 import styles from './PushNotificationsHandler.styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Timer from 'react-native-background-timer-android';
 
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
+const IS_IOS = Platform.OS === 'ios';
 const PushNotificationsHandler = ({
   children,
 }: {
@@ -99,36 +106,46 @@ const PushNotificationsHandler = ({
         console.log('User provisionally granted permissions request');
       }
     }
-    // else {
-    //   const batteryOptimizationEnabled =
-    //     await notifee.isBatteryOptimizationEnabled();
-    //   if (batteryOptimizationEnabled) {
-    //     // 2. ask your users to disable the feature
-    //     Alert.alert(
-    //       'Restrictions Detected',
-    //       'To ensure notifications are delivered, please disable battery optimization for the app.',
-    //       [
-    //         // 3. launch intent to navigate the user to the appropriate screen
-    //         {
-    //           text: 'OK, open settings',
-    //           onPress: async () =>
-    //             await notifee.openBatteryOptimizationSettings(),
-    //         },
-    //         {
-    //           text: 'Cancel',
-    //           onPress: () => console.log('Cancel Pressed'),
-    //           style: 'cancel',
-    //         },
-    //       ],
-    //       {cancelable: false},
-    //     );
-    //   }
-    // }
   }, []);
 
   useEffect(() => {
     onRequestingPremission();
   }, [onRequestingPremission]);
+
+  // async function onCreateTriggerNotification() {
+  //   console.log('new Date(Date.now());', new Date(Date.now()));
+  //   const date = new Date(Date.now());
+  //   date.setHours(0);
+  //   date.setMinutes(0);
+  //   date.setSeconds(15);
+
+  //   // Create a time-based trigger
+  //   const trigger: TimestampTrigger = {
+  //     type: TriggerType.TIMESTAMP,
+  //     timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
+  //   };
+
+  //   // const trigger: IntervalTrigger = {
+  //   //   type: TriggerType.INTERVAL,
+  //   //   interval: 10,
+  //   //   timeUnit: TimeUnit.SECONDS,
+  //   // };
+
+  //   // Create a trigger notification
+
+  //   console.log('envie push');
+
+  //   await notifee.createTriggerNotification(
+  //     {
+  //       title: 'Meeting with Jane',
+  //       body: 'Today at 11:20am',
+  //       android: {
+  //         channelId: 'your-channel-id',
+  //       },
+  //     },
+  //     trigger,
+  //   );
+  // }
 
   useEffect(() => {
     console.log(' timeout appStateActivity.match(/background/)', {
@@ -138,12 +155,26 @@ const PushNotificationsHandler = ({
     });
 
     if (appStateActivity.match(/background/) && sentPushNotification) {
-      console.log('ciclada en appStateActivity');
-      let timer: ReturnType<typeof setTimeout> = setTimeout(() => {
-        console.log('triggered timer');
-        onDisplayNotification();
-        clearTimeout(timer);
-      }, timeForNextPush);
+      // onCreateTriggerNotification();
+
+      if (!IS_IOS) {
+        // Start a timer that will log "tic" after 500 milliseconds just once
+        // const timeoutId =
+        Timer.setTimeout(() => {
+          console.log('triggered timer Android');
+
+          return onDisplayNotification();
+        }, timeForNextPush);
+        // Timer.clearTimeout(timeoutId);
+      } else {
+        // Cancel the timer if needed
+        // console.log('ciclada en appStateActivity');
+        let timer: ReturnType<typeof setTimeout> = setTimeout(() => {
+          console.log('triggered timer');
+          onDisplayNotification();
+          clearTimeout(timer);
+        }, timeForNextPush);
+      }
     }
   }, [appStateActivity, sentPushNotification, timeForNextPush]);
 

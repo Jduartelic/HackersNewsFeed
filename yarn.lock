@@ -3120,6 +3120,7 @@ __metadata:
     prettier: 2.8.8
     react: 18.3.1
     react-native: 0.75.4
+    react-native-background-timer-android: ^1.0.4
     react-native-config: ^1.5.3
     react-native-gesture-handler: ^2.20.0
     react-native-linear-gradient: ^2.8.3
@@ -8314,6 +8315,15 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-native-background-timer-android@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "react-native-background-timer-android@npm:1.0.4"
+  peerDependencies:
+    react-native: ">=0.47.0"
+  checksum: 60a53600acd94d6d6d8c60dfefcc8e85866953eeae558d1988d4c2d7f5c34066e5652a9234acb09a5dcbb9b9d654294660a1fa6fc6e5215b452729be874f7dd9
   languageName: node
   linkType: hard
 

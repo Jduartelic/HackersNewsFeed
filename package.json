@@ -23,6 +23,7 @@
     "date-fns": "^4.1.0",
     "react": "18.3.1",
     "react-native": "0.75.4",
+    "react-native-background-timer-android": "^1.0.4",
     "react-native-config": "^1.5.3",
     "react-native-gesture-handler": "^2.20.0",
     "react-native-linear-gradient": "^2.8.3",
