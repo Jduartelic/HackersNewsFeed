@@ -1,5 +1,11 @@
 import React, {useEffect, useContext, useCallback, useMemo} from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+  Platform,
+} from 'react-native';
 import {useNews} from '../../hooks';
 import {
   NewsContext,
@@ -94,7 +100,9 @@ const HomeScreen = (): React.JSX.Element => {
           querySearch: parseLocalFacets.querySearch,
           userName: parseLocalFacets.userName,
           pushNotifications: {
-            appStateActivity: 'active',
+            appStateActivity:
+              defaultUserActivityContextValues.stateUserActivityData.state
+                .pushNotifications.appStateActivity,
             sentPushNotification: false,
             timeForNextPush: 6000,
           },
