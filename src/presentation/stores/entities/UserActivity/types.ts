@@ -5,6 +5,7 @@ export enum UserActivityKind {
   FETCHING = 'FETCHING',
   INITIAL_STATE = 'INITIAL_STATE',
   DEFAULT = 'DEFAULT',
+  PUSH_NOTIFICATION_PROCESS = 'PUSH_NOTIFICATION_PROCESS',
 }
 
 export type UserActivityEntity = {
@@ -13,6 +14,13 @@ export type UserActivityEntity = {
   querySearch?: string[];
   hasSeenOnboarding?: boolean;
   userName: string;
+  pushNotifications: PushNotificationActivityEntity;
+};
+
+export type PushNotificationActivityEntity = {
+  appStateActivity: string;
+  sentPushNotification: boolean;
+  timeForNextPush: number;
 };
 
 export type UserActivityPayloadEntity = {
@@ -21,6 +29,7 @@ export type UserActivityPayloadEntity = {
   querySearch?: string[];
   hasSeenOnboarding?: boolean;
   userName: string;
+  pushNotifications: PushNotificationActivityEntity;
 };
 
 export interface UserActivityActions {

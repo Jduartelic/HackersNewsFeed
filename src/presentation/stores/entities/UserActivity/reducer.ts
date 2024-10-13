@@ -40,10 +40,33 @@ export function UserActivityDataReducer(
     case UserActivityKind.FETCHED:
       dataPayload = JSON.stringify({
         ...action.payload,
+        appStateActivity: 'active',
       });
-      console.log('datapayloadjsa', dataPayload);
+
       setSavedData(constants.USER_ACTIVITY.STORAGE_KEY, dataPayload);
 
+      return {
+        ...state,
+        state: {
+          facets: action.payload.facets,
+          facetsSelectedByUser: action.payload.facetsSelectedByUser,
+          querySearch: action.payload.querySearch,
+          hasSeenOnboarding: action.payload.hasSeenOnboarding,
+          userName: action.payload.userName,
+          pushNotifications: {
+            appStateActivity: action.payload.pushNotifications.appStateActivity,
+            sentPushNotification:
+              action.payload.pushNotifications.sentPushNotification,
+            timeForNextPush: action.payload.pushNotifications.timeForNextPush,
+          },
+        },
+        loading: false,
+        fetched: true,
+        error: error,
+      };
+
+    case UserActivityKind.PUSH_NOTIFICATION_PROCESS: {
+      console.log('hablame UserActivityKind.PUSH_NOTIFICATION_PROCESS');
       return {
         ...state,
         state: {
@@ -53,11 +76,18 @@ export function UserActivityDataReducer(
           querySearch: action.payload.querySearch,
           hasSeenOnboarding: action.payload.hasSeenOnboarding,
           userName: action.payload.userName,
+          pushNotifications: {
+            appStateActivity: action.payload.pushNotifications.appStateActivity,
+            sentPushNotification:
+              action.payload.pushNotifications.sentPushNotification,
+            timeForNextPush: action.payload.pushNotifications.timeForNextPush,
+          },
         },
         loading: false,
         fetched: true,
         error: error,
       };
+    }
     case UserActivityKind.DEFAULT:
       return {
         ...state,

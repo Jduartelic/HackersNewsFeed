@@ -14,6 +14,10 @@ export default {
     STORAGE_KEY: 'StorageKeys::STORAGE_SAVED_DATA',
   },
   USER_ACTIVITY: {
+    RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION_TITLE:
+      'We’ve got news updates waiting for you!',
+    RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION:
+      'Missed something important? Customize your notifications to only receive updates on topics you care about. Would you like to turn them back on?',
     STORAGE_KEY: 'StorageKeys::USER_ACTIVITY_HACKER_NEWS_SAVED_DATA',
     FACETS: {
       keywords: {

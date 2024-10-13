@@ -22,7 +22,6 @@ const OnboardingScreen = (): React.JSX.Element => {
       <View style={{paddingHorizontal: 16}}>
         <Text
           style={{
-            fontFamily: 'Cochin',
             fontWeight: '700',
             fontSize: 40,
             color: '#000',

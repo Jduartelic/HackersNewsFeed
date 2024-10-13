@@ -46,6 +46,7 @@ const OnboardingScreen = (): React.JSX.Element => {
                   dispatchUserActivityData({
                     type: UserActivityKind.FETCHED,
                     payload: {
+                      ...stateUserActivityData.state,
                       facets: facets,
                       facetsSelectedByUser: facetsSelectedByUser,
                       hasSeenOnboarding: true,

@@ -2095,6 +2095,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@notifee/react-native@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "@notifee/react-native@npm:9.1.1"
+  peerDependencies:
+    react-native: "*"
+  checksum: 93d7efcb1a622cb6f53af99bd0b6856e2cf30ec684e74d8c91715dee5135cf7ea165eef26a7a5acc0e7b13db91c68982a4d22f186019322ed01c162fa02f5d03
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2
   resolution: "@npmcli/agent@npm:2.2.2"
@@ -3090,6 +3099,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@notifee/react-native": ^9.1.1
     "@react-native-community/masked-view": ^0.1.11
     "@react-native/babel-preset": 0.75.4
     "@react-native/eslint-config": 0.75.4
