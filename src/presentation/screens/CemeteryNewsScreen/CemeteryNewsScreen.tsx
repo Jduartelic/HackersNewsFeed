@@ -46,7 +46,9 @@ const CemeteryNewsScreen = (): React.JSX.Element => {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView
+      testID="cementery-news-container"
+      style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       {loading && renderSkeleton()}
       {!loading && <NewsFeed newsDataList={deletedNews} />}

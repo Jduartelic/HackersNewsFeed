@@ -54,11 +54,10 @@ const WebViewScreen = ({route, navigation}: Props) => {
         startInLoadingState={true}
         renderLoading={() => {
           return (
-            <View style={styles.webViewLoadingContainer}>
-              <ActivityIndicator
-                testID="activity-indicator-web-view-screen"
-                size="large"
-              />
+            <View
+              testID="activity-indicator-web-view-screen"
+              style={styles.webViewLoadingContainer}>
+              <ActivityIndicator size="large" />
             </View>
           );
         }}

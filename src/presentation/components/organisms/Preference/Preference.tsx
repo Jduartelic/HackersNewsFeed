@@ -14,15 +14,19 @@ const Preference = (): React.JSX.Element => {
     useContext(UserActivityContext);
   const {facetsSelectedByUser, facets, userName} = stateUserActivityData.state;
 
-  const renderItem = (keywords: string[], title: string, index: number) => {
+  const renderItem = (
+    keywords: string[],
+    title: string,
+    indexTitleFacet: number,
+  ) => {
     return (
       <View
-        testID={`preferences-container-${index}`}
+        testID={`preferences-container-${indexTitleFacet}`}
         key={uuid.v4().toString()}
         style={styles.mainContainerFacets}>
         <Text style={styles.textTitleFacet}>{title}</Text>
 
-        {keywords.map((keyword, index) => {
+        {keywords.map((keyword, indexKeyword) => {
           const isSelected = facetsSelectedByUser?.some(
             facet => facet === keyword,
           );
@@ -32,7 +36,7 @@ const Preference = (): React.JSX.Element => {
               style={styles.innerContainerFacets}>
               <Text style={styles.keywordText}>{keyword}</Text>
               <Icon
-                testID={`pressable-component-${index}`}
+                testID={`pressable-component-${indexKeyword}`}
                 onPress={() => {
                   const facetsData = facetsSelectedByUser;
                   if (!isSelected) {

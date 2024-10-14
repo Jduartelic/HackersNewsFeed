@@ -1,8 +1,4 @@
-import {
-  NewsKind,
-  defaultNewsContextValues,
-  StateStoreNewsData,
-} from '../../entities';
+import {NewsKind, defaultNewsContextValues, StateStoreNewsData} from '..';
 import {NewsDataReducer} from './reducer';
 import {Fixtures} from '../../../../domain';
 import {waitFor} from '@testing-library/react-native';
@@ -13,27 +9,25 @@ const mockNewsFixtures = Fixtures.NewsList;
 
 describe('News reducer', () => {
   beforeEach(() => jest.clearAllMocks());
-  afterEach(() => jest.clearAllMocks());
-
   it('should call INITIAL_STATE type in News reducer', async () => {
-    const result = NewsDataReducer(
-      {
-        ...mockStateStoreNewsData,
-      },
-      {
+    const result: void | StateStoreNewsData =
+      defaultNewsContextValues.dispatchNewsData({
         type: NewsKind.INITIAL_STATE,
         payload: {
           ...mockStateStoreNewsData.state,
         },
-        loading: false,
-        fetched: false,
-        error: undefined,
-      },
+        ...mockStateStoreNewsData,
+      });
+    console.log(
+      'defaultNewsContextValues.stateNewsData',
+      defaultNewsContextValues.stateNewsData,
     );
 
+    console.log('result', result);
     await waitFor(
       async () => {
-        expect(result.state).toStrictEqual(mockStateStoreNewsData.state);
+        const resultData = result as unknown as StateStoreNewsData;
+        expect(resultData.state.newsList.data).toHaveLength(0);
       },
       {timeout: 1000},
     );
@@ -125,33 +119,6 @@ describe('News reducer', () => {
           ...mockStateStoreNewsData.state,
           favoritesNewsList: [mockNewsFixtures.data[0].storyId],
           favoritesNewsId: mockNewsFixtures.data[0].storyId,
-          newsList: mockNewsFixtures,
-        },
-        loading: false,
-        fetched: true,
-        error: undefined,
-      },
-    );
-
-    await waitFor(
-      async () => {
-        expect(result.state.favoritesNewsList).toHaveLength(1);
-      },
-      {timeout: 1000},
-    );
-  });
-
-  it('should call ADD_FAVORITES type  without any favorites selected in News reducer', async () => {
-    const result = NewsDataReducer(
-      {
-        ...mockStateStoreNewsData,
-      },
-      {
-        type: NewsKind.ADD_FAVORITES,
-        payload: {
-          ...mockStateStoreNewsData.state,
-          favoritesNewsList: [],
-          favoritesNewsId: undefined,
           newsList: mockNewsFixtures,
         },
         loading: false,

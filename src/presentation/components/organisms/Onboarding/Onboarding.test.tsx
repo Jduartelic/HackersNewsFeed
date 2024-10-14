@@ -1,9 +1,8 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {fireEvent, render} from '@testing-library/react-native';
+import {render, waitFor, screen} from '@testing-library/react-native';
 import Onboarding from './Onboarding';
 
-const mockDispatchUserData = jest.fn();
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
@@ -55,9 +54,15 @@ const renderScreen = () =>
   );
 
 describe('OnboardingScreen', () => {
-  it('should render OnboardingScreen component successfully', () => {
-    const {getByTestId} = renderScreen();
-    const component = getByTestId('onboarding-container');
-    expect(component).toBeTruthy();
+  it('should render OnboardingScreen component successfully', async () => {
+    renderScreen();
+    const component = screen.getByTestId('onboarding-container');
+
+    await waitFor(
+      () => {
+        expect(component).toBeTruthy();
+      },
+      {timeout: 10},
+    );
   });
 });

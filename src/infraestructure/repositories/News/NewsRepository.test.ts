@@ -1,4 +1,3 @@
-import {Fixtures} from '../../../domain';
 import {DtoFixtures} from '../../dtos';
 import NewsRepository from './NewsRepository';
 import axios from 'axios';

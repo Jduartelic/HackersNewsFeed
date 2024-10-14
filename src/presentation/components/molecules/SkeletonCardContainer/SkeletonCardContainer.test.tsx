@@ -1,10 +1,7 @@
 import React from 'react';
-import {View, ImageSourcePropType, Image} from 'react-native';
-import {fireEvent, render, waitFor, act} from '@testing-library/react-native';
+import {render, waitFor, screen} from '@testing-library/react-native';
 import SkeletonCardContainer from './SkeletonCardContainer';
-import Icon, {
-  FontAwesome5IconProps,
-} from 'react-native-vector-icons/FontAwesome5';
+
 import {NavigationContainer} from '@react-navigation/native';
 
 const renderScreen = ({loading}: {loading: boolean}) => {
@@ -22,34 +19,34 @@ describe('SkeletonCardContainer', () => {
     jest.useRealTimers();
   });
   it('renders SkeletonCardContainer ', async () => {
-    const {getByTestId} = renderScreen({
+    jest.useFakeTimers();
+
+    renderScreen({
       loading: true,
     });
 
-    act(() => {
-      waitFor(
-        () => {
-          const mainComponent = getByTestId('skeleton-container');
-          expect(mainComponent).toBeTruthy();
-        },
-        {timeout: 1000},
-      );
-    });
+    await waitFor(
+      () => {
+        const mainComponent = screen.getByTestId('skeleton-container');
+        expect(mainComponent).toBeTruthy();
+      },
+      {timeout: 10},
+    );
   });
 
   it('renders not SkeletonCardContainer', async () => {
-    const {getByTestId} = renderScreen({
+    jest.useFakeTimers();
+
+    renderScreen({
       loading: false,
     });
 
-    act(() => {
-      waitFor(
-        () => {
-          const mainComponent = getByTestId('skeleton-container');
-          expect(mainComponent).toBeTruthy();
-        },
-        {timeout: 1000},
-      );
-    });
+    await waitFor(
+      () => {
+        const mainComponent = screen.getByTestId('skeleton-container');
+        expect(mainComponent).toBeTruthy();
+      },
+      {timeout: 10},
+    );
   });
 });
