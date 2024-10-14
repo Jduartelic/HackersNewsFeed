@@ -33,7 +33,7 @@ const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        testID="container-content-order-confirmation"
+        testID="container-news-feed"
         data={newsDataList.data}
         style={styles.containerFlatlist}
         showsVerticalScrollIndicator={false}
