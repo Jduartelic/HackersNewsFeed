@@ -39,7 +39,7 @@ describe('useNews', () => {
     });
 
     await result.current.getNewsList('');
-    waitFor(
+    await waitFor(
       () => {
         expect(mockedDispatch).toHaveBeenCalled();
       },
@@ -54,8 +54,7 @@ describe('useNews', () => {
     });
 
     await result.current.getNewsList('mock');
-
-    waitFor(
+    await waitFor(
       () => {
         expect(mockedDispatch).toHaveBeenCalled();
       },

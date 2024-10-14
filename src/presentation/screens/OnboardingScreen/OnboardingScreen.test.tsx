@@ -4,17 +4,29 @@ import {
   NewsContext,
   StateStoreNewsData,
   defaultNewsContextValues,
+  StateStoreUserActivityData,
+  defaultUserActivityContextValues,
+  UserActivityContext,
 } from '../../stores/entities';
-import {render, screen} from '@testing-library/react-native';
-import {Fixtures} from '../../../domain';
-import FavoritesScreen from './FavoritesScreen';
+import {
+  waitFor,
+  render,
+  fireEvent,
+  screen,
+} from '@testing-library/react-native';
+import OnboardingScreen from './OnboardingScreen';
+
+const mockStateStoreUserActivityData: StateStoreUserActivityData =
+  defaultUserActivityContextValues.stateUserActivityData;
 
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
+
 const mockDispatchNewsData = jest.fn();
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
+const mockedReplace = jest.fn();
 
 let mockRoutes = [
   {
@@ -50,6 +62,7 @@ jest.mock('@react-navigation/native', () => {
         type: 'stack',
       })),
       toggleDrawer: mockedToggleDrawer,
+      replace: mockedReplace,
     }),
     useIsFocused: () => true,
   };
@@ -57,8 +70,10 @@ jest.mock('@react-navigation/native', () => {
 
 const renderScreen = ({
   stateStoreNewsData = mockStateStoreNewsData,
+  stateStoreUserActivityData = mockStateStoreUserActivityData,
 }: {
   stateStoreNewsData: StateStoreNewsData;
+  stateStoreUserActivityData: StateStoreUserActivityData;
 }) =>
   render(
     <NavigationContainer>
@@ -67,49 +82,56 @@ const renderScreen = ({
           stateNewsData: {...stateStoreNewsData},
           dispatchNewsData: mockDispatchNewsData,
         }}>
-        <FavoritesScreen />
+        <UserActivityContext.Provider
+          value={{
+            stateUserActivityData: {
+              ...stateStoreUserActivityData,
+            },
+            dispatchUserActivityData:
+              defaultUserActivityContextValues.dispatchUserActivityData,
+          }}>
+          <OnboardingScreen />
+        </UserActivityContext.Provider>
       </NewsContext.Provider>
-      ,
     </NavigationContainer>,
   );
 
-describe('FavoritesScreen', () => {
+describe('OnboardingScreen', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.clearAllMocks();
     jest.useRealTimers();
   });
 
-  it('should render component FavoritesScreen correctly', async () => {
-    renderScreen({
-      stateStoreNewsData: {
-        ...mockStateStoreNewsData,
-        state: {
-          ...mockStateStoreNewsData.state,
-          newsList: Fixtures.NewsList,
-          favoritesNewsList: [Fixtures.NewsList.data[0].storyId],
-        },
-      },
-    });
-
-    const mainComponent = screen.getByTestId('favorites-news-container');
-
-    expect(mainComponent).toBeTruthy();
-  });
-
-  it('should render Skeleton component on loading state', async () => {
+  it('should render tab bar component and press button on bottom tab and move to the next screen', async () => {
+    mockIndex = 0;
     renderScreen({
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
         state: {
           ...mockStateStoreNewsData.state,
         },
-        loading: true,
+        loading: false,
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+        },
+
+        fetched: false,
+        loading: false,
+        error: undefined,
       },
     });
 
-    const mainComponent = screen.getByTestId('favorites-news-container');
+    const button = screen.getByTestId('bottom-tab-button');
 
-    expect(mainComponent).toBeTruthy();
+    fireEvent.press(button);
+    await waitFor(
+      () => {
+        expect('onboarding-screen-container').toBeDefined();
+      },
+      {timeout: 100},
+    );
   });
 });

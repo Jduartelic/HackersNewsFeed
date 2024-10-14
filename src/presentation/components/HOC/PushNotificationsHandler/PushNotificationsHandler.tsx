@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, {useEffect, useContext, useCallback} from 'react';
 import {View, AppState, Platform, Modal, Text, Pressable} from 'react-native';
 import {
   NewsContext,
@@ -13,11 +7,7 @@ import {
   NewsKind,
 } from '../../../stores/entities';
 import {constants} from '../../../constants';
-import notifee, {
-  AndroidImportance,
-  AndroidVisibility,
-  AuthorizationStatus,
-} from '@notifee/react-native';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {Linking} from 'react-native';
 import styles from './PushNotificationsHandler.styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -56,7 +46,7 @@ const PushNotificationsHandler = ({
     return val;
   }, []);
 
-  async function onDisplayNotification() {
+  const onDisplayNotification = useCallback(async () => {
     const {storyTitle, highlightResult} =
       stateNewsData.state.newsList.data[
         getRandomId(0, stateNewsData.state.newsList.data.length - 1)
@@ -86,7 +76,11 @@ const PushNotificationsHandler = ({
         },
       },
     });
-  }
+  }, [
+    TITLE_PUSH_NOTIFICATIONS,
+    getRandomId,
+    stateNewsData.state.newsList.data,
+  ]);
 
   const onRequestingPremission = useCallback(async () => {
     const settings = await notifee.requestPermission();
@@ -114,7 +108,13 @@ const PushNotificationsHandler = ({
         }, timeForNextPush);
       }
     }
-  }, [appStateActivity, sentPushNotification, timeForNextPush]);
+  }, [
+    appStateActivity,
+    sentPushNotification,
+    timeForNextPush,
+    IS_IOS,
+    onDisplayNotification,
+  ]);
 
   const onFetchingUserActivity = useCallback(
     async ({appState, sentPush}: {appState: string; sentPush: boolean}) => {
@@ -155,6 +155,11 @@ const PushNotificationsHandler = ({
       getRandomNumber,
       sentPushNotification,
       stateUserActivity,
+      FACETS.keywords,
+      TITLE_PUSH_NOTIFICATIONS.length,
+      dispatchNewsData,
+      getRandomId,
+      state,
     ],
   );
 

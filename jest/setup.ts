@@ -55,3 +55,53 @@ jest.mock('react-native-background-timer-android', () => ({
     clearTimeout(id); // Clear the timer
   }),
 }));
+
+jest.mock('react-native-webview', () => {
+  const MockWebView = jest.requireActual('react-native').View;
+
+  return {
+    __esModule: true,
+    WebView: MockWebView,
+    default: MockWebView,
+  };
+});
+
+export const navigationTabBarMock = {
+  addListener: jest.fn(),
+  canGoBack: jest.fn(),
+  dispatch: jest.fn(),
+  emit: jest.fn(),
+  getId: jest.fn(),
+  getParent: jest.fn(),
+  getState: jest.fn(),
+  goBack: jest.fn(),
+  isFocused: jest.fn(),
+  jumpTo: jest.fn(),
+  navigate: jest.fn(),
+  pop: jest.fn(),
+  popToTop: jest.fn(),
+  push: jest.fn(),
+  removeListener: jest.fn(),
+  replace: jest.fn(),
+  reset: jest.fn(),
+  setOptions: jest.fn(),
+  setParams: jest.fn(),
+};
+
+export const optionsTabBarMock = {
+  header: jest.fn(),
+};
+
+export const routeMocksTabNavigator = [
+  {
+    key: 'HomeScreen-sPdh_xjdOxrMtgPqOVtED',
+    name: 'HomeScreen',
+    params: undefined,
+  },
+
+  {
+    key: 'PreferenceScreen-aJVmNbjGzMaeDNaTmXvmJ',
+    name: 'PreferenceScreen',
+    params: undefined,
+  },
+];

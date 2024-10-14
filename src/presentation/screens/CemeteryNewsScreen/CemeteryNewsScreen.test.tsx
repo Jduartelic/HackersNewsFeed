@@ -1,28 +1,16 @@
-import React, {
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
-import {View} from 'react-native';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   NewsContext,
   StateStoreNewsData,
   defaultNewsContextValues,
 } from '../../stores/entities';
-import {waitFor, render, act} from '@testing-library/react-native';
+import {render, screen} from '@testing-library/react-native';
 import {Fixtures} from '../../../domain';
 import CemeteryNewsScreen from './CemeteryNewsScreen';
-import * as ReactNative from 'react-native';
-import mock from '@notifee/react-native/jest-mock';
 
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
-const mockNewsFixtures = Fixtures.NewsList;
-
-const mockDispatchUserData = jest.fn();
 const mockDispatchNewsData = jest.fn();
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
@@ -92,8 +80,8 @@ describe('CemeteryNewsScreen', () => {
     jest.useRealTimers();
   });
 
-  it('should render component CemeteryNewsScreen correctly', async () => {
-    const {getByTestId} = renderScreen({
+  it('should render component CemeteryNewsScreen correctly', () => {
+    renderScreen({
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
         state: {
@@ -104,13 +92,13 @@ describe('CemeteryNewsScreen', () => {
       },
     });
 
-    const mainComponent = getByTestId('cementery-news-container');
+    const mainComponent = screen.getByTestId('cementery-news-container');
 
     expect(mainComponent).toBeTruthy();
   });
 
-  it('should render Skeleton component on loading state', async () => {
-    const {getByTestId} = renderScreen({
+  it('should render Skeleton component on loading state', () => {
+    renderScreen({
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
         state: {
@@ -120,7 +108,7 @@ describe('CemeteryNewsScreen', () => {
       },
     });
 
-    const mainComponent = getByTestId('cementery-news-container');
+    const mainComponent = screen.getByTestId('cementery-news-container');
 
     expect(mainComponent).toBeTruthy();
   });

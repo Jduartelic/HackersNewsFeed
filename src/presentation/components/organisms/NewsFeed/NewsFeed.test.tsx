@@ -1,10 +1,7 @@
 import React from 'react';
-import {View, ImageSourcePropType, Image} from 'react-native';
-import {fireEvent, render, act, waitFor} from '@testing-library/react-native';
+import {render, waitFor, screen} from '@testing-library/react-native';
 import NewsFeed from './NewsFeed';
-import Icon, {
-  FontAwesome5IconProps,
-} from 'react-native-vector-icons/FontAwesome5';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {Fixtures, News} from '../../../../domain';
 import {
@@ -13,8 +10,6 @@ import {
   NewsContext,
 } from '../../../stores/entities';
 
-const mockedNavigate = jest.fn();
-const mockedGoBack = jest.fn();
 const mockDispatchNewsData = jest.fn();
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
@@ -42,20 +37,20 @@ const renderScreen = ({
 
 describe('NewsFeed', () => {
   it('renders NewsFeed component correctly', () => {
-    const {getByTestId} = renderScreen({
+    renderScreen({
       newsDataList: mockNewsFixtures,
       stateStoreNewsData: mockStateStoreNewsData,
     });
-    const mainComponent = getByTestId('container-news-feed');
+    const mainComponent = screen.getByTestId('container-news-feed');
     expect(mainComponent).toBeDefined();
   });
 
   it('should execute a pull down to refresh', async () => {
-    const {getByTestId} = renderScreen({
+    renderScreen({
       newsDataList: mockNewsFixtures,
       stateStoreNewsData: mockStateStoreNewsData,
     });
-    const mainComponent = getByTestId('container-news-feed');
+    const mainComponent = screen.getByTestId('container-news-feed');
     const {refreshControl} = mainComponent.props;
 
     refreshControl.props.onRefresh();
@@ -64,19 +59,4 @@ describe('NewsFeed', () => {
     });
     expect(mainComponent).toBeDefined();
   });
-  // it('renders MainHeader on HomeScreen correctly and press button', () => {
-  //   mockIndex = 0;
-  //   const {getByTestId} = renderScreen({
-  //     iconLeft: 'chevron-left',
-  //     iconRight: 'chevron-left',
-  //     imageSource: 0,
-  //   });
-  //   const mainComponent = getByTestId('main-header');
-  //   expect(mainComponent).toBeDefined();
-
-  //   const buttonComponent = getByTestId('button-left-header');
-
-  //   fireEvent.press(buttonComponent);
-  //   expect(mockedToggleDrawer).toHaveBeenCalled();
-  // });
 });

@@ -9,41 +9,28 @@ import {
   StateStoreNewsData,
   defaultNewsContextValues,
 } from '../../../stores/entities';
-import {fireEvent, render, waitFor, act} from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  screen,
+} from '@testing-library/react-native';
 import {Fixtures} from '../../../../domain';
 import PushNotificationsHandler from './PushNotificationsHandler';
-import * as ReactNative from 'react-native';
-import mock from '@notifee/react-native/jest-mock';
-import Notifee, {
-  AndroidImportance,
-  AndroidVisibility,
-  AuthorizationStatus,
-} from '@notifee/react-native';
 
 const mockStateStoreUserActivityData: StateStoreUserActivityData =
   defaultUserActivityContextValues.stateUserActivityData;
 
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
-const mockNewsFixtures = Fixtures.NewsList;
 
-const onPressMock = jest.fn();
 const mockDispatchUserData = jest.fn();
 const mockDispatchNewsData = jest.fn();
-const mockDisplayNotification = jest.fn();
-// const mockVisibility = jest.fn().mockResolvedValue(AndroidVisibility.PUBLIC);
-// const mockImportance = jest.fn().mockResolvedValue(AndroidImportance.HIGH);
 const mockNotification = jest.fn().mockReturnValue({
   id: 'mockChannelId',
 });
 
 jest.mock('@notifee/react-native', () => {
-  /**
-   * Devido a vários problemas ao importar o mock oferecido pela notifee, resolvi
-   * criar manualmente o mock apenas das funcionalidades que utilizamos no app.
-   * https://github.com/invertase/notifee/issues/739
-   */
-
   const notifee = {
     getInitialNotification: jest.fn().mockResolvedValue(null),
     displayNotification: jest.fn().mockResolvedValue(mockNotification),
@@ -53,8 +40,6 @@ jest.mock('@notifee/react-native', () => {
     createChannel: jest.fn().mockResolvedValue({
       id: 'default',
       name: 'Default Channel',
-      // visibility: mockVisibility,
-      // importance: mockImportance,
     }),
     requestPermission: jest
       .fn()
@@ -155,7 +140,7 @@ describe('PushNotificationsHandler', () => {
     jest.resetModules();
   });
 
-  it('should dipatch action to prepare for sending push notification', () => {
+  it('should dipatch action to prepare for sending push notification', async () => {
     jest.clearAllMocks();
 
     jest.useFakeTimers();
@@ -188,7 +173,7 @@ describe('PushNotificationsHandler', () => {
       },
     });
 
-    waitFor(
+    await waitFor(
       async () => {
         if (appStateChangeListener) {
           appStateChangeListener('background');
@@ -200,7 +185,7 @@ describe('PushNotificationsHandler', () => {
     expect(mockDispatchUserData).toHaveBeenCalled();
   });
 
-  it('should sent push notification', () => {
+  it('should sent push notification', async () => {
     jest.clearAllMocks();
 
     jest.useFakeTimers();
@@ -233,7 +218,7 @@ describe('PushNotificationsHandler', () => {
       },
     });
 
-    waitFor(
+    await waitFor(
       async () => {
         if (appStateChangeListener) {
           appStateChangeListener('background');
@@ -254,7 +239,7 @@ describe('PushNotificationsHandler', () => {
     React.useState = jest.fn().mockReturnValue([modalVisible, setModalVisible]);
 
     Platform.OS = 'ios';
-    const {getByTestId} = renderScreen({
+    renderScreen({
       children: <View />,
       stateStoreNewsData: {
         state: {
@@ -282,15 +267,15 @@ describe('PushNotificationsHandler', () => {
       },
     });
 
-    const modal = getByTestId('modal-request-permission');
+    const modal = screen.getByTestId('modal-request-permission');
     expect(modal).toBeTruthy();
 
-    const buttonCloseModal = getByTestId('button-close-modal');
+    const buttonCloseModal = screen.getByTestId('button-close-modal');
 
     fireEvent.press(buttonCloseModal);
     expect(setModalVisible).toHaveBeenCalled();
 
-    const buttonSettings = getByTestId('button-settings');
+    const buttonSettings = screen.getByTestId('button-settings');
     fireEvent.press(buttonSettings);
 
     expect(spyOnLinking).toHaveBeenCalled();
@@ -370,7 +355,7 @@ describe('PushNotificationsHandler', () => {
     expect(mockNotification().id).toStrictEqual('mockChannelId');
   });
 
-  it('should dipatch action android exec app to prepare for sending push notification', () => {
+  it('should dipatch action android exec app to prepare for sending push notification', async () => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     Platform.OS = 'android';
@@ -402,7 +387,7 @@ describe('PushNotificationsHandler', () => {
       },
     });
 
-    waitFor(
+    await waitFor(
       async () => {
         if (appStateChangeListener) {
           appStateChangeListener('background');
@@ -414,7 +399,7 @@ describe('PushNotificationsHandler', () => {
     expect(mockDispatchUserData).toHaveBeenCalled();
   });
 
-  it('should dipatch change state from background to foreground', () => {
+  it('should dipatch change state from background to foreground', async () => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     Platform.OS = 'android';
@@ -446,7 +431,7 @@ describe('PushNotificationsHandler', () => {
       },
     });
 
-    waitFor(
+    await waitFor(
       async () => {
         if (appStateChangeListener) {
           appStateChangeListener('active');

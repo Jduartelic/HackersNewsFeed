@@ -1,33 +1,21 @@
-import React, {
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
-import {View} from 'react-native';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   StateStoreUserActivityData,
   defaultUserActivityContextValues,
   UserActivityContext,
-  NewsContext,
-  StateStoreNewsData,
-  defaultNewsContextValues,
 } from '../../../stores/entities';
-import {fireEvent, render, waitFor} from '@testing-library/react-native';
-import {Fixtures} from '../../../../domain';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  screen,
+} from '@testing-library/react-native';
 import Preference from './Preference';
-import * as ReactNative from 'react-native';
-import mock from '@notifee/react-native/jest-mock';
 
 const mockStateStoreUserActivityData: StateStoreUserActivityData =
   defaultUserActivityContextValues.stateUserActivityData;
-
-const mockNewsFixtures = Fixtures.NewsList;
-
 const mockDispatchUserData = jest.fn();
-const mockDispatchNewsData = jest.fn();
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
@@ -100,10 +88,10 @@ describe('Preference', () => {
     jest.clearAllMocks();
   });
 
-  it('should render component successfully and press to select element', () => {
+  it('should render component successfully and press to select element', async () => {
     jest.useFakeTimers();
 
-    const {getByTestId, queryAllByTestId} = renderScreen({
+    renderScreen({
       stateStoreUserActivityData: {
         state: {
           ...mockStateStoreUserActivityData.state,
@@ -114,28 +102,23 @@ describe('Preference', () => {
         error: undefined,
       },
     });
-    const component = getByTestId('preferences-container-0');
+    const component = screen.getByTestId('preferences-container-0');
     expect(component).toBeTruthy();
 
-    waitFor(
+    const componentButton = screen.queryAllByTestId('pressable-component-0');
+    fireEvent.press(componentButton[0]);
+    await waitFor(
       async () => {
-        const componentButton = queryAllByTestId('pressable-component-0');
-        fireEvent.press(componentButton[0]);
-        waitFor(
-          async () => {
-            expect(mockDispatchUserData).toHaveBeenCalled();
-          },
-          {timeout: 1000},
-        );
+        expect(mockDispatchUserData).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
   });
 
-  it('should render component successfully and keyword android should be selected', () => {
+  it('should render component successfully and keyword android should be selected', async () => {
     jest.useFakeTimers();
 
-    const {getByTestId, queryAllByTestId} = renderScreen({
+    renderScreen({
       stateStoreUserActivityData: {
         state: {
           ...mockStateStoreUserActivityData.state,
@@ -147,19 +130,14 @@ describe('Preference', () => {
         error: undefined,
       },
     });
-    const component = getByTestId('preferences-container-0');
+    const component = screen.getByTestId('preferences-container-0');
     expect(component).toBeTruthy();
-    const componentButton = queryAllByTestId('pressable-component-0');
+    const componentButton = screen.queryAllByTestId('pressable-component-0');
+    fireEvent.press(componentButton[0]);
 
-    waitFor(
+    await waitFor(
       async () => {
-        fireEvent.press(componentButton[0]);
-        waitFor(
-          async () => {
-            expect(mockDispatchUserData).toHaveBeenCalled();
-          },
-          {timeout: 1000},
-        );
+        expect(mockDispatchUserData).toHaveBeenCalled();
       },
       {timeout: 1000},
     );

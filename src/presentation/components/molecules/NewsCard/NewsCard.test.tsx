@@ -1,29 +1,18 @@
 import React from 'react';
-import {View, ImageSourcePropType, Image} from 'react-native';
-import {fireEvent, render, act, waitFor} from '@testing-library/react-native';
+import {fireEvent, render, screen} from '@testing-library/react-native';
 import NewsCard from './NewsCard';
-import Icon, {
-  FontAwesome5IconProps,
-} from 'react-native-vector-icons/FontAwesome5';
-import {NavigationContainer} from '@react-navigation/native';
 import {NewsData, Fixtures} from '../../../../domain';
 import {
   NewsContext,
   StateStoreNewsData,
   defaultNewsContextValues,
 } from '../../../stores/entities';
-import {
-  fireGestureHandler,
-  getByGestureTestId,
-} from 'react-native-gesture-handler/jest-utils';
-import {PanGesture} from 'react-native-gesture-handler/';
 
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
-const mockNewsFixtures = Fixtures.NewsList;
 const mockDispatchNewsData = jest.fn();
 
 let mockRoutes = [
@@ -90,8 +79,8 @@ describe('NewsCard', () => {
     jest.useRealTimers();
   });
 
-  it('renders NewsCard', async () => {
-    const {getByTestId} = renderScreen({
+  it('renders NewsCard', () => {
+    renderScreen({
       newsData: Fixtures.NewsList.data[0],
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
@@ -101,25 +90,18 @@ describe('NewsCard', () => {
         },
       },
     });
-    // const view = getByTestId('layout-provider');
-    const view = getByTestId('layout-provider');
-    waitFor(() => {
-      fireEvent(view, 'onLayout', {
-        nativeEvent: {layout: {width: 500}},
-      });
 
-      //   fireGestureHandler<PanGesture>(getByGestureTestId('pan'), [
-      //     {x: 5, y: 15},
-      //     {x: 6, y: 16},
-      //     {x: 7, y: 17},
-      //   ]);
+    const view = screen.getByTestId('layout-provider');
+
+    fireEvent(view, 'onLayout', {
+      nativeEvent: {layout: {width: 500}},
     });
-    const mainComponent = getByTestId('main-container');
+    const mainComponent = screen.getByTestId('main-container');
     expect(mainComponent).toBeDefined();
   });
 
   it('should navigate to webView screen', async () => {
-    const {getByTestId} = renderScreen({
+    renderScreen({
       newsData: Fixtures.NewsList.data[0],
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
@@ -131,13 +113,13 @@ describe('NewsCard', () => {
       },
     });
 
-    const mainComponent = getByTestId('body-card');
+    const mainComponent = screen.getByTestId('body-card');
     fireEvent.press(mainComponent);
     expect(mockedNavigate).toHaveBeenCalled();
   });
 
   it('should delete a news', async () => {
-    const {getByTestId} = renderScreen({
+    renderScreen({
       newsData: Fixtures.NewsList.data[0],
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
@@ -149,13 +131,13 @@ describe('NewsCard', () => {
       },
     });
 
-    const mainComponent = getByTestId('trash-button');
+    const mainComponent = screen.getByTestId('trash-button');
     fireEvent.press(mainComponent);
     expect(mockDispatchNewsData).toHaveBeenCalled();
   });
 
   it('should add news to favorite', async () => {
-    const {getByTestId} = renderScreen({
+    renderScreen({
       newsData: Fixtures.NewsList.data[0],
       stateStoreNewsData: {
         ...mockStateStoreNewsData,
@@ -166,7 +148,7 @@ describe('NewsCard', () => {
       },
     });
 
-    const mainComponent = getByTestId('heart-button');
+    const mainComponent = screen.getByTestId('heart-button');
     fireEvent.press(mainComponent);
     expect(mockDispatchNewsData).toHaveBeenCalled();
   });

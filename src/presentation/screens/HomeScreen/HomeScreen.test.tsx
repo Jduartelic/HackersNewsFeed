@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
-import {View} from 'react-native';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   NewsContext,
@@ -15,21 +8,17 @@ import {
   defaultUserActivityContextValues,
   UserActivityContext,
 } from '../../stores/entities';
-import {waitFor, render, act} from '@testing-library/react-native';
+import {render, screen, waitFor} from '@testing-library/react-native';
 import {Fixtures} from '../../../domain';
 import HomeScreen from './HomeScreen';
-import * as ReactNative from 'react-native';
-import mock from '@notifee/react-native/jest-mock';
-import {MMKV} from 'react-native-mmkv';
 import {constants} from '../../constants';
-// import {} from '../../functions/storage/storage'
+
 const Storage = require('../../functions/storage/storage');
 const mockStateStoreUserActivityData: StateStoreUserActivityData =
   defaultUserActivityContextValues.stateUserActivityData;
 
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
-const mockNewsFixtures = Fixtures.NewsList;
 
 const mockDispatchUserData = jest.fn();
 const mockDispatchNewsData = jest.fn();
@@ -88,12 +77,6 @@ jest.mock('react-native-mmkv', () => {
 });
 
 jest.mock('@notifee/react-native', () => {
-  /**
-   * Devido a vários problemas ao importar o mock oferecido pela notifee, resolvi
-   * criar manualmente o mock apenas das funcionalidades que utilizamos no app.
-   * https://github.com/invertase/notifee/issues/739
-   */
-
   const notifee = {
     getInitialNotification: jest.fn().mockResolvedValue(null),
     displayNotification: jest.fn().mockResolvedValue({}),
@@ -103,8 +86,6 @@ jest.mock('@notifee/react-native', () => {
     createChannel: jest.fn().mockResolvedValue({
       id: 'default',
       name: 'Default Channel',
-      // visibility: mockVisibility,
-      // importance: mockImportance,
     }),
     requestPermission: jest
       .fn()
@@ -146,11 +127,6 @@ const renderScreen = ({
   );
 
 describe('HomeScreen', () => {
-  let storage: MMKV;
-
-  beforeAll(() => {
-    storage = new MMKV();
-  });
   beforeEach(() => {
     jest.useFakeTimers();
     jest.clearAllMocks();
@@ -265,7 +241,14 @@ describe('HomeScreen', () => {
         error: undefined,
       },
     });
-    expect('home-screen-container').toBeTruthy();
+    const component = screen.getByTestId('home-screen-container');
+
+    await waitFor(
+      () => {
+        expect(component).toBeTruthy();
+      },
+      {timeout: 10},
+    );
   });
 
   it('should navigate to onboarding screen', async () => {

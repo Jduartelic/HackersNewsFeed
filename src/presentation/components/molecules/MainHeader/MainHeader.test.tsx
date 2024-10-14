@@ -1,6 +1,11 @@
 import React from 'react';
 import {ImageSourcePropType} from 'react-native';
-import {fireEvent, render, waitFor} from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  screen,
+} from '@testing-library/react-native';
 import MainHeader from './MainHeader';
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -60,7 +65,7 @@ const renderScreen = ({
     <NavigationContainer>
       <MainHeader
         iconLeft={{name: iconLeft}}
-        imageSource={0}
+        imageSource={imageSource}
         iconRight={{name: iconRight}}
       />
     </NavigationContainer>,
@@ -76,19 +81,19 @@ describe('MainHeader', () => {
     jest.useFakeTimers();
     jest.clearAllMocks();
   });
-  it('renders MainHeader on WebViewScreen correctly and press button', () => {
-    const {getByTestId} = renderScreen({
+  it('renders MainHeader on WebViewScreen correctly and press button', async () => {
+    renderScreen({
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: 0,
     });
-    const mainComponent = getByTestId('main-header');
+    const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();
 
-    const buttonComponent = getByTestId('button-left-header');
+    const buttonComponent = screen.getByTestId('button-left-header');
 
     fireEvent.press(buttonComponent);
-    waitFor(
+    await waitFor(
       async () => {
         expect(mockedGoBack).toHaveBeenCalled();
       },
@@ -96,20 +101,20 @@ describe('MainHeader', () => {
     );
   });
 
-  it('renders MainHeader on HomeScreen correctly and press button', () => {
+  it('renders MainHeader on HomeScreen correctly and press button', async () => {
     mockIndex = 0;
-    const {getByTestId} = renderScreen({
+    renderScreen({
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: 0,
     });
-    const mainComponent = getByTestId('main-header');
+    const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();
 
-    const buttonComponent = getByTestId('button-left-header');
+    const buttonComponent = screen.getByTestId('button-left-header');
 
     fireEvent.press(buttonComponent);
-    waitFor(
+    await waitFor(
       async () => {
         expect(mockedToggleDrawer).toHaveBeenCalled();
       },
@@ -117,20 +122,20 @@ describe('MainHeader', () => {
     );
   });
 
-  it('renders MainHeader on HomeScreen correctly and navigate to FavoriteScreen', () => {
+  it('renders MainHeader on HomeScreen correctly and navigate to FavoriteScreen', async () => {
     mockIndex = 0;
-    const {getByTestId} = renderScreen({
+    renderScreen({
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: undefined,
     });
-    const mainComponent = getByTestId('main-header');
+    const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();
 
-    const buttonComponent = getByTestId('button-right-header');
+    const buttonComponent = screen.getByTestId('button-right-header');
 
     fireEvent.press(buttonComponent);
-    waitFor(
+    await waitFor(
       async () => {
         expect(mockedNavigate).toHaveBeenCalled();
       },

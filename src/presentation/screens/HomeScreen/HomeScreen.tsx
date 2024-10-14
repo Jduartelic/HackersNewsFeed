@@ -1,11 +1,5 @@
 import React, {useEffect, useContext, useCallback, useMemo} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  Platform,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import {useNews} from '../../hooks';
 import {
   NewsContext,

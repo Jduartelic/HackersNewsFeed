@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, waitFor} from '@testing-library/react-native';
+import {render, waitFor, screen} from '@testing-library/react-native';
 import SkeletonCardContainer from './SkeletonCardContainer';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,7 +12,7 @@ const renderScreen = ({loading}: {loading: boolean}) => {
   );
 };
 
-describe.skip('SkeletonCardContainer', () => {
+describe('SkeletonCardContainer', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.clearAllMocks();
@@ -21,13 +21,13 @@ describe.skip('SkeletonCardContainer', () => {
   it('renders SkeletonCardContainer ', async () => {
     jest.useFakeTimers();
 
-    const {getByTestId} = renderScreen({
+    renderScreen({
       loading: true,
     });
 
-    waitFor(
+    await waitFor(
       () => {
-        const mainComponent = getByTestId('skeleton-container');
+        const mainComponent = screen.getByTestId('skeleton-container');
         expect(mainComponent).toBeTruthy();
       },
       {timeout: 10},
@@ -37,13 +37,13 @@ describe.skip('SkeletonCardContainer', () => {
   it('renders not SkeletonCardContainer', async () => {
     jest.useFakeTimers();
 
-    const {getByTestId} = renderScreen({
+    renderScreen({
       loading: false,
     });
 
-    waitFor(
+    await waitFor(
       () => {
-        const mainComponent = getByTestId('skeleton-container');
+        const mainComponent = screen.getByTestId('skeleton-container');
         expect(mainComponent).toBeTruthy();
       },
       {timeout: 10},
