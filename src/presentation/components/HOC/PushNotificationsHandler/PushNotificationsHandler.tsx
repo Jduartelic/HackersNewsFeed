@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, {useEffect, useContext, useCallback} from 'react';
 import {View, AppState, Platform, Modal, Text, Pressable} from 'react-native';
 import {
   NewsContext,
@@ -13,29 +7,19 @@ import {
   NewsKind,
 } from '../../../stores/entities';
 import {constants} from '../../../constants';
-import {useNavigation} from '@react-navigation/native';
-import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import notifee, {
-  AndroidImportance,
-  AndroidVisibility,
-  AuthorizationStatus,
-} from '@notifee/react-native';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {Linking} from 'react-native';
 import styles from './PushNotificationsHandler.styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Timer from 'react-native-background-timer-android';
 
-type HackerNewsFeedNavigationProp =
-  NativeStackNavigationProp<HackerNewsFeedStack>;
-
-const IS_IOS = Platform.OS === 'ios';
 const PushNotificationsHandler = ({
   children,
 }: {
   children: React.ReactNode;
 }): React.JSX.Element => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const IS_IOS = Platform.OS === 'ios';
+  const [modalVisible, setModalVisible] = React.useState(false);
   const {ONBOARDING, USER_ACTIVITY} = constants;
   const {
     RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION,
@@ -44,7 +28,6 @@ const PushNotificationsHandler = ({
     FACETS,
   } = USER_ACTIVITY;
   const {CONTINUE} = ONBOARDING;
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
@@ -63,7 +46,7 @@ const PushNotificationsHandler = ({
     return val;
   }, []);
 
-  async function onDisplayNotification() {
+  const onDisplayNotification = useCallback(async () => {
     const {storyTitle, highlightResult} =
       stateNewsData.state.newsList.data[
         getRandomId(0, stateNewsData.state.newsList.data.length - 1)
@@ -79,8 +62,6 @@ const PushNotificationsHandler = ({
     const channelId = await notifee.createChannel({
       id: 'default',
       name: 'Default Channel',
-      visibility: AndroidVisibility.PUBLIC,
-      importance: AndroidImportance.HIGH,
     });
 
     await notifee.displayNotification({
@@ -95,7 +76,11 @@ const PushNotificationsHandler = ({
         },
       },
     });
-  }
+  }, [
+    TITLE_PUSH_NOTIFICATIONS,
+    getRandomId,
+    stateNewsData.state.newsList.data,
+  ]);
 
   const onRequestingPremission = useCallback(async () => {
     const settings = await notifee.requestPermission();
@@ -123,7 +108,13 @@ const PushNotificationsHandler = ({
         }, timeForNextPush);
       }
     }
-  }, [appStateActivity, sentPushNotification, timeForNextPush]);
+  }, [
+    appStateActivity,
+    sentPushNotification,
+    timeForNextPush,
+    IS_IOS,
+    onDisplayNotification,
+  ]);
 
   const onFetchingUserActivity = useCallback(
     async ({appState, sentPush}: {appState: string; sentPush: boolean}) => {
@@ -164,6 +155,11 @@ const PushNotificationsHandler = ({
       getRandomNumber,
       sentPushNotification,
       stateUserActivity,
+      FACETS.keywords,
+      TITLE_PUSH_NOTIFICATIONS.length,
+      dispatchNewsData,
+      getRandomId,
+      state,
     ],
   );
 
@@ -209,6 +205,7 @@ const PushNotificationsHandler = ({
       {children}
 
       <Modal
+        testID="modal-request-permission"
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -219,6 +216,7 @@ const PushNotificationsHandler = ({
           <View style={styles.modalView}>
             <View style={styles.modalClose}>
               <Icon
+                testID="button-close-modal"
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
@@ -234,6 +232,7 @@ const PushNotificationsHandler = ({
               {RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION}
             </Text>
             <Pressable
+              testID="button-settings"
               style={[styles.button, styles.buttonClose]}
               onPress={() => {
                 setModalVisible(!modalVisible);

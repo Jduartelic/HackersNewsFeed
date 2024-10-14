@@ -8,7 +8,7 @@ const OnboardingScreen = (): React.JSX.Element => {
   const {WELCOME_TITLE, THANKS_COMMENT} = constants.ONBOARDING;
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView testID="onboarding-container" style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
 
       <View style={styles.paddingContainer}>

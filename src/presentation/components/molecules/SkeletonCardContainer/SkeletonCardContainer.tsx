@@ -6,7 +6,10 @@ import uuid from 'react-native-uuid';
 
 const SkeletonCardContainer = ({isLoading}: {isLoading: boolean}) => {
   return (
-    <View key={uuid.v4().toString()} style={styles.skeletonContainer}>
+    <View
+      testID="skeleton-container"
+      key={uuid.v4().toString()}
+      style={styles.skeletonContainer}>
       <View style={styles.skeletonHeaderContainer}>
         <Skeleton
           animationDirection="horizontalRight"
