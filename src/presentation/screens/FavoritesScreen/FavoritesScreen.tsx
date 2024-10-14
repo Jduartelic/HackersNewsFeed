@@ -51,7 +51,9 @@ const FavoritesScreen = (): React.JSX.Element => {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView
+      testID="favorites-news-container"
+      style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
       {loading && renderSkeleton()}
       {!loading && <NewsFeed newsDataList={favoritesNews} />}

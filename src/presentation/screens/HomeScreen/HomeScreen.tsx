@@ -182,7 +182,7 @@ const HomeScreen = (): React.JSX.Element => {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView testID="home-screen-container" style={styles.mainContainer}>
       <PushNotificationsHandler>
         <StatusBar barStyle={'dark-content'} backgroundColor={'#f5f5f5'} />
         {loading && renderSkeleton()}

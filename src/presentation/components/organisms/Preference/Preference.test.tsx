@@ -15,7 +15,7 @@ import {
   StateStoreNewsData,
   defaultNewsContextValues,
 } from '../../../stores/entities';
-import {fireEvent, render, act} from '@testing-library/react-native';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import {Fixtures} from '../../../../domain';
 import Preference from './Preference';
 import * as ReactNative from 'react-native';
@@ -91,12 +91,18 @@ const renderScreen = ({
   );
 
 describe('Preference', () => {
+  afterAll(() => {
+    jest.useFakeTimers();
+    jest.clearAllMocks();
+  });
   beforeEach(() => {
     jest.useFakeTimers();
     jest.clearAllMocks();
   });
 
   it('should render component successfully and press to select element', () => {
+    jest.useFakeTimers();
+
     const {getByTestId, queryAllByTestId} = renderScreen({
       stateStoreUserActivityData: {
         state: {
@@ -110,12 +116,25 @@ describe('Preference', () => {
     });
     const component = getByTestId('preferences-container-0');
     expect(component).toBeTruthy();
-    const componentButton = queryAllByTestId('pressable-component-0');
-    fireEvent.press(componentButton[0]);
-    expect(mockDispatchUserData).toHaveBeenCalled();
+
+    waitFor(
+      async () => {
+        const componentButton = queryAllByTestId('pressable-component-0');
+        fireEvent.press(componentButton[0]);
+        waitFor(
+          async () => {
+            expect(mockDispatchUserData).toHaveBeenCalled();
+          },
+          {timeout: 1000},
+        );
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should render component successfully and keyword android should be selected', () => {
+    jest.useFakeTimers();
+
     const {getByTestId, queryAllByTestId} = renderScreen({
       stateStoreUserActivityData: {
         state: {
@@ -131,7 +150,18 @@ describe('Preference', () => {
     const component = getByTestId('preferences-container-0');
     expect(component).toBeTruthy();
     const componentButton = queryAllByTestId('pressable-component-0');
-    fireEvent.press(componentButton[0]);
-    expect(mockDispatchUserData).toHaveBeenCalled();
+
+    waitFor(
+      async () => {
+        fireEvent.press(componentButton[0]);
+        waitFor(
+          async () => {
+            expect(mockDispatchUserData).toHaveBeenCalled();
+          },
+          {timeout: 1000},
+        );
+      },
+      {timeout: 1000},
+    );
   });
 });

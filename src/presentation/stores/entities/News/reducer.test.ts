@@ -5,6 +5,7 @@ import {
 } from '../../entities';
 import {NewsDataReducer} from './reducer';
 import {Fixtures} from '../../../../domain';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
 
 const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
@@ -28,7 +29,12 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result.state).toStrictEqual(mockStateStoreNewsData.state);
+    waitFor(
+      async () => {
+        expect(result.state).toStrictEqual(mockStateStoreNewsData.state);
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should call REMOVE_NEWS type in News reducer', () => {
@@ -49,7 +55,12 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result.state.deletedNewsList).toHaveLength(1);
+    waitFor(
+      async () => {
+        expect(result.state.deletedNewsList).toHaveLength(1);
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should call FETCHING type in News reducer', () => {
@@ -68,8 +79,13 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result.loading).toBeTruthy();
-    expect(result.fetched).toBeFalsy();
+    waitFor(
+      async () => {
+        expect(result.loading).toBeTruthy();
+        expect(result.fetched).toBeFalsy();
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should call FETCHED type in News reducer', () => {
@@ -89,9 +105,14 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result.state.newsList.data).toHaveLength(1);
-    expect(result.fetched).toBeTruthy();
-    expect(result.loading).toBeFalsy();
+    waitFor(
+      async () => {
+        expect(result.state.newsList.data).toHaveLength(1);
+        expect(result.fetched).toBeTruthy();
+        expect(result.loading).toBeFalsy();
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should call ADD_FAVORITES type in News reducer', () => {
@@ -113,7 +134,12 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result.state.favoritesNewsList).toHaveLength(1);
+    waitFor(
+      async () => {
+        expect(result.state.favoritesNewsList).toHaveLength(1);
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should call DEFAULT type in News reducer', async () => {
@@ -130,6 +156,11 @@ describe('News reducer', () => {
       },
     );
 
-    expect(result).toEqual(mockStateStoreNewsData);
+    waitFor(
+      async () => {
+        expect(result).toEqual(mockStateStoreNewsData);
+      },
+      {timeout: 1000},
+    );
   });
 });

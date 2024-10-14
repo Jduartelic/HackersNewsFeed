@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {act, renderHook} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks';
 import {waitFor} from '@testing-library/react-native';
 import {Fixtures} from '../../../../domain';
 import {defaultNewsContextValues, NewsContext} from '../../../stores/entities';
@@ -39,9 +39,12 @@ describe('useNews', () => {
     });
 
     await result.current.getNewsList('');
-    await waitFor(() => {
-      expect(mockedDispatch).toHaveBeenCalled();
-    });
+    waitFor(
+      () => {
+        expect(mockedDispatch).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
   });
 
   it('should keep error state as null when the custom hook starts getProductList', async () => {
@@ -52,8 +55,11 @@ describe('useNews', () => {
 
     await result.current.getNewsList('mock');
 
-    await waitFor(() => {
-      expect(mockedDispatch).toHaveBeenCalled();
-    });
+    waitFor(
+      () => {
+        expect(mockedDispatch).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
   });
 });

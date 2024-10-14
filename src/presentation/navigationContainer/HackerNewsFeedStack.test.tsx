@@ -1,6 +1,9 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
-import {HackerNewsFeedDrawer} from '../navigationContainer/navigationStack';
+import {
+  HackerNewsFeedDrawer,
+  HackerNewsFeedStack,
+} from '../navigationContainer/navigationStack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {CemeteryNewsScreen} from '../screens/';
 import {NavigationContainer} from '@react-navigation/native';
@@ -23,6 +26,8 @@ jest.mock('@react-navigation/native', () => {
 
 const renderScreen = () => {
   const {Screen, Navigator} = createDrawerNavigator<HackerNewsFeedDrawer>();
+  const {Screen: ScreenStack, Navigator: NavigatorStack} =
+    createDrawerNavigator<HackerNewsFeedStack>();
   return render(
     <NavigationContainer>
       <Navigator initialRouteName="MainScreen">
@@ -31,6 +36,13 @@ const renderScreen = () => {
           component={CemeteryNewsScreen}
           options={{headerShown: false}}
         />
+        {/* <NavigatorStack initialRouteName="HomeScreen"> */}
+        <ScreenStack
+          name="HomeScreen"
+          component={CemeteryNewsScreen}
+          options={{headerShown: false}}
+        />
+        {/* </NavigatorStack> */}
       </Navigator>
     </NavigationContainer>,
   );

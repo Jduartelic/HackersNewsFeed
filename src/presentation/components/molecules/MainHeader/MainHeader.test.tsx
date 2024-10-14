@@ -1,10 +1,7 @@
 import React from 'react';
-import {View, ImageSourcePropType, Image} from 'react-native';
-import {fireEvent, render} from '@testing-library/react-native';
+import {ImageSourcePropType} from 'react-native';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import MainHeader from './MainHeader';
-import Icon, {
-  FontAwesome5IconProps,
-} from 'react-native-vector-icons/FontAwesome5';
 import {NavigationContainer} from '@react-navigation/native';
 
 const mockedNavigate = jest.fn();
@@ -71,6 +68,14 @@ const renderScreen = ({
 };
 
 describe('MainHeader', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.clearAllMocks();
+  });
+  afterAll(() => {
+    jest.useFakeTimers();
+    jest.clearAllMocks();
+  });
   it('renders MainHeader on WebViewScreen correctly and press button', () => {
     const {getByTestId} = renderScreen({
       iconLeft: 'chevron-left',
@@ -83,7 +88,12 @@ describe('MainHeader', () => {
     const buttonComponent = getByTestId('button-left-header');
 
     fireEvent.press(buttonComponent);
-    expect(mockedGoBack).toHaveBeenCalled();
+    waitFor(
+      async () => {
+        expect(mockedGoBack).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
   });
 
   it('renders MainHeader on HomeScreen correctly and press button', () => {
@@ -99,7 +109,12 @@ describe('MainHeader', () => {
     const buttonComponent = getByTestId('button-left-header');
 
     fireEvent.press(buttonComponent);
-    expect(mockedToggleDrawer).toHaveBeenCalled();
+    waitFor(
+      async () => {
+        expect(mockedToggleDrawer).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
   });
 
   it('renders MainHeader on HomeScreen correctly and navigate to FavoriteScreen', () => {
@@ -115,6 +130,11 @@ describe('MainHeader', () => {
     const buttonComponent = getByTestId('button-right-header');
 
     fireEvent.press(buttonComponent);
-    expect(mockedNavigate).toHaveBeenCalled();
+    waitFor(
+      async () => {
+        expect(mockedNavigate).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
   });
 });

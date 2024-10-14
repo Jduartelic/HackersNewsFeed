@@ -23,13 +23,13 @@ import styles from './PushNotificationsHandler.styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Timer from 'react-native-background-timer-android';
 
-const IS_IOS = Platform.OS === 'ios';
 const PushNotificationsHandler = ({
   children,
 }: {
   children: React.ReactNode;
 }): React.JSX.Element => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const IS_IOS = Platform.OS === 'ios';
+  const [modalVisible, setModalVisible] = React.useState(false);
   const {ONBOARDING, USER_ACTIVITY} = constants;
   const {
     RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION,
@@ -72,8 +72,6 @@ const PushNotificationsHandler = ({
     const channelId = await notifee.createChannel({
       id: 'default',
       name: 'Default Channel',
-      visibility: AndroidVisibility.PUBLIC,
-      importance: AndroidImportance.HIGH,
     });
 
     await notifee.displayNotification({
@@ -202,6 +200,7 @@ const PushNotificationsHandler = ({
       {children}
 
       <Modal
+        testID="modal-request-permission"
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -212,6 +211,7 @@ const PushNotificationsHandler = ({
           <View style={styles.modalView}>
             <View style={styles.modalClose}>
               <Icon
+                testID="button-close-modal"
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
@@ -227,6 +227,7 @@ const PushNotificationsHandler = ({
               {RECONSIDER_PUSH_NOTIFICATIONS_PERMISSION}
             </Text>
             <Pressable
+              testID="button-settings"
               style={[styles.button, styles.buttonClose]}
               onPress={() => {
                 setModalVisible(!modalVisible);
