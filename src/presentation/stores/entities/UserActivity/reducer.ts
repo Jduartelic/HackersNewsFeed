@@ -66,7 +66,6 @@ export function UserActivityDataReducer(
       };
 
     case UserActivityKind.PUSH_NOTIFICATION_PROCESS: {
-      console.log('hablame UserActivityKind.PUSH_NOTIFICATION_PROCESS');
       return {
         ...state,
         state: {

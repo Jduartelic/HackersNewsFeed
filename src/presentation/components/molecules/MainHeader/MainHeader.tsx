@@ -38,9 +38,10 @@ export const MainHeader = ({
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <View style={styles.innerContainer}>
+      <View testID="main-header" style={styles.innerContainer}>
         <View>
           <Icon
+            testID="button-left-header"
             name={iconLeft.name}
             size={30}
             color="#000"
@@ -66,6 +67,7 @@ export const MainHeader = ({
         <View>
           {iconRight && (
             <Icon
+              testID="button-right-header"
               name={iconRight.name}
               size={30}
               color="#5ce1e6"

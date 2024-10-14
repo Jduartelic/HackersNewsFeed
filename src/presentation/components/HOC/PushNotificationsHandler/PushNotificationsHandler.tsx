@@ -13,9 +13,6 @@ import {
   NewsKind,
 } from '../../../stores/entities';
 import {constants} from '../../../constants';
-import {useNavigation} from '@react-navigation/native';
-import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import notifee, {
   AndroidImportance,
   AndroidVisibility,
@@ -25,9 +22,6 @@ import {Linking} from 'react-native';
 import styles from './PushNotificationsHandler.styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Timer from 'react-native-background-timer-android';
-
-type HackerNewsFeedNavigationProp =
-  NativeStackNavigationProp<HackerNewsFeedStack>;
 
 const IS_IOS = Platform.OS === 'ios';
 const PushNotificationsHandler = ({
@@ -44,7 +38,6 @@ const PushNotificationsHandler = ({
     FACETS,
   } = USER_ACTIVITY;
   const {CONTINUE} = ONBOARDING;
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);

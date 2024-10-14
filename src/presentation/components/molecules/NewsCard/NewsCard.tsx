@@ -101,9 +101,11 @@ export const NewsCard = (newsData: NewsData) => {
     <GestureHandlerRootView style={styles.cardContainer}>
       <>
         <Animated.View
+          testID="main-container"
           style={[styles.containerTrashButton, animatedStylesZindexRight]}>
           <View style={styles.trashButton}>
             <Pressable
+              testID="trash-button"
               onPress={() => {
                 offset.value = withTiming(100);
                 dispatchNewsData({
@@ -121,7 +123,7 @@ export const NewsCard = (newsData: NewsData) => {
           </View>
         </Animated.View>
       </>
-      <View onLayout={onLayout}>
+      <View testID="layout-provider" onLayout={onLayout}>
         <GestureDetector gesture={pan}>
           <Animated.View
             style={[
@@ -139,7 +141,7 @@ export const NewsCard = (newsData: NewsData) => {
             />
 
             <View style={styles.container}>
-              <Pressable onPress={navigateWebView}>
+              <Pressable testID="body-card" onPress={navigateWebView}>
                 <Text>{newsData.storyTitle}</Text>
               </Pressable>
               {/*   <Pressable onPress={navigateWebView}>
@@ -162,6 +164,7 @@ export const NewsCard = (newsData: NewsData) => {
 
             <View style={styles.containerFavoritesbutton}>
               <Pressable
+                testID="heart-button"
                 hitSlop={30}
                 onPress={() => {
                   offset.value = withTiming(0);

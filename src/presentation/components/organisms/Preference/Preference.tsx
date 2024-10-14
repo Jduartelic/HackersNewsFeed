@@ -6,11 +6,7 @@ import {constants} from '../../../constants';
 import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const Preference = ({
-  hideOnboarding = false,
-}: {
-  hideOnboarding: boolean;
-}): React.JSX.Element => {
+const Preference = (): React.JSX.Element => {
   const {ONBOARDING, USER_ACTIVITY} = constants;
   const {SELECT_INTEREST_FACETS, PREFERENCE} = ONBOARDING;
   const {keywords: KEY_WORDS} = USER_ACTIVITY.FACETS;
@@ -18,19 +14,25 @@ const Preference = ({
     useContext(UserActivityContext);
   const {facetsSelectedByUser, facets, userName} = stateUserActivityData.state;
 
-  const renderItem = (keywords: string[], title: string) => {
+  const renderItem = (keywords: string[], title: string, index: number) => {
     return (
-      <View key={uuid.v4().toString()} style={styles.mainContainerFacets}>
+      <View
+        testID={`preferences-container-${index}`}
+        key={uuid.v4().toString()}
+        style={styles.mainContainerFacets}>
         <Text style={styles.textTitleFacet}>{title}</Text>
 
-        {keywords.map(keyword => {
+        {keywords.map((keyword, index) => {
           const isSelected = facetsSelectedByUser?.some(
             facet => facet === keyword,
           );
           return (
-            <View style={styles.innerContainerFacets}>
+            <View
+              key={uuid.v4().toString()}
+              style={styles.innerContainerFacets}>
               <Text style={styles.keywordText}>{keyword}</Text>
               <Icon
+                testID={`pressable-component-${index}`}
                 onPress={() => {
                   const facetsData = facetsSelectedByUser;
                   if (!isSelected) {
@@ -70,24 +72,17 @@ const Preference = ({
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      {hideOnboarding && (
-        <>
-          <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
-          <View style={styles.paddingContainer}>
-            <Text style={styles.textFacetsInterest}>
-              {SELECT_INTEREST_FACETS}
-            </Text>
-          </View>
-
-          <View style={styles.paddingContainer}>
-            <Text style={styles.textFacetsPreferences}>{PREFERENCE}</Text>
-          </View>
-        </>
-      )}
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+      <View style={styles.paddingContainer}>
+        <Text style={styles.textFacetsInterest}>{SELECT_INTEREST_FACETS}</Text>
+      </View>
+      <View style={styles.paddingContainer}>
+        <Text style={styles.textFacetsPreferences}>{PREFERENCE}</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         {Object.values(KEY_WORDS).map((item, index) => {
           const title = Object.keys(KEY_WORDS)[index];
-          return renderItem(item, title);
+          return renderItem(item, title, index);
         })}
       </ScrollView>
     </SafeAreaView>
