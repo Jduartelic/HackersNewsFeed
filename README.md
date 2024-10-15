@@ -45,7 +45,7 @@ needed to correctly set up your work environment, enabling you to contribute eff
 
 ### Prerequisites
 
-To get your environment ready we recommend you to read [this documentation](https://reactnative.dev/docs/environment-setup),
+To get your environment ready we recommend you to read [this documentation](https://reactnative.dev/docs/set-up-your-environment),
 where you will find detailed information on basic installation requirements.
 
 ### Installation
