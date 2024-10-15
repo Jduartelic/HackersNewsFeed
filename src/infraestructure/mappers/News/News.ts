@@ -16,9 +16,12 @@ const getHighlightResults = (
   };
 };
 export const newsMap = (response: NewsDto): News => {
-  const data = response.hits
-    .map((dto: NewsDtoData): NewsData => {
-      return {
+  const dataNews: NewsData[] = [];
+  response.hits.forEach((dto: NewsDtoData) => {
+    const exist = dataNews.some(item => item.storyId === dto.story_id);
+
+    if (!exist) {
+      dataNews.push({
         highlightResult: getHighlightResults(dto._highlightResult),
         tags: dto?._tags,
         author: dto?.author,
@@ -29,14 +32,16 @@ export const newsMap = (response: NewsDto): News => {
         objectID: dto?.objectID,
         parentId: dto?.parent_id,
         storyId: dto?.story_id,
-        storyTitle: dto?.story_title,
+        storyTitle: dto?.story_title ?? dto.title,
         storyUrl: dto?.story_url,
         updatedAt: dto?.updated_at,
-      };
-    })
-    .sort((a: NewsData, b: NewsData) => {
-      return b.createdAtI - a.createdAtI;
-    });
+      });
+    }
+  });
 
-  return {data};
+  dataNews.sort((a: NewsData, b: NewsData) => {
+    return b.createdAtI - a.createdAtI;
+  });
+
+  return {data: dataNews};
 };

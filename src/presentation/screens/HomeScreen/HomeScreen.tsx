@@ -90,10 +90,18 @@ const HomeScreen = (): React.JSX.Element => {
       const parseLocalFacets: UserActivityEntity = savedData
         ? JSON.parse(savedData)
         : {
-            facets: constants.USER_ACTIVITY.FACETS,
+            facets: constants.USER_ACTIVITY.FACETS.keywords.technology,
             facetsSelectedByUser: [],
             querySearch: '',
             hasSeenOnboarding: false,
+            pushNotifications: {
+              appStateActivity:
+                defaultUserActivityContextValues.stateUserActivityData.state
+                  .pushNotifications.appStateActivity,
+              sentPushNotification: false,
+              timeForNextPush: 6000,
+            },
+            userName: '',
           };
       dispatchUserActivityData({
         type: UserActivityKind.FETCHED,
@@ -103,13 +111,7 @@ const HomeScreen = (): React.JSX.Element => {
           hasSeenOnboarding: parseLocalFacets.hasSeenOnboarding,
           querySearch: parseLocalFacets.querySearch,
           userName: parseLocalFacets.userName,
-          pushNotifications: {
-            appStateActivity:
-              defaultUserActivityContextValues.stateUserActivityData.state
-                .pushNotifications.appStateActivity,
-            sentPushNotification: false,
-            timeForNextPush: 6000,
-          },
+          pushNotifications: parseLocalFacets.pushNotifications,
         },
       });
     });

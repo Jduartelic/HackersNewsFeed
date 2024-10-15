@@ -14,6 +14,7 @@ export interface NewsDtoData {
   parent_id: number;
   story_id: number;
   story_title: string;
+  title: string;
   story_url: string;
   updated_at: string;
 }

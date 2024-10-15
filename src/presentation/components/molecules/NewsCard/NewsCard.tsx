@@ -57,7 +57,8 @@ export const NewsCard = (newsData: NewsData) => {
   const resultInDays =
     Number(result.replace('h', '')) > 24
       ? `${differenceInDays(currentDate, date)}d`
-      : `${differenceInCalendarYears(date, currentDate)}y`;
+      : resultInHour;
+  // `${differenceInCalendarYears(date, currentDate)}y`;
 
   const offset = useSharedValue<number>(0);
   const width = useSharedValue<number>(0);
@@ -106,7 +107,6 @@ export const NewsCard = (newsData: NewsData) => {
     }
     return false;
   }, [state.favoritesNewsList, newsData.storyId]);
-
   return (
     <GestureHandlerRootView style={styles.cardContainer}>
       <>
