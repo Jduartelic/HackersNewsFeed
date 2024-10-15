@@ -40,10 +40,7 @@ export function UserActivityDataReducer(
     case UserActivityKind.FETCHED:
       dataPayload = JSON.stringify({
         ...action.payload,
-        hasSeenOnboarding: true,
-        appStateActivity: 'active',
       });
-
       setSavedData(constants.USER_ACTIVITY.STORAGE_KEY, dataPayload);
 
       return {

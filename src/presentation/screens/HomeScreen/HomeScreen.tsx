@@ -36,12 +36,13 @@ const HomeScreen = (): React.JSX.Element => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
-  const {loading, fetched, state} = stateNewsData;
+  const {loading, fetched, state, error} = stateNewsData;
   const {
     loading: loadingUserActivity,
     fetched: fetchedUserActivity,
     state: stateUserActivity,
   } = stateUserActivityData;
+  if (error) console.log('error', error);
 
   const filteredListNews = useMemo(() => {
     const {deletedNewsList, newsList} = state;
@@ -65,9 +66,9 @@ const HomeScreen = (): React.JSX.Element => {
     };
 
     const dataFromStorage = await getSavedData(constants.HOME.STORAGE_KEY);
-
     if (dataFromStorage) {
       const data = JSON.parse(dataFromStorage);
+
       dataPayload.newsList = data.newsList;
       dataPayload.deletedNewsList = data.deletedNewsList ?? [];
       dataPayload.favoritesNewsList = data.favoritesNewsList ?? [];
@@ -103,6 +104,7 @@ const HomeScreen = (): React.JSX.Element => {
             },
             userName: '',
           };
+
       dispatchUserActivityData({
         type: UserActivityKind.FETCHED,
         payload: {

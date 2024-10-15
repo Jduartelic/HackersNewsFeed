@@ -26,7 +26,7 @@ export const newsMap = (response: NewsDto): News => {
         tags: dto?._tags,
         author: dto?.author,
         children: dto?.children,
-        commentText: dto?.comment_text,
+        commentText: 'dto?.comment_text',
         createdAt: dto?.created_at,
         createdAtI: dto?.created_at_i,
         objectID: dto?.objectID,
