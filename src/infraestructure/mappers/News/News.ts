@@ -16,8 +16,8 @@ const getHighlightResults = (
   };
 };
 export const newsMap = (response: NewsDto): News => {
-  return {
-    data: response.hits.map((dto: NewsDtoData): NewsData => {
+  const data = response.hits
+    .map((dto: NewsDtoData): NewsData => {
       return {
         highlightResult: getHighlightResults(dto._highlightResult),
         tags: dto?._tags,
@@ -33,6 +33,10 @@ export const newsMap = (response: NewsDto): News => {
         storyUrl: dto?.story_url,
         updatedAt: dto?.updated_at,
       };
-    }),
-  };
+    })
+    .sort((a: NewsData, b: NewsData) => {
+      return b.createdAtI - a.createdAtI;
+    });
+
+  return {data};
 };

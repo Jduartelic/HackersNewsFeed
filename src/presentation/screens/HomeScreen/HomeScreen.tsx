@@ -5,6 +5,7 @@ import {
   StatusBar,
   View,
   BackHandler,
+  Alert,
 } from 'react-native';
 import {useNews} from '../../hooks';
 import {
@@ -32,7 +33,7 @@ type HackerNewsFeedNavigationProp =
 
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
-  const {HOME} = constants;
+  const {HOME, USER_ACTIVITY} = constants;
   const {navigate, replace, getState} =
     useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
@@ -53,6 +54,11 @@ const HomeScreen = (): React.JSX.Element => {
       ),
     };
   }, [state]);
+
+  const getRandomId = useCallback((min: number, max: number): number => {
+    const val = Math.floor(Math.random() * (max - min + 1)) + min;
+    return val;
+  }, []);
 
   const onFetchingNews = useCallback(async () => {
     let dataPayload: NewsPayloadEntity = {
@@ -127,7 +133,12 @@ const HomeScreen = (): React.JSX.Element => {
 
   useEffect(() => {
     if (loading && !fetched) {
-      getNewsList(stateUserActivity.querySearch ?? '');
+      const idKeyword = getRandomId(0, 5);
+      const facetKeyword = Object.values(USER_ACTIVITY.FACETS.keywords).find(
+        (_, index) => index === idKeyword,
+      ) ?? ['Android'];
+      const queryParam = facetKeyword[getRandomId(0, facetKeyword.length - 1)];
+      getNewsList(queryParam);
     }
   }, [loading, fetched, getNewsList, stateUserActivity.querySearch]);
 

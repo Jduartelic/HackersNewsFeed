@@ -9,7 +9,7 @@ export interface NewsData {
   children?: number[];
   commentText?: string;
   createdAt?: string;
-  createdAtI?: number;
+  createdAtI: number;
   objectID?: string;
   parentId?: number;
   storyId: number;

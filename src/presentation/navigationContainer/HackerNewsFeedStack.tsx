@@ -155,6 +155,21 @@ const HackerNewsFeedScreens = () => {
         }}
       />
 
+      <Drawer.Screen
+        name="CemeteryNewsScreen"
+        component={CemeteryNewsScreen}
+        options={{
+          header: () =>
+            HeaderHackerNewsFeedScreens({
+              iconLeft: {name: 'chevron-left'},
+              imageSource: images.logoInitials,
+            }),
+          headerShown: true,
+          headerStyle: {backgroundColor: '#f5f5f5'},
+          headerShadowVisible: true,
+        }}
+      />
+
       <Stack.Screen
         name="OnboardingScreen"
         component={OnboardingScreen}

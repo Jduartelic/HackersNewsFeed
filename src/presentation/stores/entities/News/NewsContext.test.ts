@@ -18,12 +18,6 @@ describe('News reducer', () => {
         },
         ...mockStateStoreNewsData,
       });
-    console.log(
-      'defaultNewsContextValues.stateNewsData',
-      defaultNewsContextValues.stateNewsData,
-    );
-
-    console.log('result', result);
     await waitFor(
       async () => {
         const resultData = result as unknown as StateStoreNewsData;

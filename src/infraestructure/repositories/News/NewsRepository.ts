@@ -11,7 +11,6 @@ const getNews: NewsResponse = async (typePlatform: string): Promise<News> => {
       },
     },
   );
-
   return mappers.newsMap(data);
 };
 

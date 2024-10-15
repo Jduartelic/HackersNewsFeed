@@ -11,7 +11,6 @@ const useNews = () => {
     async (typePlatform: string) => {
       try {
         const response = await NewsRepository.getNews(typePlatform);
-
         dispatchNewsData({
           type: NewsKind.FETCHED,
           payload: {

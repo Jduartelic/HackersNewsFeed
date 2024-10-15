@@ -4,6 +4,7 @@ type HackerNewsFeedStack = {
     url: string;
   };
   FavoritesScreen: undefined;
+  CemeteryNewsScreen: undefined;
   OnboardingScreen: undefined;
 };
 

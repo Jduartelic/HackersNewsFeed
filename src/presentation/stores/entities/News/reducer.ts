@@ -64,10 +64,19 @@ export function NewsDataReducer(
         error: error,
       };
     case NewsKind.REMOVE_NEWS:
-      const deletedList: number[] = state.state.deletedNewsList;
+      let deletedList: number[] = state.state.deletedNewsList;
       if (action.payload.deletedNewsId) {
-        deletedList?.push(action.payload.deletedNewsId);
+        const exist = deletedList?.find(
+          item => item === action.payload.deletedNewsId,
+        );
+
+        if (exist) {
+          deletedList = deletedList.filter(item => item !== exist);
+        } else {
+          deletedList?.push(action.payload.deletedNewsId);
+        }
       }
+
       dataPayload = JSON.stringify({
         newsList: state.state.newsList,
         deletedNewsList: deletedList,

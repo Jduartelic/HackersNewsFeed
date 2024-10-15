@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000',
   },
+  textFacetsInterestDisabled: {
+    fontWeight: '600',
+    fontSize: 20,
+    color: '#00000066',
+  },
   textFacetsPreferences: {
     fontWeight: '400',
     fontSize: 20,
