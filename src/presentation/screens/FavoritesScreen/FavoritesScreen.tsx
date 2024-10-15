@@ -14,7 +14,7 @@ import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
 const FavoritesScreen = (): React.JSX.Element => {
-  const {HOME} = constants;
+  const {HOME, MAIN_COLOR} = constants;
 
   const {stateNewsData} = useContext(NewsContext);
 
@@ -54,7 +54,7 @@ const FavoritesScreen = (): React.JSX.Element => {
     <SafeAreaView
       testID="favorites-news-container"
       style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       {loading && renderSkeleton()}
       {!loading && <NewsFeed newsDataList={favoritesNews} />}
     </SafeAreaView>

@@ -8,7 +8,7 @@ import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
 const CemeteryNewsScreen = (): React.JSX.Element => {
-  const {HOME} = constants;
+  const {MAIN_COLOR, HOME} = constants;
 
   const {stateNewsData} = useContext(NewsContext);
 
@@ -49,7 +49,7 @@ const CemeteryNewsScreen = (): React.JSX.Element => {
     <SafeAreaView
       testID="cementery-news-container"
       style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       {loading && renderSkeleton()}
       {!loading && <NewsFeed newsDataList={deletedNews} />}
     </SafeAreaView>

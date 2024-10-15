@@ -13,10 +13,8 @@ import {
   HackerNewsFeedStack,
   HackerNewsFeedDrawer,
 } from '../navigationContainer/navigationStack';
-import {
-  NewsContextProvider,
-  UserActivityContextProvider,
-} from '../stores/entities';
+import {NewsContextProvider} from '../stores/entities/News/NewsContext';
+import {UserActivityContextProvider} from '../stores/entities/UserActivity/UserActivityContext';
 import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -37,6 +35,8 @@ function HackerNewsFeedNavigator() {
     [],
   );
 
+  const DrawerContentComponent = useCallback(() => <DrawerCustomScreen />, []);
+
   return (
     <UserActivityContextProvider>
       <NewsContextProvider>
@@ -46,7 +46,7 @@ function HackerNewsFeedNavigator() {
               headerShown: false,
               swipeEnabled: false,
             }}
-            drawerContent={() => <DrawerCustomScreen />}>
+            drawerContent={() => DrawerContentComponent()}>
             <Drawer.Screen
               name="MainScreen"
               component={HackerNewsFeedScreens}

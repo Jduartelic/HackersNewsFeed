@@ -189,4 +189,64 @@ describe('News reducer', () => {
       {timeout: 1000},
     );
   });
+
+  it('should call REMOVE_NEWS and state exist type in News reducer', async () => {
+    const result = NewsDataReducer(
+      {
+        ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+          deletedNewsList: [mockNewsFixtures.data[0].storyId],
+        },
+      },
+      {
+        type: NewsKind.REMOVE_NEWS,
+        payload: {
+          ...mockStateStoreNewsData.state,
+          deletedNewsList: [mockNewsFixtures.data[0].storyId],
+          deletedNewsId: mockNewsFixtures.data[0].storyId,
+        },
+        loading: false,
+        fetched: true,
+        error: undefined,
+      },
+    );
+
+    await waitFor(
+      async () => {
+        expect(result.state.deletedNewsList).toHaveLength(0);
+      },
+      {timeout: 1000},
+    );
+  });
+
+  it('should call ADD_FAVORITES and state exist type in News reducer', async () => {
+    const result = NewsDataReducer(
+      {
+        ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+          favoritesNewsList: [mockNewsFixtures.data[0].storyId],
+        },
+      },
+      {
+        type: NewsKind.ADD_FAVORITES,
+        payload: {
+          ...mockStateStoreNewsData.state,
+          favoritesNewsList: [mockNewsFixtures.data[0].storyId],
+          favoritesNewsId: mockNewsFixtures.data[0].storyId,
+          newsList: mockNewsFixtures,
+        },
+        loading: false,
+        fetched: true,
+        error: undefined,
+      },
+    );
+    await waitFor(
+      async () => {
+        expect(result.state.favoritesNewsList).toHaveLength(0);
+      },
+      {timeout: 1000},
+    );
+  });
 });

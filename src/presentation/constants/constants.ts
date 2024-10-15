@@ -1,4 +1,5 @@
 export default {
+  MAIN_COLOR: '#f5f5f5',
   ONBOARDING: {
     WELCOME_TITLE: 'WELCOME',
     THANKS_COMMENT:

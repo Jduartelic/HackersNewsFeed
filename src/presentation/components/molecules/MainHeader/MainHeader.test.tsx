@@ -31,6 +31,7 @@ let mockRoutes = [
   },
 ];
 let mockIndex = 1;
+let mockIsFocus = true;
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
   return {
@@ -47,6 +48,7 @@ jest.mock('@react-navigation/native', () => {
         type: 'stack',
       })),
       toggleDrawer: mockedToggleDrawer,
+      isFocused: jest.fn().mockResolvedValue(mockIsFocus),
     }),
     useIsFocused: () => true,
   };
@@ -124,6 +126,28 @@ describe('MainHeader', () => {
 
   it('renders MainHeader on HomeScreen correctly and navigate to FavoriteScreen', async () => {
     mockIndex = 0;
+    renderScreen({
+      iconLeft: 'chevron-left',
+      iconRight: 'chevron-left',
+      imageSource: undefined,
+    });
+    const mainComponent = screen.getByTestId('main-header');
+    expect(mainComponent).toBeDefined();
+
+    const buttonComponent = screen.getByTestId('button-right-header');
+
+    fireEvent.press(buttonComponent);
+    await waitFor(
+      async () => {
+        expect(mockedNavigate).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
+  });
+
+  it('renders remove header elements by focus and go back', async () => {
+    mockIndex = 0;
+    mockIsFocus = false;
     renderScreen({
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',

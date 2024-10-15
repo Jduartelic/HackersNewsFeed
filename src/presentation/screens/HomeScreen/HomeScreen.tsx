@@ -5,7 +5,6 @@ import {
   StatusBar,
   View,
   BackHandler,
-  Alert,
 } from 'react-native';
 import {useNews} from '../../hooks';
 import {
@@ -27,15 +26,13 @@ import {useNavigation} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PushNotificationsHandler} from '../../components/HOC/';
-
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
-  const {HOME, USER_ACTIVITY} = constants;
-  const {navigate, replace, getState} =
-    useNavigation<HackerNewsFeedNavigationProp>();
+  const {HOME, USER_ACTIVITY, MAIN_COLOR} = constants;
+  const {navigate, replace} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
@@ -140,7 +137,14 @@ const HomeScreen = (): React.JSX.Element => {
       const queryParam = facetKeyword[getRandomId(0, facetKeyword.length - 1)];
       getNewsList(queryParam);
     }
-  }, [loading, fetched, getNewsList, stateUserActivity.querySearch]);
+  }, [
+    loading,
+    fetched,
+    getNewsList,
+    stateUserActivity.querySearch,
+    USER_ACTIVITY.FACETS.keywords,
+    getRandomId,
+  ]);
 
   useEffect(() => {
     if (
@@ -200,7 +204,7 @@ const HomeScreen = (): React.JSX.Element => {
   return (
     <SafeAreaView testID="home-screen-container" style={styles.mainContainer}>
       <PushNotificationsHandler>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'#f5f5f5'} />
+        <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
         {loading && renderSkeleton()}
         {!loading && <NewsFeed newsDataList={filteredListNews} />}
       </PushNotificationsHandler>

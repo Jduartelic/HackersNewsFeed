@@ -35,6 +35,9 @@ jest.mock('@notifee/react-native', () => {
     onBackgroundEvent: jest.fn(),
     createChannelGroup: jest.fn().mockResolvedValue('channel-group-id'),
     createChannel: jest.fn().mockResolvedValue({}),
+    requestPermission: jest
+      .fn()
+      .mockResolvedValue({authorizationStatus: 'granted'}),
   };
 
   return {

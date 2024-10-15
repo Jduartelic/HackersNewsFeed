@@ -1,9 +1,9 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
-  StateStoreUserActivityData,
-  defaultUserActivityContextValues,
-  UserActivityContext,
+  NewsContext,
+  StateStoreNewsData,
+  defaultNewsContextValues,
 } from '../../stores/entities';
 import {
   fireEvent,
@@ -12,10 +12,10 @@ import {
   screen,
 } from '@testing-library/react-native';
 import DrawerCustomScreen from './DrawerCustomScreen';
+import {Fixtures} from '../../../domain';
 
-const mockStateStoreUserActivityData: StateStoreUserActivityData =
-  defaultUserActivityContextValues.stateUserActivityData;
-const mockDispatchUserData = jest.fn();
+const mockStateStoreNewsData: StateStoreNewsData =
+  defaultNewsContextValues.stateNewsData;
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
@@ -60,13 +60,19 @@ jest.mock('@react-navigation/native', () => {
 });
 
 const renderScreen = ({
-  stateStoreUserActivityData = mockStateStoreUserActivityData,
+  stateStoreNewsData = mockStateStoreNewsData,
 }: {
-  stateStoreUserActivityData: StateStoreUserActivityData;
+  stateStoreNewsData: StateStoreNewsData;
 }) =>
   render(
     <NavigationContainer>
-      <DrawerCustomScreen />
+      <NewsContext.Provider
+        value={{
+          stateNewsData: {...stateStoreNewsData},
+          dispatchNewsData: defaultNewsContextValues.dispatchNewsData,
+        }}>
+        <DrawerCustomScreen />
+      </NewsContext.Provider>
     </NavigationContainer>,
   );
 
@@ -80,56 +86,88 @@ describe('DrawerCustomScreen', () => {
     jest.clearAllMocks();
   });
 
-  it('should render component successfully and press to select element', async () => {
+  it('should render component and by tapping cemetery screen and should navigate', async () => {
     jest.useFakeTimers();
 
     renderScreen({
-      stateStoreUserActivityData: {
+      stateStoreNewsData: {
+        ...mockStateStoreNewsData,
         state: {
-          ...mockStateStoreUserActivityData.state,
+          ...mockStateStoreNewsData.state,
+          deletedNewsList: [Fixtures.NewsList.data[0].storyId],
         },
-
-        fetched: true,
-        loading: false,
-        error: undefined,
       },
     });
-    const component = screen.getByTestId('preferences-container-0');
-    expect(component).toBeTruthy();
 
-    const componentButton = screen.queryAllByTestId('pressable-component-0');
-    fireEvent.press(componentButton[0]);
+    const componentButtonCemetery = screen.getByTestId('button-cemetery');
+    fireEvent.press(componentButtonCemetery);
     await waitFor(
       async () => {
-        expect(mockDispatchUserData).toHaveBeenCalled();
+        expect(mockedNavigate).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
+    mockedNavigate.mockClear();
+    const componentButtonFavorites = screen.getByTestId('button-favorites');
+    fireEvent.press(componentButtonFavorites);
+    await waitFor(
+      async () => {
+        expect(mockedNavigate).not.toHaveBeenCalled();
       },
       {timeout: 1000},
     );
   });
 
-  it('should render component successfully and keyword android should be selected', async () => {
+  it('should render component and by tapping favorites should navigate', async () => {
     jest.useFakeTimers();
 
     renderScreen({
-      stateStoreUserActivityData: {
+      stateStoreNewsData: {
+        ...mockStateStoreNewsData,
         state: {
-          ...mockStateStoreUserActivityData.state,
-          facetsSelectedByUser: ['Best'],
+          ...mockStateStoreNewsData.state,
+          favoritesNewsList: [Fixtures.NewsList.data[0].storyId],
         },
-
-        fetched: true,
-        loading: false,
-        error: undefined,
       },
     });
-    const component = screen.getByTestId('preferences-container-0');
-    expect(component).toBeTruthy();
-    const componentButton = screen.queryAllByTestId('pressable-component-0');
-    fireEvent.press(componentButton[0]);
 
+    const componentButtonCemetery = screen.getByTestId('button-cemetery');
+    fireEvent.press(componentButtonCemetery);
     await waitFor(
       async () => {
-        expect(mockDispatchUserData).toHaveBeenCalled();
+        expect(mockedNavigate).not.toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
+    mockedNavigate.mockClear();
+    const componentButtonFavorites = screen.getByTestId('button-favorites');
+    fireEvent.press(componentButtonFavorites);
+    await waitFor(
+      async () => {
+        expect(mockedNavigate).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
+  });
+
+  it('should goBack and close Drawer', async () => {
+    jest.useFakeTimers();
+
+    renderScreen({
+      stateStoreNewsData: {
+        ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+          deletedNewsList: [Fixtures.NewsList.data[0].storyId],
+        },
+      },
+    });
+
+    const componentButtonCemetery = screen.getByTestId('button-go-back');
+    fireEvent.press(componentButtonCemetery);
+    await waitFor(
+      async () => {
+        expect(mockedGoBack).toHaveBeenCalled();
       },
       {timeout: 1000},
     );

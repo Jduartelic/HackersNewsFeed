@@ -27,7 +27,6 @@ import {
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {NewsContext, NewsKind} from '../../../stores/entities';
-import RenderHtml from 'react-native-render-html';
 import {differenceInCalendarYears} from 'date-fns/fp';
 
 const SIZE = 120;
