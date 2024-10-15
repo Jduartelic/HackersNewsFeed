@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import {View, FlatList, RefreshControl} from 'react-native';
 import {NewsCard} from '../../molecules';
 import styles from './NewsFeed.styles';
@@ -7,6 +7,7 @@ import {News, NewsData} from '../../../../domain';
 import uuid from 'react-native-uuid';
 
 const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
+  const flatListRef = useRef<FlatList>(null);
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {state, loading} = stateNewsData;
 
@@ -33,6 +34,7 @@ const NewsFeed = ({newsDataList}: {newsDataList: News}) => {
   return (
     <View style={styles.container}>
       <FlatList
+        ref={flatListRef}
         testID="container-news-feed"
         data={newsDataList.data}
         style={styles.containerFlatlist}

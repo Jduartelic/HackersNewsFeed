@@ -4,9 +4,11 @@ import FavoritesScreen from './FavoritesScreen/FavoritesScreen';
 import CemeteryNewsScreen from './CemeteryNewsScreen/CemeteryNewsScreen';
 import OnboardingScreen from './OnboardingScreen/OnboardingScreen';
 import DrawerCustomScreen from './DrawerCustomScreen/DrawerCustomScreen';
+import ErrorboundaryScreen from './ErrorboundaryScreen/ErrorboundaryScreen';
 
 export {
   DrawerCustomScreen,
+  ErrorboundaryScreen,
   HomeScreen,
   WebViewScreen,
   FavoritesScreen,

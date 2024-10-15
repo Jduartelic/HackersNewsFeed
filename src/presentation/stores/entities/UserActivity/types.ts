@@ -6,6 +6,7 @@ export enum UserActivityKind {
   INITIAL_STATE = 'INITIAL_STATE',
   DEFAULT = 'DEFAULT',
   PUSH_NOTIFICATION_PROCESS = 'PUSH_NOTIFICATION_PROCESS',
+  SAVE_INPUT = 'SAVE_INPUT',
 }
 
 export type UserActivityEntity = {

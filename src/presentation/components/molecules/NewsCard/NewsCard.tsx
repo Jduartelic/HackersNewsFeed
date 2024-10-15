@@ -28,6 +28,7 @@ import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {NewsContext, NewsKind} from '../../../stores/entities';
 import {differenceInCalendarYears} from 'date-fns/fp';
+import uuid from 'react-native-uuid';
 
 const SIZE = 120;
 const BOUNDARY_OFFSET = 50;
@@ -58,7 +59,6 @@ export const NewsCard = (newsData: NewsData) => {
     Number(result.replace('h', '')) > 24
       ? `${differenceInDays(currentDate, date)}d`
       : resultInHour;
-  // `${differenceInCalendarYears(date, currentDate)}y`;
 
   const offset = useSharedValue<number>(0);
   const width = useSharedValue<number>(0);
@@ -108,7 +108,9 @@ export const NewsCard = (newsData: NewsData) => {
     return false;
   }, [state.favoritesNewsList, newsData.storyId]);
   return (
-    <GestureHandlerRootView style={styles.cardContainer}>
+    <GestureHandlerRootView
+      key={uuid.v4().toString()}
+      style={styles.cardContainer}>
       <>
         <Animated.View
           testID="main-container"
@@ -139,36 +141,38 @@ export const NewsCard = (newsData: NewsData) => {
       </>
       <View testID="layout-provider" onLayout={onLayout}>
         <GestureDetector gesture={pan}>
-          <Animated.View
-            style={[
-              styles.tapContainer,
-              animatedStyles,
-              animatedWidthTapStyles,
-            ]}>
-            {!isCemeteryScreen && (
-              <View style={styles.containerFavoritesbutton}>
-                <Icon
-                  testID="heart-button"
-                  name="heart"
-                  size={30}
-                  color={isSelected ? '#df1b1b' : '#000'}
-                  solid={isSelected ? true : false}
-                  onPress={() => {
-                    offset.value = withTiming(0);
-                    dispatchNewsData({
-                      type: NewsKind.ADD_FAVORITES,
-                      payload: {
-                        newsList: state.newsList,
-                        deletedNewsList: state.deletedNewsList,
-                        favoritesNewsList: state.favoritesNewsList,
-                        favoritesNewsId: newsData.storyId,
-                      },
-                    });
-                  }}
-                />
-              </View>
-            )}
-          </Animated.View>
+          <>
+            <Animated.View
+              style={[
+                styles.tapContainer,
+                animatedStyles,
+                animatedWidthTapStyles,
+              ]}>
+              {!isCemeteryScreen && (
+                <View style={styles.containerFavoritesbutton}>
+                  <Icon
+                    testID="heart-button"
+                    name="heart"
+                    size={30}
+                    color={isSelected ? '#df1b1b' : '#000'}
+                    solid={isSelected ? true : false}
+                    onPress={() => {
+                      offset.value = withTiming(0);
+                      dispatchNewsData({
+                        type: NewsKind.ADD_FAVORITES,
+                        payload: {
+                          newsList: state.newsList,
+                          deletedNewsList: state.deletedNewsList,
+                          favoritesNewsList: state.favoritesNewsList,
+                          favoritesNewsId: newsData.storyId,
+                        },
+                      });
+                    }}
+                  />
+                </View>
+              )}
+            </Animated.View>
+          </>
         </GestureDetector>
         <Animated.View style={[styles.innerCardContainer, animatedStyles]}>
           <View style={styles.cardHeaderContainer}>

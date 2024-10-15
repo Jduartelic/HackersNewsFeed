@@ -1,4 +1,15 @@
 export default {
+  ERROR: {
+    ERR_NETWORK: {
+      TITLE: 'No Internet Connection',
+      DESCRIPTION:
+        "It looks like you're offline. Please check your connection and try again.",
+    },
+    GENERIC_ERROR: {
+      TITLE: 'Something Went Wrong',
+      DESCRIPTION: 'An unexpected error occurred. Please try again later.',
+    },
+  },
   MAIN_COLOR: '#f5f5f5',
   ONBOARDING: {
     WELCOME_TITLE: 'WELCOME',

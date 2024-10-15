@@ -7,6 +7,7 @@ import {
   CemeteryNewsScreen,
   OnboardingScreen,
   DrawerCustomScreen,
+  ErrorboundaryScreen,
 } from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -19,7 +20,7 @@ import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {FontAwesome5IconProps} from 'react-native-vector-icons/FontAwesome5';
-import {ImageSourcePropType} from 'react-native';
+import {ImageSourcePropType, View} from 'react-native';
 
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
 const Drawer = createDrawerNavigator<HackerNewsFeedDrawer>();
@@ -103,6 +104,8 @@ const HackerNewsFeedScreens = () => {
     <Stack.Navigator
       screenOptions={{
         gestureEnabled: false,
+        fullScreenGestureEnabled: false,
+        fullScreenGestureShadowEnabled: false,
       }}>
       <Stack.Screen
         name="HomeScreen"
@@ -113,7 +116,7 @@ const HackerNewsFeedScreens = () => {
           header: () =>
             HeaderHackerNewsFeedScreens({
               iconLeft: {name: 'bars'},
-              iconRight: {name: 'star'},
+              iconRight: {name: 'search'},
               imageSource: images.logoInitials,
             }),
           headerShown: true,
@@ -177,6 +180,18 @@ const HackerNewsFeedScreens = () => {
           gestureEnabled: false,
           animation: 'slide_from_right',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="ErrorboundaryScreen"
+        component={ErrorboundaryScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_bottom',
+          headerShown: false,
+          autoHideHomeIndicator: true,
+          presentation: 'transparentModal',
         }}
       />
     </Stack.Navigator>

@@ -17,6 +17,11 @@ const DrawerCustomScreen = (): React.JSX.Element => {
   const {stateNewsData} = useContext(NewsContext);
   const anyRemoveNews = stateNewsData.state.deletedNewsList.length > 0;
   const anyFavoritesNews = stateNewsData.state.favoritesNewsList.length > 0;
+  console.log(
+    'hablame',
+    stateNewsData.state.deletedNewsList.length,
+    stateNewsData.state.favoritesNewsList.length,
+  );
   return (
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />

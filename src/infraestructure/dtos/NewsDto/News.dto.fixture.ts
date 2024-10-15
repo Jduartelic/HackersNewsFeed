@@ -1,3 +1,6 @@
+const mockHttp = 'mock-http';
+const mockString = 'mock-string';
+
 const NewsDataSuccess = {
   hits: [
     {
@@ -5,42 +8,110 @@ const NewsDataSuccess = {
         author: {
           matchLevel: 'none',
           matchedWords: [],
-          value: 'acdha',
+          value: mockString,
         },
         comment_text: {
           fullyHighlighted: false,
           matchLevel: 'full',
           matchedWords: ['mobile'],
-          value:
-            'Also note the part after \u201cand\u201d - I wrote that as a compound sentence because I saw more people than I expected go from both earlier smartphones or PDAs because the iPhone gave them the web in a way that earlier devices just didn\u2019t. None of my clients had seen much in the way of public <em>mobile</em> web (or WAP) adoption prior to that, but that changed surprisingly quickly when the iPhone launched.',
+          value: mockString,
         },
         story_title: {
           matchLevel: 'none',
           matchedWords: [],
-          value:
-            'Google must open Android for third-party stores, rules Epic judge',
+          value: mockString,
         },
         story_url: {
           matchLevel: 'none',
           matchedWords: [],
-          value:
-            'https://www.theverge.com/policy/2024/10/7/24243316/epic-google-permanent-injunction-ruling-third-party-stores',
+          value: mockHttp,
         },
       },
-      _tags: ['comment', 'author_acdha', 'story_41769657'],
-      author: 'acdha',
+      _tags: [mockString, mockString, mockString],
+      author: mockString,
       children: [41786847],
-      comment_text:
-        'Also note the part after \u201cand\u201d - I wrote that as a compound sentence because I saw more people than I expected go from both earlier smartphones or PDAs because the iPhone gave them the web in a way that earlier devices just didn\u2019t. None of my clients had seen much in the way of public mobile web (or WAP) adoption prior to that, but that changed surprisingly quickly when the iPhone launched.',
+      comment_text: mockString,
       created_at: '2024-10-09T10:35:42Z',
       created_at_i: 1728470142,
       objectID: '41786319',
       parent_id: 41784573,
       story_id: 41769657,
-      story_title:
-        'Google must open Android for third-party stores, rules Epic judge',
-      story_url:
-        'https://www.theverge.com/policy/2024/10/7/24243316/epic-google-permanent-injunction-ruling-third-party-stores',
+      story_title: mockString,
+      story_url: mockHttp,
+      updated_at: '2024-10-09T11:51:27Z',
+    },
+    {
+      _highlightResult: {
+        author: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+        comment_text: {
+          fullyHighlighted: false,
+          matchLevel: 'full',
+          matchedWords: ['mobile'],
+          value: mockString,
+        },
+        story_title: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+        story_url: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+      },
+      _tags: [mockString, mockString, mockString],
+      author: mockString,
+      children: [41786847],
+      comment_text: mockString,
+      created_at: '2024-10-09T10:35:42Z',
+      created_at_i: 1728470142,
+      objectID: '41786319',
+      parent_id: 41784573,
+      story_id: 41769657,
+      story_title: mockString,
+      story_url: mockHttp,
+      updated_at: '2024-10-09T11:51:27Z',
+    },
+    {
+      _highlightResult: {
+        author: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+        comment_text: {
+          fullyHighlighted: false,
+          matchLevel: 'full',
+          matchedWords: ['mobile'],
+          value: mockString,
+        },
+        story_title: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+        story_url: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: mockString,
+        },
+      },
+      _tags: [mockString, mockString, mockString],
+      author: mockString,
+      children: [41786847],
+      comment_text: mockString,
+      created_at: '2024-10-09T10:35:43Z',
+      created_at_i: 1728470143,
+      objectID: '41786319',
+      parent_id: 41784573,
+      story_id: 41769656,
+      title: mockString,
+      story_url: mockHttp,
       updated_at: '2024-10-09T11:51:27Z',
     },
   ],

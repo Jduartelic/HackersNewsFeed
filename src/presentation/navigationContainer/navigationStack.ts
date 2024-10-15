@@ -6,6 +6,7 @@ type HackerNewsFeedStack = {
   FavoritesScreen: undefined;
   CemeteryNewsScreen: undefined;
   OnboardingScreen: undefined;
+  ErrorboundaryScreen: undefined;
 };
 
 type HackerNewsFeedDrawer = {

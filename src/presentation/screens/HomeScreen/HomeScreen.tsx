@@ -26,6 +26,7 @@ import {useNavigation} from '@react-navigation/native';
 import {HackerNewsFeedStack} from '../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PushNotificationsHandler} from '../../components/HOC/';
+
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
@@ -42,7 +43,6 @@ const HomeScreen = (): React.JSX.Element => {
     fetched: fetchedUserActivity,
     state: stateUserActivity,
   } = stateUserActivityData;
-  if (error) console.log('error', error);
 
   const filteredListNews = useMemo(() => {
     const {deletedNewsList, newsList} = state;
@@ -132,13 +132,17 @@ const HomeScreen = (): React.JSX.Element => {
     }
   }, [loadingUserActivity, fetchedUserActivity, onFetchingUserActivity]);
 
+  const getQueryParam = () => {
+    const idKeyword = getRandomId(0, 5);
+    const facetKeyword = Object.values(USER_ACTIVITY.FACETS.keywords).find(
+      (_, index) => index === idKeyword,
+    ) ?? ['Android'];
+    return facetKeyword[getRandomId(0, facetKeyword.length - 1)];
+  };
+
   useEffect(() => {
     if (loading && !fetched) {
-      const idKeyword = getRandomId(0, 5);
-      const facetKeyword = Object.values(USER_ACTIVITY.FACETS.keywords).find(
-        (_, index) => index === idKeyword,
-      ) ?? ['Android'];
-      const queryParam = facetKeyword[getRandomId(0, facetKeyword.length - 1)];
+      const queryParam = stateUserActivity.querySearch ?? getQueryParam();
       getNewsList(queryParam);
     }
   }, [
