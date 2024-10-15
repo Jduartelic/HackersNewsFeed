@@ -6,6 +6,7 @@ import {
   FavoritesScreen,
   CemeteryNewsScreen,
   OnboardingScreen,
+  DrawerCustomScreen,
 } from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -44,7 +45,8 @@ function HackerNewsFeedNavigator() {
             screenOptions={{
               headerShown: false,
               swipeEnabled: false,
-            }}>
+            }}
+            drawerContent={() => <DrawerCustomScreen />}>
             <Drawer.Screen
               name="MainScreen"
               component={HackerNewsFeedScreens}
@@ -52,6 +54,17 @@ function HackerNewsFeedNavigator() {
             <Drawer.Screen
               name="CemeteryNewsScreen"
               component={CemeteryNewsScreen}
+              options={{
+                header: () => MainHeaderComponent(),
+                headerShown: true,
+                headerStyle: {backgroundColor: '#f5f5f5'},
+                headerShadowVisible: true,
+              }}
+            />
+
+            <Drawer.Screen
+              name="FavoritesScreen"
+              component={FavoritesScreen}
               options={{
                 header: () => MainHeaderComponent(),
                 headerShown: true,

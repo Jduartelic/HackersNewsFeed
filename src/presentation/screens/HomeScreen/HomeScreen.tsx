@@ -1,5 +1,11 @@
 import React, {useEffect, useContext, useCallback, useMemo} from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+  BackHandler,
+} from 'react-native';
 import {useNews} from '../../hooks';
 import {
   NewsContext,
@@ -27,7 +33,8 @@ type HackerNewsFeedNavigationProp =
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
   const {HOME} = constants;
-  const {navigate, replace} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {navigate, replace, getState} =
+    useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
@@ -153,6 +160,10 @@ const HomeScreen = (): React.JSX.Element => {
     fetchedUserActivity,
     replace,
   ]);
+
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    return false;
+  });
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(

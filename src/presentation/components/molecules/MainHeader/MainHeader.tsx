@@ -27,10 +27,10 @@ export const MainHeader = ({
   imageSource?: ImageSourcePropType;
   iconRight?: FontAwesome5IconProps;
 }) => {
-  const {navigate, getState, goBack} =
+  const {navigate, getState, goBack, isFocused} =
     useNavigation<HackerNewsFeedNavigationProp>();
   const {toggleDrawer} = useNavigation<HackerNewsFeedDrawerNavigationProp>();
-
+  const isScreenFocused = isFocused();
   const routeStateScreen = useMemo(() => {
     const state = getState();
     return state.routes[state.index].name;
@@ -40,23 +40,25 @@ export const MainHeader = ({
     <SafeAreaView style={styles.mainContainer}>
       <View testID="main-header" style={styles.innerContainer}>
         <View>
-          <Icon
-            testID="button-left-header"
-            name={iconLeft.name}
-            size={30}
-            color="#000"
-            solid={false}
-            onPress={() => {
-              if (routeStateScreen === 'HomeScreen') {
-                toggleDrawer();
-              } else {
-                goBack();
-              }
-            }}
-          />
+          {isScreenFocused && (
+            <Icon
+              testID="button-left-header"
+              name={iconLeft.name}
+              size={30}
+              color="#000"
+              solid={false}
+              onPress={() => {
+                if (routeStateScreen === 'HomeScreen') {
+                  toggleDrawer();
+                } else {
+                  goBack();
+                }
+              }}
+            />
+          )}
         </View>
         <View>
-          {imageSource && (
+          {isScreenFocused && imageSource && (
             <Image
               source={imageSource}
               style={styles.imageContainer}
@@ -65,7 +67,7 @@ export const MainHeader = ({
           )}
         </View>
         <View>
-          {iconRight && (
+          {isScreenFocused && iconRight && (
             <Icon
               testID="button-right-header"
               name={iconRight.name}

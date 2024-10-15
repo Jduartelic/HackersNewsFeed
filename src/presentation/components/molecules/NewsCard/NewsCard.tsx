@@ -77,7 +77,7 @@ export const NewsCard = (newsData: NewsData) => {
   }));
 
   const animatedWidthTapStyles = useAnimatedStyle(() => ({
-    width: -70 > offset.value ? '100%' : '7%',
+    width: -70 > offset.value ? '100%' : '30%',
   }));
 
   const animatedStylesZindexRight = useAnimatedStyle(() => ({
@@ -142,30 +142,17 @@ export const NewsCard = (newsData: NewsData) => {
 
             <View style={styles.container}>
               <Pressable testID="body-card" onPress={navigateWebView}>
-                <Text>{newsData.storyTitle}</Text>
+                <Text style={styles.textStoryTitle}>{newsData.storyTitle}</Text>
               </Pressable>
-              {/*   <Pressable onPress={navigateWebView}>
-                <Text>{'See full commentary'}</Text>
-              </Pressable>
-         <Animated.View
-                style={{
-                  flex: 1,
-                  // flexGrow: 0,
-                  // height: '0%',
-                  width: '100%',
-                  backgroundColor: 'blue',
-                }}>
-                <RenderHtml
-                  contentWidth={width.value}
-                  source={{html: newsData.commentText!!}}
-                />
-              </Animated.View>     */}
             </View>
 
             <View style={styles.containerFavoritesbutton}>
-              <Pressable
+              <Icon
                 testID="heart-button"
-                hitSlop={30}
+                name="heart"
+                size={30}
+                color={isSelected ? '#df1b1b' : '#000'}
+                solid={isSelected ? true : false}
                 onPress={() => {
                   offset.value = withTiming(0);
                   dispatchNewsData({
@@ -177,14 +164,8 @@ export const NewsCard = (newsData: NewsData) => {
                       favoritesNewsId: newsData.storyId,
                     },
                   });
-                }}>
-                <Icon
-                  name="heart"
-                  size={30}
-                  color={isSelected ? '#df1b1b' : '#000'}
-                  solid={isSelected ? true : false}
-                />
-              </Pressable>
+                }}
+              />
             </View>
           </View>
           <View style={styles.cardFooterContainer}>

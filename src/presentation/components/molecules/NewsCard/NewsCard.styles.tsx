@@ -74,14 +74,20 @@ const styles = StyleSheet.create({
   },
   tapContainer: {
     flex: 1,
-    height: '88%',
+    height: '45%',
     zIndex: 100,
     position: 'absolute',
-    top: 16,
     bottom: 0,
     right: 0,
   },
   imageContainer: {height: 50, width: 50, borderRadius: 100},
+  textStoryTitle: {
+    marginBottom: 15,
+    textAlign: 'left',
+    fontWeight: '400',
+    fontSize: 18,
+    color: '#000',
+  },
 });
 
 export default styles;

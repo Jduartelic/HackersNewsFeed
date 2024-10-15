@@ -40,6 +40,7 @@ export function UserActivityDataReducer(
     case UserActivityKind.FETCHED:
       dataPayload = JSON.stringify({
         ...action.payload,
+        hasSeenOnboarding: true,
         appStateActivity: 'active',
       });
 

@@ -15,7 +15,7 @@ const useNews = () => {
         dispatchNewsData({
           type: NewsKind.FETCHED,
           payload: {
-            newsList: response,
+            newsList: response.data.length ? response : state.newsList,
             deletedNewsList: state.deletedNewsList,
             favoritesNewsList: state.favoritesNewsList,
             favoritesNewsId: undefined,
@@ -26,7 +26,7 @@ const useNews = () => {
         return dispatchNewsData({
           type: NewsKind.FETCHED,
           payload: {
-            newsList: {data: []},
+            newsList: state.newsList,
             deletedNewsList: state.deletedNewsList,
             favoritesNewsList: state.favoritesNewsList,
             favoritesNewsId: undefined,

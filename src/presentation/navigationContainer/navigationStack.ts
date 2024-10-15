@@ -9,6 +9,7 @@ type HackerNewsFeedStack = {
 
 type HackerNewsFeedDrawer = {
   MainScreen: HackerNewsFeedStack;
+  FavoritesScreen: undefined;
   CemeteryNewsScreen: undefined;
 };
 
