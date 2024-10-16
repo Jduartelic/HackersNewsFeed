@@ -60,32 +60,35 @@ After you have fulfilled all the installation **prerequisites** you need, you mu
 
 # Features
 
-## Ask Permissions for push notifications 
-<img width="396" alt="Onboarding screen - permission" src="https://github.com/user-attachments/assets/aac56c63-521d-4ef2-ad6d-77babd48c7cb">
+## Ask Permissions for push notifications <br>
+
+<img width="396" alt="Onboarding screen - permission" src="https://github.com/user-attachments/assets/aac56c63-521d-4ef2-ad6d-77babd48c7cb"> <br>
 <img width="388" alt="Captura de pantalla 2024-10-16 a la(s) 9 22 26 a  m" src="https://github.com/user-attachments/assets/399adbfa-4e7d-4294-b8b2-b4fc287b4e18">
 
-## Feeds News
-<img width="387" alt="home screen android" src="https://github.com/user-attachments/assets/892b704a-4cd2-49f0-9fe4-64164b93504f">
+## Feeds News <br>
+
+<img width="387" alt="home screen android" src="https://github.com/user-attachments/assets/892b704a-4cd2-49f0-9fe4-64164b93504f"> <br>
 <img width="392" alt="home screen" src="https://github.com/user-attachments/assets/9261499b-c4a2-444f-a7b6-0871a58bc2b5">
 
-## Search for specific topics
-<img width="389" alt="search bar android" src="https://github.com/user-attachments/assets/313029e3-5b7d-41a5-b555-71d777af5945">
+## Search for specific topics <br>
+<img width="389" alt="search bar android" src="https://github.com/user-attachments/assets/313029e3-5b7d-41a5-b555-71d777af5945"> <br>
 <img width="395" alt="search bar" src="https://github.com/user-attachments/assets/e0bd7f0e-f179-4b3c-978d-623675cd4525">
 
-## Read News by tapping the news card
-<img width="394" alt="Captura de pantalla 2024-10-16 a la(s) 9 29 44 a  m" src="https://github.com/user-attachments/assets/fbe165cb-b7b5-4572-b3bf-cf8f650bc90b">
+## Read News by tapping the news card <br>
+<img width="394" alt="Captura de pantalla 2024-10-16 a la(s) 9 29 44 a  m" src="https://github.com/user-attachments/assets/fbe165cb-b7b5-4572-b3bf-cf8f650bc90b"> <br>
 <img width="389" alt="Captura de pantalla 2024-10-16 a la(s) 9 29 34 a  m" src="https://github.com/user-attachments/assets/d1bb424f-17be-4b17-aad8-79c3d53c3bfa">
 
-## Add or remove news from feed
-<img width="392" alt="add or dismiss news" src="https://github.com/user-attachments/assets/745441dd-24a2-4903-91b6-03cebb234e6c">
+## Add or remove news from feed <br>
+
+<img width="392" alt="add or dismiss news" src="https://github.com/user-attachments/assets/745441dd-24a2-4903-91b6-03cebb234e6c"> <br>
 <img width="391" alt="add or dimiss news" src="https://github.com/user-attachments/assets/4b7c6fb0-9f1f-453c-9b47-346e9e546fc4">
 
-## Places where you can look what you like or dismiss
-<img width="392" alt="find what you have saved or delete" src="https://github.com/user-attachments/assets/81eca69f-a1a1-4c66-b47a-0b1e71a07f94">
+## Places where you can look what you like or dismiss <br>
+
+<img width="392" alt="find what you have saved or delete" src="https://github.com/user-attachments/assets/81eca69f-a1a1-4c66-b47a-0b1e71a07f94"> <br>
 <img width="387" alt="find add or dismiss news" src="https://github.com/user-attachments/assets/80ea99ca-5d02-42e4-b3bf-7265aea7d40b">
 
-## Receive push notifications
-<img width="392" alt="receive push notification android" src="https://github.com/user-attachments/assets/58c770a6-1a41-4617-ac32-ec1a150525e5">
+## Receive push notifications <br>
+
+<img width="392" alt="receive push notification android" src="https://github.com/user-attachments/assets/58c770a6-1a41-4617-ac32-ec1a150525e5"> <br>
 <img width="395" alt="receive push notification" src="https://github.com/user-attachments/assets/0896bd7d-9d0d-4863-a69d-0d777ba074c8">
-
-
