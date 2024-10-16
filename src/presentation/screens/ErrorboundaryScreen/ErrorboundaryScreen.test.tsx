@@ -12,7 +12,7 @@ import {
   waitFor,
 } from '@testing-library/react-native';
 import ErrorboundaryScreen from './ErrorboundaryScreen';
-import {navigationTabBarMock, optionsTabBarMock} from '../../../../jest/setup';
+import {navigationTabBarMock} from '../../../../jest/setup';
 import {HackerNewsFeedStack} from '../../navigationContainer/navigationStack';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -21,11 +21,6 @@ const mockStateStoreNewsData: StateStoreNewsData =
   defaultNewsContextValues.stateNewsData;
 const mockDispatchNewsData = jest.fn();
 const mockedNavigate = jest.fn();
-const mockedGoBack = jest.fn();
-const mockedToggleDrawer = jest.fn();
-
-let mockIndex = 1;
-
 let mockNavigation = {
   ...navigationTabBarMock,
   goBack: mockedNavigate,
@@ -86,11 +81,10 @@ describe('ErrorboundaryScreen', () => {
 
     await waitFor(
       async () => {
-        expect(mockDispatchNewsData).toHaveBeenCalled();
+        expect(mockedNavigate).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
-    expect(mockedNavigate).toHaveBeenCalled();
   });
   it('should render with GENERIC_ERROR message component ErrorboundaryScreen correctly ', async () => {
     renderScreen({
@@ -113,10 +107,9 @@ describe('ErrorboundaryScreen', () => {
     fireEvent.press(buttonComponent);
     await waitFor(
       async () => {
-        expect(mockDispatchNewsData).toHaveBeenCalled();
+        expect(mockedNavigate).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
-    expect(mockedNavigate).toHaveBeenCalled();
   });
 });

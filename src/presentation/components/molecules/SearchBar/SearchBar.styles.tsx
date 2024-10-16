@@ -1,44 +1,25 @@
-import {StyleSheet, Dimensions} from 'react-native';
-
-const SHADOW_COLOR = '#000';
-const ANDROID_ELEVATION = 4;
-const SHADOW_OFFSET_PROPS = {width: 0, height: -4};
-const SHADOW_OPACITY = 0.1;
-const SHADOW_RADIUS = 16;
-const {width} = Dimensions.get('screen');
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  skeletonContainer: {
-    minHeight: 100,
-    width: width - 32,
-    backgroundColor: 'white',
-    borderRadius: 16,
-    marginTop: 16,
-    elevation: ANDROID_ELEVATION,
-    shadowOffset: SHADOW_OFFSET_PROPS,
-    shadowOpacity: SHADOW_OPACITY,
-    shadowRadius: SHADOW_RADIUS,
-    shadowColor: SHADOW_COLOR,
-  },
-  skeletonHeaderContainer: {
-    flex: 0.25,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  skeletonBodyContainer: {
-    flex: 0.55,
-    flexDirection: 'row',
-  },
-  skeletonFooterContainer: {
-    flex: 0.2,
-    flexDirection: 'row',
-  },
-  skeletonAvatar: {flex: 0.2, paddingVertical: 16, paddingLeft: 16},
-  skeletonTitle: {flex: 0.8, paddingRight: 16},
-  skeletonDescription: {
+  container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  input: {
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    color: '#333',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 });
 

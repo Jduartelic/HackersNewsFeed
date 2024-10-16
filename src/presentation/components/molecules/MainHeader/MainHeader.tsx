@@ -1,5 +1,5 @@
-import React, {useMemo, useContext, useEffect, useRef} from 'react';
-import {View, ImageSourcePropType, Image, Keyboard} from 'react-native';
+import React, {useMemo, useContext, useEffect} from 'react';
+import {View, ImageSourcePropType, Image} from 'react-native';
 import styles from './MainHeader.styles';
 import Icon, {
   FontAwesome5IconProps,
@@ -22,12 +22,10 @@ import {
   Gesture,
   GestureDetector,
   GestureHandlerRootView,
-  Pressable,
 } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withDecay,
   withTiming,
   Easing,
   ReduceMotion,
@@ -49,7 +47,7 @@ export const MainHeader = ({
   iconRight?: FontAwesome5IconProps;
 }) => {
   const {stateNewsData, dispatchNewsData} = useContext(NewsContext);
-  const {error, state, loading} = stateNewsData;
+  const {error, state} = stateNewsData;
   const {stateUserActivityData, dispatchUserActivityData} =
     useContext(UserActivityContext);
   const {state: stateUserActivity} = stateUserActivityData;
@@ -57,9 +55,10 @@ export const MainHeader = ({
     useNavigation<HackerNewsFeedNavigationProp>();
   const {toggleDrawer} = useNavigation<HackerNewsFeedDrawerNavigationProp>();
   const isScreenFocused = isFocused();
+
   const routeStateScreen = useMemo(() => {
-    const state = getState();
-    return state.routes[state.index].name;
+    const stateRoute = getState();
+    return stateRoute.routes[stateRoute.index].name;
   }, [getState]);
 
   useEffect(() => {
@@ -73,7 +72,7 @@ export const MainHeader = ({
       });
       navigate('ErrorboundaryScreen');
     }
-  }, [error, isScreenFocused, navigate]);
+  }, [error, isScreenFocused, navigate, dispatchNewsData, state]);
 
   const onPressSearchBar = () => {
     if (!pressed.value) {

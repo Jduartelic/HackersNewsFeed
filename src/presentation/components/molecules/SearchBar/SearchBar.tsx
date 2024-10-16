@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {View, TextInput} from 'react-native';
 import {UserActivityContext, UserActivityKind} from '../../../stores/entities';
+import styles from './SearchBar.styles';
 
 const SearchBar = () => {
   const {stateUserActivityData, dispatchUserActivityData} =
@@ -21,6 +22,7 @@ const SearchBar = () => {
   return (
     <View style={styles.container}>
       <TextInput
+        testID="search-bar-input"
         style={styles.input}
         placeholder="Search something cute..."
         value={querySearch}
@@ -30,28 +32,5 @@ const SearchBar = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  input: {
-    height: 40,
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    color: '#333',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-});
 
 export default SearchBar;

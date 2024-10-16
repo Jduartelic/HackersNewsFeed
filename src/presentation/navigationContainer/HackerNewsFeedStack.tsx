@@ -20,7 +20,7 @@ import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {FontAwesome5IconProps} from 'react-native-vector-icons/FontAwesome5';
-import {ImageSourcePropType, View} from 'react-native';
+import {ImageSourcePropType} from 'react-native';
 
 const Stack = createNativeStackNavigator<HackerNewsFeedStack>();
 const Drawer = createDrawerNavigator<HackerNewsFeedDrawer>();

@@ -15,8 +15,10 @@ const DrawerCustomScreen = (): React.JSX.Element => {
   const {MAIN_COLOR} = constants;
   const {navigate, goBack} = useNavigation<HackerNewsFeedNavigationProp>();
   const {stateNewsData} = useContext(NewsContext);
-  const anyRemoveNews = stateNewsData.state.deletedNewsList.data;
-  const anyFavoritesNews = stateNewsData.state.favoritesNewsList.data;
+  const deletedNewList = stateNewsData.state.deletedNewsList.data;
+  const favoritesNewsList = stateNewsData.state.favoritesNewsList.data;
+  const anyRemoveNews = deletedNewList && deletedNewList.length;
+  const anyFavoritesNews = favoritesNewsList && favoritesNewsList.length;
 
   return (
     <SafeAreaView style={styles.mainContainer}>

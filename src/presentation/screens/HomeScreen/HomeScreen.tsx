@@ -43,11 +43,6 @@ const HomeScreen = (): React.JSX.Element => {
     fetched: fetchedUserActivity,
     state: stateUserActivity,
   } = stateUserActivityData;
-  console.log(
-    'stateUserActivityData stateUserActivityData',
-    stateUserActivityData,
-  );
-  console.log('stateNewsData stateNewsData', stateNewsData);
 
   const filteredListNews = useMemo(() => {
     const {deletedNewsList, newsList} = state;
@@ -78,12 +73,9 @@ const HomeScreen = (): React.JSX.Element => {
     };
 
     const dataFromStorage = await getSavedData(constants.HOME.STORAGE_KEY);
-    console.log('dataFromStorage data', dataFromStorage);
 
     if (dataFromStorage) {
       const data = JSON.parse(dataFromStorage);
-
-      console.log('dataFromStorage data', data);
 
       dataPayload.newsList = data.newsList;
       dataPayload.deletedNewsList = data.deletedNewsList ?? {data: []};
@@ -104,11 +96,6 @@ const HomeScreen = (): React.JSX.Element => {
 
   const onFetchingUserActivity = useCallback(async () => {
     getSavedData(constants.USER_ACTIVITY.STORAGE_KEY).then(savedData => {
-      console.log(
-        ' getSavedData(constants.USER_ACTIVITY.STORAGE_KEY)',
-        savedData,
-      );
-
       const parseLocalFacets: UserActivityEntity = savedData
         ? JSON.parse(savedData)
         : {
@@ -153,18 +140,20 @@ const HomeScreen = (): React.JSX.Element => {
     }
   }, [loadingUserActivity, fetchedUserActivity, onFetchingUserActivity]);
 
-  const getQueryParam = () => {
+  const getQueryParam = useCallback(() => {
     const idKeyword = getRandomId(0, 5);
     const facetKeyword = Object.values(USER_ACTIVITY.FACETS.keywords).find(
       (_, index) => index === idKeyword,
     ) ?? ['Android'];
     return facetKeyword[getRandomId(0, facetKeyword.length - 1)];
-  };
+  }, [USER_ACTIVITY.FACETS.keywords, getRandomId]);
 
   useEffect(() => {
     if (loading && !fetched) {
-      const queryParam = stateUserActivity.querySearch ?? getQueryParam();
-      getNewsList(queryParam);
+      const queryParam = stateUserActivity.querySearch
+        ? stateUserActivity.querySearch
+        : getQueryParam();
+      getNewsList(queryParam ?? '');
     }
   }, [
     loading,

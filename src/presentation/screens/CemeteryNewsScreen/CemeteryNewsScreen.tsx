@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import {NewsContext} from '../../stores/entities';
 import {NewsFeed} from '../../components/organisms';
@@ -9,21 +9,8 @@ import uuid from 'react-native-uuid';
 
 const CemeteryNewsScreen = (): React.JSX.Element => {
   const {MAIN_COLOR, HOME} = constants;
-
   const {stateNewsData} = useContext(NewsContext);
-
   const {loading, state} = stateNewsData;
-
-  // const deletedNews = useMemo(() => {
-  //   return state.deletedNewsList;
-  //   // const {deletedNewsList, newsList} = state;
-
-  //   // return {
-  //   //   data: newsList.data.filter(item =>
-  //   //     deletedNewsList.data.includes(item.storyId),
-  //   //   ),
-  //   // };
-  // }, [state]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(

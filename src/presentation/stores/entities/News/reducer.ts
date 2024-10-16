@@ -3,21 +3,6 @@ import {setSavedData} from '../../../functions';
 import {constants} from '../../../constants';
 import {News, NewsData} from '../../../../domain';
 
-const getDataMerge = (
-  sourceList: NewsData[],
-  dataList: NewsData[],
-  addStoryId: Number,
-) => {
-  const news = sourceList.find(item => item.storyId === addStoryId);
-
-  return {
-    data: {
-      ...dataList,
-      ...news,
-    },
-  };
-};
-
 export function NewsDataReducer(
   state: StateStoreNewsData,
   action: NewsActions,
@@ -92,7 +77,7 @@ export function NewsDataReducer(
         );
 
         if (exist) {
-          deletedList.data = state.state.favoritesNewsList.data.filter(
+          deletedList.data = state.state.deletedNewsList.data.filter(
             item => item.storyId !== action.payload.deletedNewsId,
           );
         } else {
@@ -115,11 +100,6 @@ export function NewsDataReducer(
       }
 
       dataPayload = JSON.stringify({
-        newsList: state.state.newsList,
-        deletedNewsList: deletedList,
-        favoritesNewsList: state.state.favoritesNewsList,
-      });
-      console.log('dataPayload antes de guardar favoritos', {
         newsList: state.state.newsList,
         deletedNewsList: deletedList,
         favoritesNewsList: state.state.favoritesNewsList,
@@ -157,18 +137,7 @@ export function NewsDataReducer(
 
           if (news) {
             favoritesList.data.push(news);
-          } // = {
-          //   data: {
-          //     ...favoritesList?.data,
-          //     ...news,
-          //   },
-          // };
-          // favoritesList = {
-          //   data: {
-          //     ...favoritesList?.data,
-          //     ...news,
-          //   },
-          // };
+          }
         }
       } else {
         const news = state.state.newsList?.data.find(
@@ -185,10 +154,6 @@ export function NewsDataReducer(
         favoritesNewsList: favoritesList,
       });
 
-      console.log('dataPayload antes de guardar favoritos', {
-        ...state.state,
-        favoritesNewsList: favoritesList,
-      });
       setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
 
       return {

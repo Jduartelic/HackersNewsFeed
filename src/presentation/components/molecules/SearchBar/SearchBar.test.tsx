@@ -1,13 +1,38 @@
 import React from 'react';
-import {render, waitFor, screen} from '@testing-library/react-native';
-import SkeletonCardContainer from './SkeletonCardContainer';
-
+import {
+  render,
+  waitFor,
+  screen,
+  fireEvent,
+} from '@testing-library/react-native';
+import SearchBar from './SearchBar';
 import {NavigationContainer} from '@react-navigation/native';
+import {
+  StateStoreUserActivityData,
+  defaultUserActivityContextValues,
+  UserActivityContext,
+} from '../../../stores/entities';
 
-const renderScreen = ({loading}: {loading: boolean}) => {
+const mockStateStoreUserActivityData: StateStoreUserActivityData =
+  defaultUserActivityContextValues.stateUserActivityData;
+const mockDispatchUUserActivityData = jest.fn();
+
+const renderScreen = ({
+  stateStoreUserActivityData = mockStateStoreUserActivityData,
+}: {
+  stateStoreUserActivityData: StateStoreUserActivityData;
+}) => {
   return render(
     <NavigationContainer>
-      <SkeletonCardContainer isLoading={loading} />
+      <UserActivityContext.Provider
+        value={{
+          stateUserActivityData: {
+            ...stateStoreUserActivityData,
+          },
+          dispatchUserActivityData: mockDispatchUUserActivityData,
+        }}>
+        <SearchBar />
+      </UserActivityContext.Provider>
     </NavigationContainer>,
   );
 };
@@ -18,33 +43,37 @@ describe('SkeletonCardContainer', () => {
     jest.clearAllMocks();
     jest.useRealTimers();
   });
+
   it('renders SkeletonCardContainer ', async () => {
     jest.useFakeTimers();
 
     renderScreen({
-      loading: true,
-    });
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          pushNotifications: {
+            appStateActivity: 'background',
+            sentPushNotification: true,
+            timeForNextPush: 10,
+          },
+          querySearch: '',
+        },
 
-    await waitFor(
-      () => {
-        const mainComponent = screen.getByTestId('skeleton-container');
-        expect(mainComponent).toBeTruthy();
+        fetched: true,
+        loading: false,
+        error: undefined,
       },
-      {timeout: 10},
-    );
-  });
-
-  it('renders not SkeletonCardContainer', async () => {
-    jest.useFakeTimers();
-
-    renderScreen({
-      loading: false,
     });
+
+    const searchBarInput = screen.getByTestId('search-bar-input');
+
+    fireEvent(searchBarInput, 'focus');
+    fireEvent.changeText(searchBarInput, 'mock');
+    fireEvent(searchBarInput, 'blur');
 
     await waitFor(
       () => {
-        const mainComponent = screen.getByTestId('skeleton-container');
-        expect(mainComponent).toBeTruthy();
+        expect(mockDispatchUUserActivityData).toHaveBeenCalled();
       },
       {timeout: 10},
     );

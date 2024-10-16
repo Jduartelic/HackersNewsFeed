@@ -94,7 +94,8 @@ describe('DrawerCustomScreen', () => {
         ...mockStateStoreNewsData,
         state: {
           ...mockStateStoreNewsData.state,
-          deletedNewsList: [Fixtures.NewsList.data[0].storyId],
+          deletedNewsList: Fixtures.NewsList,
+          favoritesNewsList: {data: []},
         },
       },
     });
@@ -126,7 +127,8 @@ describe('DrawerCustomScreen', () => {
         ...mockStateStoreNewsData,
         state: {
           ...mockStateStoreNewsData.state,
-          favoritesNewsList: [Fixtures.NewsList.data[0].storyId],
+          deletedNewsList: {data: []},
+          favoritesNewsList: Fixtures.NewsList,
         },
       },
     });
@@ -158,7 +160,7 @@ describe('DrawerCustomScreen', () => {
         ...mockStateStoreNewsData,
         state: {
           ...mockStateStoreNewsData.state,
-          deletedNewsList: [Fixtures.NewsList.data[0].storyId],
+          deletedNewsList: Fixtures.NewsList,
         },
       },
     });

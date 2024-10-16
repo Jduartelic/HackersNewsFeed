@@ -33,7 +33,6 @@ import {
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {NewsContext, NewsKind} from '../../../stores/entities';
-import {differenceInCalendarYears} from 'date-fns/fp';
 import uuid from 'react-native-uuid';
 
 const SIZE = 120;
@@ -109,7 +108,6 @@ export const NewsCard = (newsData: NewsData) => {
 
   const isSelected = useMemo(() => {
     if (state.favoritesNewsList.data && state.favoritesNewsList.data.length) {
-      console.log('state.favoritesNewsList.data', state.favoritesNewsList.data);
       return state.favoritesNewsList.data.some(
         item => item.storyId === newsData.storyId,
       );
