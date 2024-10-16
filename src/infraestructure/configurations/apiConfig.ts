@@ -5,7 +5,5 @@ type ApiType = {
 };
 
 export const apiConfig: ApiType = {
-  apiUrl:
-    Config.API_URL ??
-    'https://hn.algolia.com/api/v1/search_by_date?query=mobile',
+  apiUrl: Config.API_URL ?? 'https://hn.algolia.com/api/v1/',
 };

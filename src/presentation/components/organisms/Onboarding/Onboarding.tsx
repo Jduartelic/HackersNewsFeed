@@ -5,11 +5,12 @@ import {constants} from '../../../constants';
 import {images} from '../../../../domain';
 
 const OnboardingScreen = (): React.JSX.Element => {
-  const {WELCOME_TITLE, THANKS_COMMENT} = constants.ONBOARDING;
+  const {MAIN_COLOR, ONBOARDING} = constants;
+  const {WELCOME_TITLE, THANKS_COMMENT} = ONBOARDING;
 
   return (
     <SafeAreaView testID="onboarding-container" style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
 
       <View style={styles.paddingContainer}>
         <Text style={styles.titleText}>{WELCOME_TITLE}</Text>

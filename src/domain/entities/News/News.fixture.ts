@@ -45,7 +45,6 @@ const NewsList: News = {
         'https://www.theverge.com/policy/2024/10/7/24243316/epic-google-permanent-injunction-ruling-third-party-stores',
       updatedAt: '2024-10-09T11:51:27Z',
     },
-
     {
       highlightResult: {
         author: {
@@ -79,6 +78,80 @@ const NewsList: News = {
       objectID: '41783996',
       parentId: 41781430,
       storyId: 41765580,
+      storyTitle: 'Fukushima Reactor: TEPCO robot aims to extract nuclear fuel',
+      storyUrl: 'https://spectrum.ieee.org/fukushima-reactor',
+      updatedAt: '2024-10-09T03:24:54Z',
+    },
+    {
+      highlightResult: {
+        author: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'natmaka',
+        },
+        commentText: {
+          fullyHighlighted: false,
+          matchLevel: 'full',
+          matchedWords: ['mobile'],
+          value: 'mocked text',
+        },
+        storyTitle: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'Fukushima Reactor: TEPCO robot aims to extract nuclear fuel',
+        },
+        storyUrl: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'https://spectrum.ieee.org/fukushima-reactor',
+        },
+      },
+      tags: ['comment', 'author_natmaka', 'story_41765580'],
+      author: 'natmaka',
+      children: [41784206],
+      commentText: 'mocked-text',
+      createdAt: '2024-10-09T02:46:45Z',
+      createdAtI: 1728442005,
+      objectID: '41783996',
+      parentId: 4112312381430,
+      storyId: 12312312,
+      storyTitle: 'Fukushima Reactor: TEPCO robot aims to extract nuclear fuel',
+      storyUrl: 'https://spectrum.ieee.org/fukushima-reactor',
+      updatedAt: '2024-10-09T03:24:54Z',
+    },
+    {
+      highlightResult: {
+        author: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'natmaka',
+        },
+        commentText: {
+          fullyHighlighted: false,
+          matchLevel: 'full',
+          matchedWords: ['mobile'],
+          value: 'mocked text',
+        },
+        storyTitle: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'Fukushima Reactor: TEPCO robot aims to extract nuclear fuel',
+        },
+        storyUrl: {
+          matchLevel: 'none',
+          matchedWords: [],
+          value: 'https://spectrum.ieee.org/fukushima-reactor',
+        },
+      },
+      tags: ['comment', 'author_natmaka', 'story_41765580'],
+      author: 'natmaka',
+      children: [41784206],
+      commentText: 'mocked-text',
+      createdAt: '2024-10-09T02:46:45Z',
+      createdAtI: 1728442005,
+      objectID: '41783996',
+      parentId: 41781430,
+      storyId: 56757575,
       storyTitle: 'Fukushima Reactor: TEPCO robot aims to extract nuclear fuel',
       storyUrl: 'https://spectrum.ieee.org/fukushima-reactor',
       updatedAt: '2024-10-09T03:24:54Z',

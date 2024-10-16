@@ -1,5 +1,11 @@
 import React, {useEffect, useContext, useCallback, useMemo} from 'react';
-import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+  BackHandler,
+} from 'react-native';
 import {useNews} from '../../hooks';
 import {
   NewsContext,
@@ -26,7 +32,7 @@ type HackerNewsFeedNavigationProp =
 
 const HomeScreen = (): React.JSX.Element => {
   const {getNewsList} = useNews();
-  const {HOME} = constants;
+  const {HOME, USER_ACTIVITY, MAIN_COLOR} = constants;
   const {navigate, replace} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
@@ -40,27 +46,40 @@ const HomeScreen = (): React.JSX.Element => {
 
   const filteredListNews = useMemo(() => {
     const {deletedNewsList, newsList} = state;
-    return {
-      data: newsList.data.filter(
-        item => !deletedNewsList.includes(item.storyId),
-      ),
-    };
+    if (deletedNewsList.data && deletedNewsList.data.length) {
+      return {
+        data: newsList.data.filter(
+          itemNewsList =>
+            !deletedNewsList.data.some(
+              itemDeletedNewsList =>
+                itemDeletedNewsList.storyId === itemNewsList.storyId,
+            ),
+        ),
+      };
+    }
+    return newsList;
   }, [state]);
+
+  const getRandomId = useCallback((min: number, max: number): number => {
+    const val = Math.floor(Math.random() * (max - min + 1)) + min;
+    return val;
+  }, []);
 
   const onFetchingNews = useCallback(async () => {
     let dataPayload: NewsPayloadEntity = {
       newsList: {data: []},
-      deletedNewsList: [],
-      favoritesNewsList: [],
+      deletedNewsList: {data: []},
+      favoritesNewsList: {data: []},
     };
 
     const dataFromStorage = await getSavedData(constants.HOME.STORAGE_KEY);
 
     if (dataFromStorage) {
       const data = JSON.parse(dataFromStorage);
+
       dataPayload.newsList = data.newsList;
-      dataPayload.deletedNewsList = data.deletedNewsList ?? [];
-      dataPayload.favoritesNewsList = data.favoritesNewsList ?? [];
+      dataPayload.deletedNewsList = data.deletedNewsList ?? {data: []};
+      dataPayload.favoritesNewsList = data.favoritesNewsList ?? {data: []};
     }
 
     dispatchNewsData({
@@ -80,11 +99,20 @@ const HomeScreen = (): React.JSX.Element => {
       const parseLocalFacets: UserActivityEntity = savedData
         ? JSON.parse(savedData)
         : {
-            facets: constants.USER_ACTIVITY.FACETS,
+            facets: constants.USER_ACTIVITY.FACETS.keywords.technology,
             facetsSelectedByUser: [],
             querySearch: '',
             hasSeenOnboarding: false,
+            pushNotifications: {
+              appStateActivity:
+                defaultUserActivityContextValues.stateUserActivityData.state
+                  .pushNotifications.appStateActivity,
+              sentPushNotification: false,
+              timeForNextPush: 6000,
+            },
+            userName: '',
           };
+
       dispatchUserActivityData({
         type: UserActivityKind.FETCHED,
         payload: {
@@ -93,13 +121,7 @@ const HomeScreen = (): React.JSX.Element => {
           hasSeenOnboarding: parseLocalFacets.hasSeenOnboarding,
           querySearch: parseLocalFacets.querySearch,
           userName: parseLocalFacets.userName,
-          pushNotifications: {
-            appStateActivity:
-              defaultUserActivityContextValues.stateUserActivityData.state
-                .pushNotifications.appStateActivity,
-            sentPushNotification: false,
-            timeForNextPush: 6000,
-          },
+          pushNotifications: parseLocalFacets.pushNotifications,
         },
       });
     });
@@ -118,11 +140,30 @@ const HomeScreen = (): React.JSX.Element => {
     }
   }, [loadingUserActivity, fetchedUserActivity, onFetchingUserActivity]);
 
+  const getQueryParam = useCallback(() => {
+    const idKeyword = getRandomId(0, 5);
+    const facetKeyword = Object.values(USER_ACTIVITY.FACETS.keywords).find(
+      (_, index) => index === idKeyword,
+    ) ?? ['Android'];
+    return facetKeyword[getRandomId(0, facetKeyword.length - 1)];
+  }, [USER_ACTIVITY.FACETS.keywords, getRandomId]);
+
   useEffect(() => {
     if (loading && !fetched) {
-      getNewsList(stateUserActivity.querySearch ?? '');
+      const queryParam = stateUserActivity.querySearch
+        ? stateUserActivity.querySearch
+        : getQueryParam();
+      getNewsList(queryParam ?? '');
     }
-  }, [loading, fetched, getNewsList, stateUserActivity.querySearch]);
+  }, [
+    loading,
+    fetched,
+    getNewsList,
+    stateUserActivity.querySearch,
+    USER_ACTIVITY.FACETS.keywords,
+    getRandomId,
+    getQueryParam,
+  ]);
 
   useEffect(() => {
     if (
@@ -154,6 +195,10 @@ const HomeScreen = (): React.JSX.Element => {
     replace,
   ]);
 
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    return false;
+  });
+
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
       {length: HOME.NUMBER_SKELETON},
@@ -178,7 +223,7 @@ const HomeScreen = (): React.JSX.Element => {
   return (
     <SafeAreaView testID="home-screen-container" style={styles.mainContainer}>
       <PushNotificationsHandler>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'#f5f5f5'} />
+        <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
         {loading && renderSkeleton()}
         {!loading && <NewsFeed newsDataList={filteredListNews} />}
       </PushNotificationsHandler>

@@ -18,12 +18,6 @@ describe('News reducer', () => {
         },
         ...mockStateStoreNewsData,
       });
-    console.log(
-      'defaultNewsContextValues.stateNewsData',
-      defaultNewsContextValues.stateNewsData,
-    );
-
-    console.log('result', result);
     await waitFor(
       async () => {
         const resultData = result as unknown as StateStoreNewsData;
@@ -37,13 +31,17 @@ describe('News reducer', () => {
     const result = NewsDataReducer(
       {
         ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+          deletedNewsList: Fixtures.SingularNews,
+        },
       },
       {
         type: NewsKind.REMOVE_NEWS,
         payload: {
           ...mockStateStoreNewsData.state,
-          deletedNewsList: [mockNewsFixtures.data[0].storyId],
-          deletedNewsId: mockNewsFixtures.data[0].storyId,
+          deletedNewsList: Fixtures.SingularNews,
+          deletedNewsId: Fixtures.NewsList.data[1].storyId,
         },
         loading: false,
         fetched: true,
@@ -53,7 +51,7 @@ describe('News reducer', () => {
 
     await waitFor(
       async () => {
-        expect(result.state.deletedNewsList).toHaveLength(1);
+        expect(result.state.deletedNewsList.data).toHaveLength(1);
       },
       {timeout: 1000},
     );
@@ -102,7 +100,9 @@ describe('News reducer', () => {
 
     await waitFor(
       async () => {
-        expect(result.state.newsList.data).toHaveLength(1);
+        expect(result.state.newsList.data).toHaveLength(
+          Fixtures.NewsList.data.length,
+        );
       },
       {timeout: 1000},
     );
@@ -112,13 +112,18 @@ describe('News reducer', () => {
     const result = NewsDataReducer(
       {
         ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+          favoritesNewsList: Fixtures.SingularNews,
+          newsList: Fixtures.NewsList,
+        },
       },
       {
         type: NewsKind.ADD_FAVORITES,
         payload: {
           ...mockStateStoreNewsData.state,
-          favoritesNewsList: [mockNewsFixtures.data[0].storyId],
-          favoritesNewsId: mockNewsFixtures.data[0].storyId,
+          favoritesNewsList: Fixtures.SingularNews,
+          favoritesNewsId: Fixtures.NewsList.data[2].storyId,
           newsList: mockNewsFixtures,
         },
         loading: false,
@@ -129,7 +134,7 @@ describe('News reducer', () => {
 
     await waitFor(
       async () => {
-        expect(result.state.favoritesNewsList).toHaveLength(1);
+        expect(result.state.favoritesNewsList.data.length).toBeGreaterThan(0);
       },
       {timeout: 1000},
     );

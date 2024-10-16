@@ -11,12 +11,11 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     flexDirection: 'column',
-    minHeight: 100,
     width: '100%',
     paddingHorizontal: 16,
   },
   innerCardContainer: {
-    flex: 1,
+    flexGrow: 1,
     marginTop: 16,
     padding: 16,
     borderRadius: 16,
@@ -35,11 +34,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   cardBodyContainer: {
-    flex: 0.55,
+    flex: 1,
     flexDirection: 'row',
   },
   cardFooterContainer: {
-    flex: 0.2,
+    flex: 0.1,
     marginTop: 8,
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -49,11 +48,13 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
+    right: 16,
+    top: 16,
   },
   containerTrashButton: {
     position: 'absolute',
     width: '20%',
-    minHeight: 99,
+    height: '90%',
     top: 16,
     right: 16,
     borderRadius: 16,
@@ -74,14 +75,27 @@ const styles = StyleSheet.create({
   },
   tapContainer: {
     flex: 1,
-    height: '88%',
+    height: '90%',
     zIndex: 100,
     position: 'absolute',
-    top: 16,
     bottom: 0,
     right: 0,
   },
   imageContainer: {height: 50, width: 50, borderRadius: 100},
+  textStoryTitle: {
+    marginBottom: 15,
+    textAlign: 'left',
+    fontWeight: '400',
+    fontSize: 18,
+    color: '#000',
+  },
+  textStoryDate: {
+    // marginBottom: 15,
+    textAlign: 'right',
+    fontWeight: '400',
+    fontSize: 14,
+    color: '#000',
+  },
 });
 
 export default styles;

@@ -1,5 +1,11 @@
 import React, {useContext, useMemo} from 'react';
-import {View, Text, Image, LayoutChangeEvent} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  LayoutChangeEvent,
+  TouchableOpacity,
+} from 'react-native';
 import {NewsData, images} from '../../../../domain';
 import styles from './NewsCard.styles';
 import {
@@ -20,11 +26,14 @@ import {
   Pressable,
 } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {HackerNewsFeedStack} from '../../../navigationContainer/navigationStack';
+import {
+  HackerNewsFeedStack,
+  HackerNewsFeedDrawer,
+} from '../../../navigationContainer/navigationStack';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {NewsContext, NewsKind} from '../../../stores/entities';
-import RenderHtml from 'react-native-render-html';
+import uuid from 'react-native-uuid';
 
 const SIZE = 120;
 const BOUNDARY_OFFSET = 50;
@@ -32,12 +41,19 @@ const BOUNDARY_OFFSET = 50;
 type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
+type HackerNewsFeedDrawerNavigationProp =
+  NativeStackNavigationProp<HackerNewsFeedDrawer>;
+
 export const NewsCard = (newsData: NewsData) => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {getState} = useNavigation<HackerNewsFeedDrawerNavigationProp>();
   const {state} = stateNewsData;
-  const newsDate = newsData.createdAt ?? newsData.createdAtI;
-  const date = newsDate ? new Date(newsDate) : '';
+  const stateNav = getState();
+  const isCemeteryScreen =
+    stateNav.routes[stateNav.index].name === 'CemeteryNewsScreen';
+  const newsDate = newsData.createdAtI;
+  const date = new Date(newsDate * 1000);
   const currentDate = new Date();
   const result = `${differenceInMinutes(currentDate, date)}m`;
   const resultInHour =
@@ -77,7 +93,7 @@ export const NewsCard = (newsData: NewsData) => {
   }));
 
   const animatedWidthTapStyles = useAnimatedStyle(() => ({
-    width: -70 > offset.value ? '100%' : '7%',
+    width: -70 > offset.value ? '100%' : '30%',
   }));
 
   const animatedStylesZindexRight = useAnimatedStyle(() => ({
@@ -91,20 +107,24 @@ export const NewsCard = (newsData: NewsData) => {
   };
 
   const isSelected = useMemo(() => {
-    if (state.favoritesNewsList.length) {
-      return state.favoritesNewsList.some(item => item === newsData.storyId);
+    if (state.favoritesNewsList.data && state.favoritesNewsList.data.length) {
+      return state.favoritesNewsList.data.some(
+        item => item.storyId === newsData.storyId,
+      );
     }
     return false;
   }, [state.favoritesNewsList, newsData.storyId]);
 
   return (
-    <GestureHandlerRootView style={styles.cardContainer}>
+    <GestureHandlerRootView
+      key={uuid.v4().toString()}
+      style={styles.cardContainer}>
       <>
         <Animated.View
           testID="main-container"
           style={[styles.containerTrashButton, animatedStylesZindexRight]}>
           <View style={styles.trashButton}>
-            <Pressable
+            <TouchableOpacity
               testID="trash-button"
               onPress={() => {
                 offset.value = withTiming(100);
@@ -118,20 +138,52 @@ export const NewsCard = (newsData: NewsData) => {
                   },
                 });
               }}>
-              <Icon name="trash" size={30} color="#D3D3D3" />
-            </Pressable>
+              <Icon
+                name={isCemeteryScreen ? 'folder-plus' : 'trash'}
+                size={30}
+                color={isCemeteryScreen ? '#009000' : '#D3D3D3'}
+              />
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </>
       <View testID="layout-provider" onLayout={onLayout}>
         <GestureDetector gesture={pan}>
-          <Animated.View
-            style={[
-              styles.tapContainer,
-              animatedStyles,
-              animatedWidthTapStyles,
-            ]}
-          />
+          <>
+            <Animated.View
+              style={[
+                styles.tapContainer,
+                animatedStyles,
+                animatedWidthTapStyles,
+              ]}>
+              {!isCemeteryScreen && (
+                <View style={styles.containerFavoritesbutton}>
+                  <TouchableOpacity
+                    hitSlop={40}
+                    onPress={() => {
+                      offset.value = withTiming(0);
+                      dispatchNewsData({
+                        type: NewsKind.ADD_FAVORITES,
+                        payload: {
+                          newsList: state.newsList,
+                          deletedNewsList: state.deletedNewsList,
+                          favoritesNewsList: state.favoritesNewsList,
+                          favoritesNewsId: newsData.storyId,
+                        },
+                      });
+                    }}>
+                    <Icon
+                      testID="heart-button"
+                      name="heart"
+                      size={30}
+                      color={isSelected ? '#df1b1b' : '#000'}
+                      solid={isSelected ? true : false}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Animated.View>
+          </>
         </GestureDetector>
         <Animated.View style={[styles.innerCardContainer, animatedStyles]}>
           <View style={styles.cardHeaderContainer}>
@@ -140,55 +192,18 @@ export const NewsCard = (newsData: NewsData) => {
               style={styles.imageContainer}
             />
 
-            <View style={styles.container}>
+            <View style={styles.cardBodyContainer}>
               <Pressable testID="body-card" onPress={navigateWebView}>
-                <Text>{newsData.storyTitle}</Text>
-              </Pressable>
-              {/*   <Pressable onPress={navigateWebView}>
-                <Text>{'See full commentary'}</Text>
-              </Pressable>
-         <Animated.View
-                style={{
-                  flex: 1,
-                  // flexGrow: 0,
-                  // height: '0%',
-                  width: '100%',
-                  backgroundColor: 'blue',
-                }}>
-                <RenderHtml
-                  contentWidth={width.value}
-                  source={{html: newsData.commentText!!}}
-                />
-              </Animated.View>     */}
-            </View>
-
-            <View style={styles.containerFavoritesbutton}>
-              <Pressable
-                testID="heart-button"
-                hitSlop={30}
-                onPress={() => {
-                  offset.value = withTiming(0);
-                  dispatchNewsData({
-                    type: NewsKind.ADD_FAVORITES,
-                    payload: {
-                      newsList: state.newsList,
-                      deletedNewsList: state.deletedNewsList,
-                      favoritesNewsList: state.favoritesNewsList,
-                      favoritesNewsId: newsData.storyId,
-                    },
-                  });
-                }}>
-                <Icon
-                  name="heart"
-                  size={30}
-                  color={isSelected ? '#df1b1b' : '#000'}
-                  solid={isSelected ? true : false}
-                />
+                <Text style={styles.textStoryTitle}>{newsData.storyTitle}</Text>
               </Pressable>
             </View>
+            <View style={styles.cardFooterContainer} />
           </View>
           <View style={styles.cardFooterContainer}>
-            <Text>{`${newsData.author} - ${resultInDays}`}</Text>
+            <Text
+              style={
+                styles.textStoryDate
+              }>{`Author: ${newsData.author} - ${resultInDays}`}</Text>
           </View>
         </Animated.View>
       </View>

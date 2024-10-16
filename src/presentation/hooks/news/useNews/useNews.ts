@@ -11,11 +11,10 @@ const useNews = () => {
     async (typePlatform: string) => {
       try {
         const response = await NewsRepository.getNews(typePlatform);
-
         dispatchNewsData({
           type: NewsKind.FETCHED,
           payload: {
-            newsList: response,
+            newsList: response.data.length ? response : state.newsList,
             deletedNewsList: state.deletedNewsList,
             favoritesNewsList: state.favoritesNewsList,
             favoritesNewsId: undefined,
@@ -26,7 +25,7 @@ const useNews = () => {
         return dispatchNewsData({
           type: NewsKind.FETCHED,
           payload: {
-            newsList: {data: []},
+            newsList: state.newsList,
             deletedNewsList: state.deletedNewsList,
             favoritesNewsList: state.favoritesNewsList,
             favoritesNewsId: undefined,
@@ -36,7 +35,12 @@ const useNews = () => {
         });
       }
     },
-    [dispatchNewsData, state.deletedNewsList, state.favoritesNewsList],
+    [
+      dispatchNewsData,
+      state.deletedNewsList,
+      state.favoritesNewsList,
+      state.newsList,
+    ],
   );
 
   useEffect(() => {

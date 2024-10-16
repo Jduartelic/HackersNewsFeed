@@ -108,7 +108,7 @@ describe('NewsCard', () => {
         state: {
           ...mockStateStoreNewsData.state,
           newsList: Fixtures.NewsList,
-          favoritesNewsList: [Fixtures.NewsList.data[0].storyId],
+          favoritesNewsList: Fixtures.NewsList,
         },
       },
     });
@@ -126,7 +126,7 @@ describe('NewsCard', () => {
         state: {
           ...mockStateStoreNewsData.state,
           newsList: Fixtures.NewsList,
-          favoritesNewsList: [Fixtures.NewsList.data[0].storyId],
+          favoritesNewsList: Fixtures.NewsList,
         },
       },
     });

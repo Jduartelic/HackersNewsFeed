@@ -4,11 +4,14 @@ type HackerNewsFeedStack = {
     url: string;
   };
   FavoritesScreen: undefined;
+  CemeteryNewsScreen: undefined;
   OnboardingScreen: undefined;
+  ErrorboundaryScreen: undefined;
 };
 
 type HackerNewsFeedDrawer = {
   MainScreen: HackerNewsFeedStack;
+  FavoritesScreen: undefined;
   CemeteryNewsScreen: undefined;
 };
 

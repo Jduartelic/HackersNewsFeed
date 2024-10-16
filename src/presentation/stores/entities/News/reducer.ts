@@ -1,6 +1,7 @@
 import {NewsKind, NewsActions, StateStoreNewsData} from '../../entities';
 import {setSavedData} from '../../../functions';
 import {constants} from '../../../constants';
+import {News, NewsData} from '../../../../domain';
 
 export function NewsDataReducer(
   state: StateStoreNewsData,
@@ -37,18 +38,23 @@ export function NewsDataReducer(
       };
     case NewsKind.FETCHED:
       const deletedNewsList = state.state.deletedNewsList;
-      const listFiltered = action.payload.newsList.data.filter(newsListItem => {
-        const exist = deletedNewsList?.some(
-          item => item === newsListItem.storyId,
-        );
-        if (!exist) {
-          return newsListItem;
-        }
-      });
+      let listFiltered: NewsData[] = action.payload.newsList.data;
+
+      if (deletedNewsList.data && deletedNewsList.data.length) {
+        listFiltered = action.payload.newsList.data.filter(newsListItem => {
+          const exist = deletedNewsList?.data.some(
+            item => item.storyId === newsListItem.storyId,
+          );
+          if (!exist) {
+            return newsListItem;
+          }
+        });
+      }
+
       dataPayload = JSON.stringify({
-        newsList: {data: listFiltered},
-        favoritesNewsList: state.state.favoritesNewsList,
-        deletedNewsList: state.state.deletedNewsList,
+        newsList: listFiltered,
+        favoritesNewsList: state.state.favoritesNewsList.data,
+        deletedNewsList: state.state.deletedNewsList.data,
       });
       setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
 
@@ -64,10 +70,35 @@ export function NewsDataReducer(
         error: error,
       };
     case NewsKind.REMOVE_NEWS:
-      const deletedList: number[] = state.state.deletedNewsList;
-      if (action.payload.deletedNewsId) {
-        deletedList?.push(action.payload.deletedNewsId);
+      let deletedList: News = state.state.deletedNewsList;
+      if (action.payload.deletedNewsId && deletedList?.data) {
+        const exist = deletedList?.data.some(
+          item => item.storyId === action.payload.deletedNewsId,
+        );
+
+        if (exist) {
+          deletedList.data = state.state.deletedNewsList.data.filter(
+            item => item.storyId !== action.payload.deletedNewsId,
+          );
+        } else {
+          const news = state.state.newsList?.data.find(
+            item => item.storyId === action.payload.deletedNewsId,
+          );
+
+          if (news) {
+            deletedList.data.push(news);
+          }
+        }
+      } else {
+        const news = state.state.newsList?.data.find(
+          item => item.storyId === action.payload.deletedNewsId,
+        );
+
+        if (news) {
+          deletedList.data = [news];
+        }
       }
+
       dataPayload = JSON.stringify({
         newsList: state.state.newsList,
         deletedNewsList: deletedList,
@@ -88,18 +119,33 @@ export function NewsDataReducer(
         error: error,
       };
     case NewsKind.ADD_FAVORITES:
-      let favoritesList: number[] = state.state.favoritesNewsList;
-      if (action.payload.favoritesNewsId) {
-        const exist = favoritesList?.find(
-          item => item === action.payload.favoritesNewsId,
+      let favoritesList: News = state.state.favoritesNewsList;
+
+      if (action.payload.favoritesNewsId && favoritesList?.data) {
+        const exist = favoritesList?.data.some(
+          item => item.storyId === action.payload.favoritesNewsId,
         );
 
         if (exist) {
-          favoritesList = state.state.favoritesNewsList.filter(
-            item => item !== exist,
+          favoritesList.data = state.state.favoritesNewsList.data.filter(
+            item => item.storyId !== action.payload.favoritesNewsId,
           );
         } else {
-          favoritesList?.push(action.payload.favoritesNewsId);
+          const news = state.state.newsList?.data.find(
+            item => item.storyId === action.payload.favoritesNewsId,
+          );
+
+          if (news) {
+            favoritesList.data.push(news);
+          }
+        }
+      } else {
+        const news = state.state.newsList?.data.find(
+          item => item.storyId === action.payload.favoritesNewsId,
+        );
+
+        if (news) {
+          favoritesList.data = [news];
         }
       }
 
@@ -107,6 +153,7 @@ export function NewsDataReducer(
         ...state.state,
         favoritesNewsList: favoritesList,
       });
+
       setSavedData(constants.HOME.STORAGE_KEY, dataPayload);
 
       return {

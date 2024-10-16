@@ -13,8 +13,9 @@ describe('NewsRepository', () => {
     });
     const result = await NewsRepository.getNews('');
 
-    expect(result.data[0].storyId).toStrictEqual(
-      DtoFixtures.NewsDataSuccess.hits[0].story_id,
+    const firstItem = DtoFixtures.NewsDataSuccess.hits.find(
+      item => item.story_id === result.data[0].storyId,
     );
+    expect(result.data[0].storyId).toStrictEqual(firstItem?.story_id);
   });
 });

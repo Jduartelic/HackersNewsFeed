@@ -8,11 +8,25 @@ import {
 } from '@testing-library/react-native';
 import MainHeader from './MainHeader';
 import {NavigationContainer} from '@react-navigation/native';
+import {
+  StateStoreUserActivityData,
+  defaultUserActivityContextValues,
+  UserActivityContext,
+  NewsContext,
+  StateStoreNewsData,
+  defaultNewsContextValues,
+} from '../../../stores/entities';
+import {Fixtures} from '../../../../domain';
 
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
-
+const mockDispatchUserData = jest.fn();
+const mockDispatchNewsData = jest.fn();
+const mockStateStoreUserActivityData: StateStoreUserActivityData =
+  defaultUserActivityContextValues.stateUserActivityData;
+const mockStateStoreNewsData: StateStoreNewsData =
+  defaultNewsContextValues.stateNewsData;
 let mockRoutes = [
   {
     key: 'HomeScreen-FEk94Gtig1PYp4J0YNcdJ',
@@ -31,6 +45,7 @@ let mockRoutes = [
   },
 ];
 let mockIndex = 1;
+let mockIsFocus = true;
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
   return {
@@ -47,6 +62,7 @@ jest.mock('@react-navigation/native', () => {
         type: 'stack',
       })),
       toggleDrawer: mockedToggleDrawer,
+      isFocused: jest.fn().mockResolvedValue(mockIsFocus),
     }),
     useIsFocused: () => true,
   };
@@ -56,18 +72,36 @@ const renderScreen = ({
   iconLeft,
   imageSource,
   iconRight = 'chevron-right',
+  stateStoreUserActivityData = mockStateStoreUserActivityData,
+  stateStoreNewsData = mockStateStoreNewsData,
 }: {
   iconLeft: string;
+  stateStoreUserActivityData: StateStoreUserActivityData;
+  stateStoreNewsData: StateStoreNewsData;
   imageSource?: ImageSourcePropType;
   iconRight?: string;
 }) => {
   return render(
     <NavigationContainer>
-      <MainHeader
-        iconLeft={{name: iconLeft}}
-        imageSource={imageSource}
-        iconRight={{name: iconRight}}
-      />
+      <NewsContext.Provider
+        value={{
+          stateNewsData: {...stateStoreNewsData},
+          dispatchNewsData: mockDispatchNewsData,
+        }}>
+        <UserActivityContext.Provider
+          value={{
+            stateUserActivityData: {
+              ...stateStoreUserActivityData,
+            },
+            dispatchUserActivityData: mockDispatchUserData,
+          }}>
+          <MainHeader
+            iconLeft={{name: iconLeft}}
+            imageSource={imageSource}
+            iconRight={{name: iconRight}}
+          />
+        </UserActivityContext.Provider>
+      </NewsContext.Provider>
     </NavigationContainer>,
   );
 };
@@ -86,6 +120,30 @@ describe('MainHeader', () => {
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: 0,
+      stateStoreNewsData: {
+        state: {
+          ...mockStateStoreNewsData.state,
+          newsList: Fixtures.NewsList,
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          pushNotifications: {
+            appStateActivity: 'background',
+            sentPushNotification: true,
+            timeForNextPush: 10,
+          },
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
     });
     const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();
@@ -107,6 +165,30 @@ describe('MainHeader', () => {
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: 0,
+      stateStoreNewsData: {
+        state: {
+          ...mockStateStoreNewsData.state,
+          newsList: Fixtures.NewsList,
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          pushNotifications: {
+            appStateActivity: 'background',
+            sentPushNotification: true,
+            timeForNextPush: 10,
+          },
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
     });
     const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();
@@ -128,6 +210,89 @@ describe('MainHeader', () => {
       iconLeft: 'chevron-left',
       iconRight: 'chevron-left',
       imageSource: undefined,
+      stateStoreNewsData: {
+        state: {
+          ...mockStateStoreNewsData.state,
+          newsList: Fixtures.NewsList,
+          favoritesNewsList: Fixtures.NewsList,
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          pushNotifications: {
+            appStateActivity: 'background',
+            sentPushNotification: true,
+            timeForNextPush: 10,
+          },
+          querySearch: 'mock',
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
+    });
+    const mainComponent = screen.getByTestId('main-header');
+    expect(mainComponent).toBeDefined();
+
+    const buttonComponent = screen.getByTestId('button-right-header');
+
+    fireEvent.press(buttonComponent);
+
+    render;
+    const inputComponent = screen.getByTestId('search-bar-input');
+
+    fireEvent.changeText(inputComponent, 'mockPasswordInput');
+    fireEvent.press(buttonComponent);
+
+    await waitFor(
+      async () => {
+        expect(mockDispatchNewsData).toHaveBeenCalled();
+      },
+      {timeout: 1000},
+    );
+  });
+
+  it('renders remove header elements by focus and go back', async () => {
+    mockIndex = 0;
+    mockIsFocus = true;
+    renderScreen({
+      iconLeft: 'chevron-left',
+      iconRight: 'chevron-left',
+      imageSource: undefined,
+      stateStoreNewsData: {
+        state: {
+          ...mockStateStoreNewsData.state,
+          newsList: Fixtures.NewsList,
+        },
+
+        fetched: true,
+        loading: false,
+        error: {
+          message: 'mock',
+          name: 'mock',
+        },
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          pushNotifications: {
+            appStateActivity: 'background',
+            sentPushNotification: true,
+            timeForNextPush: 10,
+          },
+          querySearch: 'mock',
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
     });
     const mainComponent = screen.getByTestId('main-header');
     expect(mainComponent).toBeDefined();

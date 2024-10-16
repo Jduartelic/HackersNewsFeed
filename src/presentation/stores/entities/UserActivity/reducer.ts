@@ -40,7 +40,6 @@ export function UserActivityDataReducer(
     case UserActivityKind.FETCHED:
       dataPayload = JSON.stringify({
         ...action.payload,
-        appStateActivity: 'active',
       });
 
       setSavedData(constants.USER_ACTIVITY.STORAGE_KEY, dataPayload);
@@ -87,6 +86,14 @@ export function UserActivityDataReducer(
         error: error,
       };
     }
+    case UserActivityKind.SAVE_INPUT:
+      return {
+        ...state,
+        state: {...state.state, querySearch: action.payload.querySearch},
+        loading: state.loading,
+        fetched: state.fetched,
+        error: state.error,
+      };
     case UserActivityKind.DEFAULT:
       return {
         ...state,

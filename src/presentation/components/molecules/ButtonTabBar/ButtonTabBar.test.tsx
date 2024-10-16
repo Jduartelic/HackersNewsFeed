@@ -159,8 +159,8 @@ describe('ButtonTabBar', () => {
     renderScreen();
     const buttonComponent = screen.getByTestId('bottom-tab-button');
     expect(buttonComponent).toBeDefined();
-    fireEvent.press(buttonComponent);
 
+    fireEvent.press(buttonComponent);
     await waitFor(
       async () => {
         expect(mockedNavigate).toHaveBeenCalled();

@@ -9,6 +9,7 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import styles from './WebViewScreen.styles';
+import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
 type Props = NativeStackScreenProps<HackerNewsFeedStack, 'WebViewScreen'>;
@@ -17,6 +18,7 @@ type HackerNewsFeedNavigationProp =
   NativeStackNavigationProp<HackerNewsFeedStack>;
 
 const WebViewScreen = ({route, navigation}: Props) => {
+  const {MAIN_COLOR} = constants;
   const {goBack} = useNavigation<HackerNewsFeedNavigationProp>();
   const isFocused = navigation.isFocused();
   const webViewRef = useRef<WebView>(null);
@@ -42,7 +44,7 @@ const WebViewScreen = ({route, navigation}: Props) => {
       <StatusBar
         animated={true}
         barStyle="dark-content"
-        backgroundColor={'#fff'}
+        backgroundColor={MAIN_COLOR}
       />
       <WebView
         testID="web-view"

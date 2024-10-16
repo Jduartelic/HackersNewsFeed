@@ -6,16 +6,16 @@ import {
   FavoritesScreen,
   CemeteryNewsScreen,
   OnboardingScreen,
+  DrawerCustomScreen,
+  ErrorboundaryScreen,
 } from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   HackerNewsFeedStack,
   HackerNewsFeedDrawer,
 } from '../navigationContainer/navigationStack';
-import {
-  NewsContextProvider,
-  UserActivityContextProvider,
-} from '../stores/entities';
+import {NewsContextProvider} from '../stores/entities/News/NewsContext';
+import {UserActivityContextProvider} from '../stores/entities/UserActivity/UserActivityContext';
 import {MainHeader} from '../components/molecules';
 import {images} from '../../domain';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -36,6 +36,8 @@ function HackerNewsFeedNavigator() {
     [],
   );
 
+  const DrawerContentComponent = useCallback(() => <DrawerCustomScreen />, []);
+
   return (
     <UserActivityContextProvider>
       <NewsContextProvider>
@@ -44,7 +46,8 @@ function HackerNewsFeedNavigator() {
             screenOptions={{
               headerShown: false,
               swipeEnabled: false,
-            }}>
+            }}
+            drawerContent={() => DrawerContentComponent()}>
             <Drawer.Screen
               name="MainScreen"
               component={HackerNewsFeedScreens}
@@ -52,6 +55,17 @@ function HackerNewsFeedNavigator() {
             <Drawer.Screen
               name="CemeteryNewsScreen"
               component={CemeteryNewsScreen}
+              options={{
+                header: () => MainHeaderComponent(),
+                headerShown: true,
+                headerStyle: {backgroundColor: '#f5f5f5'},
+                headerShadowVisible: true,
+              }}
+            />
+
+            <Drawer.Screen
+              name="FavoritesScreen"
+              component={FavoritesScreen}
               options={{
                 header: () => MainHeaderComponent(),
                 headerShown: true,
@@ -90,6 +104,8 @@ const HackerNewsFeedScreens = () => {
     <Stack.Navigator
       screenOptions={{
         gestureEnabled: false,
+        fullScreenGestureEnabled: false,
+        fullScreenGestureShadowEnabled: false,
       }}>
       <Stack.Screen
         name="HomeScreen"
@@ -100,7 +116,7 @@ const HackerNewsFeedScreens = () => {
           header: () =>
             HeaderHackerNewsFeedScreens({
               iconLeft: {name: 'bars'},
-              iconRight: {name: 'star'},
+              iconRight: {name: 'search'},
               imageSource: images.logoInitials,
             }),
           headerShown: true,
@@ -142,6 +158,21 @@ const HackerNewsFeedScreens = () => {
         }}
       />
 
+      <Drawer.Screen
+        name="CemeteryNewsScreen"
+        component={CemeteryNewsScreen}
+        options={{
+          header: () =>
+            HeaderHackerNewsFeedScreens({
+              iconLeft: {name: 'chevron-left'},
+              imageSource: images.logoInitials,
+            }),
+          headerShown: true,
+          headerStyle: {backgroundColor: '#f5f5f5'},
+          headerShadowVisible: true,
+        }}
+      />
+
       <Stack.Screen
         name="OnboardingScreen"
         component={OnboardingScreen}
@@ -149,6 +180,18 @@ const HackerNewsFeedScreens = () => {
           gestureEnabled: false,
           animation: 'slide_from_right',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="ErrorboundaryScreen"
+        component={ErrorboundaryScreen}
+        options={{
+          gestureEnabled: false,
+          animation: 'slide_from_bottom',
+          headerShown: false,
+          autoHideHomeIndicator: true,
+          presentation: 'transparentModal',
         }}
       />
     </Stack.Navigator>

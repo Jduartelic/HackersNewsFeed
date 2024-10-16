@@ -4,7 +4,7 @@
  *
  * @format
  */
-import React, {useContext, useMemo} from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import {NewsContext} from '../../stores/entities';
 import {NewsFeed} from '../../components/organisms';
@@ -14,20 +14,11 @@ import {constants} from '../../constants';
 import uuid from 'react-native-uuid';
 
 const FavoritesScreen = (): React.JSX.Element => {
-  const {HOME} = constants;
+  const {HOME, MAIN_COLOR} = constants;
 
   const {stateNewsData} = useContext(NewsContext);
 
   const {loading, state} = stateNewsData;
-
-  const favoritesNews = useMemo(() => {
-    const {favoritesNewsList, newsList} = state;
-    return {
-      data: newsList.data.filter(item =>
-        favoritesNewsList.includes(item.storyId),
-      ),
-    };
-  }, [state]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
@@ -54,9 +45,9 @@ const FavoritesScreen = (): React.JSX.Element => {
     <SafeAreaView
       testID="favorites-news-container"
       style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       {loading && renderSkeleton()}
-      {!loading && <NewsFeed newsDataList={favoritesNews} />}
+      {!loading && <NewsFeed newsDataList={state.favoritesNewsList} />}
     </SafeAreaView>
   );
 };

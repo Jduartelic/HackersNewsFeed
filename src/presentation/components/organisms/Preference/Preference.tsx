@@ -7,7 +7,7 @@ import uuid from 'react-native-uuid';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Preference = (): React.JSX.Element => {
-  const {ONBOARDING, USER_ACTIVITY} = constants;
+  const {MAIN_COLOR, ONBOARDING, USER_ACTIVITY} = constants;
   const {SELECT_INTEREST_FACETS, PREFERENCE} = ONBOARDING;
   const {keywords: KEY_WORDS} = USER_ACTIVITY.FACETS;
   const {dispatchUserActivityData, stateUserActivityData} =
@@ -76,7 +76,7 @@ const Preference = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+      <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       <View style={styles.paddingContainer}>
         <Text style={styles.textFacetsInterest}>{SELECT_INTEREST_FACETS}</Text>
       </View>

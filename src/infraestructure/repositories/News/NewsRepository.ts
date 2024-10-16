@@ -4,15 +4,9 @@ import {apiConfig, mappers, NewsDto, Routes} from '../../../infraestructure';
 
 const getNews: NewsResponse = async (typePlatform: string): Promise<News> => {
   const {data} = await axios.get<NewsDto>(
-    `${apiConfig.apiUrl}${Routes.searchByDate}`,
-    {
-      params: {
-        query: typePlatform,
-      },
-    },
+    `${apiConfig.apiUrl}${Routes.searchByDate}?query=${typePlatform}`,
   );
-
-  return mappers.newsMap(data);
+  return mappers.newsMap({hits: data.hits});
 };
 
 export default {getNews};

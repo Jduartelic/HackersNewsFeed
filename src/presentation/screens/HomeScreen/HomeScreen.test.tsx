@@ -174,13 +174,14 @@ describe('HomeScreen', () => {
         state: {
           ...mockStateStoreNewsData.state,
         },
-        loading: false,
+        loading: true,
         fetched: false,
       },
       stateStoreUserActivityData: {
         state: {
           ...mockStateStoreUserActivityData.state,
           hasSeenOnboarding: true,
+          querySearch: '',
         },
 
         fetched: true,
@@ -199,7 +200,7 @@ describe('HomeScreen', () => {
         state: {
           ...mockStateStoreNewsData.state,
           newsList: Fixtures.NewsList,
-          deletedNewsList: [Fixtures.NewsList.data[0].storyId],
+          deletedNewsList: Fixtures.NewsList,
         },
         loading: false,
         fetched: true,
@@ -227,7 +228,7 @@ describe('HomeScreen', () => {
         state: {
           ...mockStateStoreNewsData.state,
         },
-        loading: true,
+        loading: false,
         fetched: false,
       },
       stateStoreUserActivityData: {
@@ -236,8 +237,8 @@ describe('HomeScreen', () => {
           hasSeenOnboarding: true,
         },
 
-        fetched: false,
-        loading: true,
+        fetched: true,
+        loading: false,
         error: undefined,
       },
     });
@@ -265,6 +266,31 @@ describe('HomeScreen', () => {
         state: {
           ...mockStateStoreUserActivityData.state,
           hasSeenOnboarding: false,
+        },
+
+        fetched: true,
+        loading: false,
+        error: undefined,
+      },
+    });
+    expect(mockedReplace).toHaveBeenCalled();
+  });
+
+  it('should fetch news by query param', async () => {
+    renderScreen({
+      stateStoreNewsData: {
+        ...mockStateStoreNewsData,
+        state: {
+          ...mockStateStoreNewsData.state,
+        },
+        loading: true,
+        fetched: false,
+      },
+      stateStoreUserActivityData: {
+        state: {
+          ...mockStateStoreUserActivityData.state,
+          hasSeenOnboarding: false,
+          querySearch: 'mock',
         },
 
         fetched: true,

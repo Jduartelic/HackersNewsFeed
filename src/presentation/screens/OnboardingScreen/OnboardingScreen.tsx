@@ -27,7 +27,11 @@ const OnboardingScreen = (): React.JSX.Element => {
           component={Onboarding}
           options={{headerShown: false}}
         />
-        <Tab.Screen name="PreferenceScreen" component={Preference} />
+        <Tab.Screen
+          name="PreferenceScreen"
+          component={Preference}
+          options={{headerShown: false}}
+        />
       </Tab.Navigator>
     </SafeAreaView>
   );

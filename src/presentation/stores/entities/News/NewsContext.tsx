@@ -5,8 +5,8 @@ export const defaultNewsContextValues: NewsContextType = {
   stateNewsData: {
     state: {
       newsList: {data: []},
-      favoritesNewsList: [],
-      deletedNewsList: [],
+      favoritesNewsList: {data: []},
+      deletedNewsList: {data: []},
     },
     loading: false,
     fetched: false,
@@ -16,8 +16,8 @@ export const defaultNewsContextValues: NewsContextType = {
       {
         state: {
           newsList: {data: []},
-          favoritesNewsList: [],
-          deletedNewsList: [],
+          favoritesNewsList: {data: []},
+          deletedNewsList: {data: []},
         },
         loading: data?.loading ?? false,
         fetched: data?.fetched ?? false,
@@ -42,8 +42,8 @@ export const NewsContextProvider = ({children}: {children: ReactNode}) => {
   const [stateNewsData, dispatchNewsData] = useReducer(NewsDataReducer, {
     state: {
       newsList: {data: []},
-      favoritesNewsList: [],
-      deletedNewsList: [],
+      favoritesNewsList: {data: []},
+      deletedNewsList: {data: []},
     },
     loading: false,
     fetched: false,

@@ -16,23 +16,32 @@ const getHighlightResults = (
   };
 };
 export const newsMap = (response: NewsDto): News => {
-  return {
-    data: response.hits.map((dto: NewsDtoData): NewsData => {
-      return {
-        highlightResult: getHighlightResults(dto._highlightResult),
-        tags: dto?._tags,
+  const dataNews: NewsData[] = [];
+  response.hits.forEach((dto: NewsDtoData) => {
+    const exist = dataNews.some(item => item.storyId === dto.story_id);
+
+    if (!exist) {
+      dataNews.push({
+        // highlightResult: getHighlightResults(dto._highlightResult),
+        // tags: dto?._tags,
         author: dto?.author,
         children: dto?.children,
-        commentText: dto?.comment_text,
+        commentText: 'dto?.comment_text',
         createdAt: dto?.created_at,
         createdAtI: dto?.created_at_i,
-        objectID: dto?.objectID,
-        parentId: dto?.parent_id,
+        // objectID: dto?.objectID,
+        // parentId: dto?.parent_id,
         storyId: dto?.story_id,
-        storyTitle: dto?.story_title,
+        storyTitle: dto?.story_title ?? dto.title,
         storyUrl: dto?.story_url,
         updatedAt: dto?.updated_at,
-      };
-    }),
-  };
+      });
+    }
+  });
+
+  dataNews.sort((a: NewsData, b: NewsData) => {
+    return b.createdAtI - a.createdAtI;
+  });
+
+  return {data: dataNews};
 };
