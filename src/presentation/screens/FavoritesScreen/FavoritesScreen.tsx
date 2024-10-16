@@ -20,14 +20,14 @@ const FavoritesScreen = (): React.JSX.Element => {
 
   const {loading, state} = stateNewsData;
 
-  const favoritesNews = useMemo(() => {
-    const {favoritesNewsList, newsList} = state;
-    return {
-      data: newsList.data.filter(item =>
-        favoritesNewsList.includes(item.storyId),
-      ),
-    };
-  }, [state]);
+  // const favoritesNews = useMemo(() => {
+  //   const {favoritesNewsList, newsList} = state;
+  //   return {
+  //     data: newsList.data.filter(item =>
+  //       favoritesNewsList.includes(item.storyId),
+  //     ),
+  //   };
+  // }, [state]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
@@ -56,7 +56,7 @@ const FavoritesScreen = (): React.JSX.Element => {
       style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       {loading && renderSkeleton()}
-      {!loading && <NewsFeed newsDataList={favoritesNews} />}
+      {!loading && <NewsFeed newsDataList={state.favoritesNewsList} />}
     </SafeAreaView>
   );
 };

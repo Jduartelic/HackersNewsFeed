@@ -22,15 +22,15 @@ export const newsMap = (response: NewsDto): News => {
 
     if (!exist) {
       dataNews.push({
-        highlightResult: getHighlightResults(dto._highlightResult),
-        tags: dto?._tags,
+        // highlightResult: getHighlightResults(dto._highlightResult),
+        // tags: dto?._tags,
         author: dto?.author,
         children: dto?.children,
         commentText: 'dto?.comment_text',
         createdAt: dto?.created_at,
         createdAtI: dto?.created_at_i,
-        objectID: dto?.objectID,
-        parentId: dto?.parent_id,
+        // objectID: dto?.objectID,
+        // parentId: dto?.parent_id,
         storyId: dto?.story_id,
         storyTitle: dto?.story_title ?? dto.title,
         storyUrl: dto?.story_url,

@@ -1,6 +1,6 @@
 import React, {useContext, useCallback} from 'react';
 import {SafeAreaView, Pressable, StatusBar, Text, View} from 'react-native';
-import {NewsContext, NewsKind} from '../../stores/entities';
+import {NewsContext} from '../../stores/entities';
 import styles from './ErrorboundaryScreen.styles';
 import {constants} from '../../constants';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -11,8 +11,8 @@ type Props = NativeStackScreenProps<HackerNewsFeedStack, 'ErrorboundaryScreen'>;
 
 const ErrorboundaryScreen = ({navigation}: Props): React.JSX.Element => {
   const {ERROR, ONBOARDING} = constants;
-  const {stateNewsData, dispatchNewsData} = useContext(NewsContext);
-  const {error, state} = stateNewsData;
+  const {stateNewsData} = useContext(NewsContext);
+  const {error} = stateNewsData;
   const errorType =
     error?.message === 'Network Error'
       ? ERROR.ERR_NETWORK
@@ -20,7 +20,7 @@ const ErrorboundaryScreen = ({navigation}: Props): React.JSX.Element => {
 
   const onCloseModal = useCallback(async () => {
     navigation.goBack();
-  }, []);
+  }, [navigation]);
 
   return (
     <SafeAreaView

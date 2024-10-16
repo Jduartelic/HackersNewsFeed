@@ -1,5 +1,11 @@
 import React, {useContext, useMemo} from 'react';
-import {View, Text, Image, LayoutChangeEvent} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  LayoutChangeEvent,
+  TouchableOpacity,
+} from 'react-native';
 import {NewsData, images} from '../../../../domain';
 import styles from './NewsCard.styles';
 import {
@@ -102,11 +108,15 @@ export const NewsCard = (newsData: NewsData) => {
   };
 
   const isSelected = useMemo(() => {
-    if (state.favoritesNewsList.length) {
-      return state.favoritesNewsList.some(item => item === newsData.storyId);
+    if (state.favoritesNewsList.data && state.favoritesNewsList.data.length) {
+      console.log('state.favoritesNewsList.data', state.favoritesNewsList.data);
+      return state.favoritesNewsList.data.some(
+        item => item.storyId === newsData.storyId,
+      );
     }
     return false;
   }, [state.favoritesNewsList, newsData.storyId]);
+
   return (
     <GestureHandlerRootView
       key={uuid.v4().toString()}
@@ -116,7 +126,7 @@ export const NewsCard = (newsData: NewsData) => {
           testID="main-container"
           style={[styles.containerTrashButton, animatedStylesZindexRight]}>
           <View style={styles.trashButton}>
-            <Pressable
+            <TouchableOpacity
               testID="trash-button"
               onPress={() => {
                 offset.value = withTiming(100);
@@ -135,7 +145,7 @@ export const NewsCard = (newsData: NewsData) => {
                 size={30}
                 color={isCemeteryScreen ? '#009000' : '#D3D3D3'}
               />
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </>
@@ -150,12 +160,8 @@ export const NewsCard = (newsData: NewsData) => {
               ]}>
               {!isCemeteryScreen && (
                 <View style={styles.containerFavoritesbutton}>
-                  <Icon
-                    testID="heart-button"
-                    name="heart"
-                    size={30}
-                    color={isSelected ? '#df1b1b' : '#000'}
-                    solid={isSelected ? true : false}
+                  <TouchableOpacity
+                    hitSlop={40}
                     onPress={() => {
                       offset.value = withTiming(0);
                       dispatchNewsData({
@@ -167,8 +173,15 @@ export const NewsCard = (newsData: NewsData) => {
                           favoritesNewsId: newsData.storyId,
                         },
                       });
-                    }}
-                  />
+                    }}>
+                    <Icon
+                      testID="heart-button"
+                      name="heart"
+                      size={30}
+                      color={isSelected ? '#df1b1b' : '#000'}
+                      solid={isSelected ? true : false}
+                    />
+                  </TouchableOpacity>
                 </View>
               )}
             </Animated.View>
@@ -189,7 +202,10 @@ export const NewsCard = (newsData: NewsData) => {
             <View style={styles.cardFooterContainer} />
           </View>
           <View style={styles.cardFooterContainer}>
-            <Text>{`Author: ${newsData.author} - ${resultInDays}`}</Text>
+            <Text
+              style={
+                styles.textStoryDate
+              }>{`Author: ${newsData.author} - ${resultInDays}`}</Text>
           </View>
         </Animated.View>
       </View>

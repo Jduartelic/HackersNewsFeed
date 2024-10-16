@@ -41,6 +41,7 @@ export function UserActivityDataReducer(
       dataPayload = JSON.stringify({
         ...action.payload,
       });
+
       setSavedData(constants.USER_ACTIVITY.STORAGE_KEY, dataPayload);
 
       return {

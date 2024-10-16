@@ -82,14 +82,14 @@ describe('ErrorboundaryScreen', () => {
     const mainComponent = screen.getByTestId('cementery-news-container');
     expect(mainComponent).toBeTruthy();
     const buttonComponent = screen.getByTestId('button-icon-close-modal');
+    fireEvent.press(buttonComponent);
 
     await waitFor(
       async () => {
-        fireEvent.press(buttonComponent);
+        expect(mockDispatchNewsData).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
-    expect(mockDispatchNewsData).toHaveBeenCalled();
     expect(mockedNavigate).toHaveBeenCalled();
   });
   it('should render with GENERIC_ERROR message component ErrorboundaryScreen correctly ', async () => {
@@ -110,13 +110,13 @@ describe('ErrorboundaryScreen', () => {
     expect(mainComponent).toBeTruthy();
     const buttonComponent = screen.getByTestId('button-close-modal');
 
+    fireEvent.press(buttonComponent);
     await waitFor(
       async () => {
-        fireEvent.press(buttonComponent);
+        expect(mockDispatchNewsData).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
-    expect(mockDispatchNewsData).toHaveBeenCalled();
     expect(mockedNavigate).toHaveBeenCalled();
   });
 });

@@ -37,20 +37,32 @@ const HomeScreen = (): React.JSX.Element => {
   const {dispatchNewsData, stateNewsData} = useContext(NewsContext);
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
-  const {loading, fetched, state, error} = stateNewsData;
+  const {loading, fetched, state} = stateNewsData;
   const {
     loading: loadingUserActivity,
     fetched: fetchedUserActivity,
     state: stateUserActivity,
   } = stateUserActivityData;
+  console.log(
+    'stateUserActivityData stateUserActivityData',
+    stateUserActivityData,
+  );
+  console.log('stateNewsData stateNewsData', stateNewsData);
 
   const filteredListNews = useMemo(() => {
     const {deletedNewsList, newsList} = state;
-    return {
-      data: newsList.data.filter(
-        item => !deletedNewsList.includes(item.storyId),
-      ),
-    };
+    if (deletedNewsList.data && deletedNewsList.data.length) {
+      return {
+        data: newsList.data.filter(
+          itemNewsList =>
+            !deletedNewsList.data.some(
+              itemDeletedNewsList =>
+                itemDeletedNewsList.storyId === itemNewsList.storyId,
+            ),
+        ),
+      };
+    }
+    return newsList;
   }, [state]);
 
   const getRandomId = useCallback((min: number, max: number): number => {
@@ -61,17 +73,21 @@ const HomeScreen = (): React.JSX.Element => {
   const onFetchingNews = useCallback(async () => {
     let dataPayload: NewsPayloadEntity = {
       newsList: {data: []},
-      deletedNewsList: [],
-      favoritesNewsList: [],
+      deletedNewsList: {data: []},
+      favoritesNewsList: {data: []},
     };
 
     const dataFromStorage = await getSavedData(constants.HOME.STORAGE_KEY);
+    console.log('dataFromStorage data', dataFromStorage);
+
     if (dataFromStorage) {
       const data = JSON.parse(dataFromStorage);
 
+      console.log('dataFromStorage data', data);
+
       dataPayload.newsList = data.newsList;
-      dataPayload.deletedNewsList = data.deletedNewsList ?? [];
-      dataPayload.favoritesNewsList = data.favoritesNewsList ?? [];
+      dataPayload.deletedNewsList = data.deletedNewsList ?? {data: []};
+      dataPayload.favoritesNewsList = data.favoritesNewsList ?? {data: []};
     }
 
     dispatchNewsData({
@@ -88,6 +104,11 @@ const HomeScreen = (): React.JSX.Element => {
 
   const onFetchingUserActivity = useCallback(async () => {
     getSavedData(constants.USER_ACTIVITY.STORAGE_KEY).then(savedData => {
+      console.log(
+        ' getSavedData(constants.USER_ACTIVITY.STORAGE_KEY)',
+        savedData,
+      );
+
       const parseLocalFacets: UserActivityEntity = savedData
         ? JSON.parse(savedData)
         : {
@@ -152,6 +173,7 @@ const HomeScreen = (): React.JSX.Element => {
     stateUserActivity.querySearch,
     USER_ACTIVITY.FACETS.keywords,
     getRandomId,
+    getQueryParam,
   ]);
 
   useEffect(() => {

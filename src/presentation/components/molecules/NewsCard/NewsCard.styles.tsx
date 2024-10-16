@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    // backgroundColor: '#f5f5f5dd',
   },
   imageContainer: {height: 50, width: 50, borderRadius: 100},
   textStoryTitle: {
@@ -88,6 +87,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontWeight: '400',
     fontSize: 18,
+    color: '#000',
+  },
+  textStoryDate: {
+    // marginBottom: 15,
+    textAlign: 'right',
+    fontWeight: '400',
+    fontSize: 14,
     color: '#000',
   },
 });

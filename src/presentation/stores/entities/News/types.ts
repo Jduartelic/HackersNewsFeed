@@ -12,16 +12,16 @@ export enum NewsKind {
 
 type NewsEntity = {
   newsList: News;
-  favoritesNewsList: number[];
-  deletedNewsList: number[];
+  favoritesNewsList: News;
+  deletedNewsList: News;
 };
 
 export type NewsPayloadEntity = {
   newsList: News;
   favoritesNewsId?: number;
   deletedNewsId?: number;
-  favoritesNewsList: number[];
-  deletedNewsList: number[];
+  favoritesNewsList: News;
+  deletedNewsList: News;
 };
 
 export interface NewsActions {

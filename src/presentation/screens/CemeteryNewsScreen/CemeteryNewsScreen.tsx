@@ -14,15 +14,16 @@ const CemeteryNewsScreen = (): React.JSX.Element => {
 
   const {loading, state} = stateNewsData;
 
-  const deletedNews = useMemo(() => {
-    const {deletedNewsList, newsList} = state;
+  // const deletedNews = useMemo(() => {
+  //   return state.deletedNewsList;
+  //   // const {deletedNewsList, newsList} = state;
 
-    return {
-      data: newsList.data.filter(item =>
-        deletedNewsList.includes(item.storyId),
-      ),
-    };
-  }, [state]);
+  //   // return {
+  //   //   data: newsList.data.filter(item =>
+  //   //     deletedNewsList.data.includes(item.storyId),
+  //   //   ),
+  //   // };
+  // }, [state]);
 
   const renderSkeleton = () => {
     let skeletonArray = Array.from(
@@ -51,7 +52,7 @@ const CemeteryNewsScreen = (): React.JSX.Element => {
       style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} backgroundColor={MAIN_COLOR} />
       {loading && renderSkeleton()}
-      {!loading && <NewsFeed newsDataList={deletedNews} />}
+      {!loading && <NewsFeed newsDataList={state.deletedNewsList} />}
     </SafeAreaView>
   );
 };
