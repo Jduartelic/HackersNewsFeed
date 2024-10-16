@@ -212,7 +212,6 @@ describe('News reducer', () => {
     );
   });
   it('should call ADD_FAVORITES and state exist type in News reducer', async () => {
-    console.log('mockSingular.data[0].storyId', mockSingular.data);
     const result = NewsDataReducer(
       {
         ...mockStateStoreNewsData,

@@ -24,7 +24,7 @@ const SearchBar = () => {
       <TextInput
         testID="search-bar-input"
         style={styles.input}
-        placeholder="Search something cute..."
+        placeholder="Search a topic..."
         value={querySearch}
         onChangeText={onChangeTextHandler}
         placeholderTextColor="#aaa"
