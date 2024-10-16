@@ -53,8 +53,8 @@ where you will find detailed information on basic installation requirements.
 After you have fulfilled all the installation **prerequisites** you need, you must follow these instructions to run the project locally:
   
 1. Clone the repository <br>`git clone git@github.com:Jduartelic/HackersNewsFeed.git`
-2. run test with <br>`yarn ci:test`
-3. Install dependencies in the root of the project <br>`yarn`, if you're using iOS you should install pods <br>`cd ios && pod install`
+2. Install dependencies in the root of the project <br>`yarn`, if you're using iOS you should install pods <br>`cd ios && pod install`
+3. run test with <br>`yarn ci:test`
 4. Run the project <br>`yarn android` or `yarn ios`
 5. Run the project in release mode <br>`yarn android --mode release`
   
