@@ -43,12 +43,12 @@ Here, we detail the critical steps for installation and implementation, includin
 iOS and Android environments functional and other essential components. You will also find all the tools and resources
 needed to correctly set up your work environment, enabling you to contribute efficiently to the project from the beginning.
 
-### Prerequisites
+## Prerequisites
 
 To get your environment ready we recommend you to read [this documentation](https://reactnative.dev/docs/set-up-your-environment),
 where you will find detailed information on basic installation requirements.
 
-### Installation
+## Installation
 
 After you have fulfilled all the installation **prerequisites** you need, you must follow these instructions to run the project locally:
 
@@ -57,3 +57,35 @@ After you have fulfilled all the installation **prerequisites** you need, you mu
 3. Install dependencies in the root of the project <br>`yarn`, if you're using iOS you should install pods <br>`cd ios && pod install`
 4. Run the project <br>`yarn android` or `yarn ios`
 5. Run the project in release mode <br>`yarn android --mode release`
+
+# Features
+
+## Ask Permissions for push notifications 
+<img width="396" alt="Onboarding screen - permission" src="https://github.com/user-attachments/assets/aac56c63-521d-4ef2-ad6d-77babd48c7cb">
+<img width="388" alt="Captura de pantalla 2024-10-16 a la(s) 9 22 26 a  m" src="https://github.com/user-attachments/assets/399adbfa-4e7d-4294-b8b2-b4fc287b4e18">
+
+## Feeds News
+<img width="387" alt="home screen android" src="https://github.com/user-attachments/assets/892b704a-4cd2-49f0-9fe4-64164b93504f">
+<img width="392" alt="home screen" src="https://github.com/user-attachments/assets/9261499b-c4a2-444f-a7b6-0871a58bc2b5">
+
+## Search for specific topics
+<img width="389" alt="search bar android" src="https://github.com/user-attachments/assets/313029e3-5b7d-41a5-b555-71d777af5945">
+<img width="395" alt="search bar" src="https://github.com/user-attachments/assets/e0bd7f0e-f179-4b3c-978d-623675cd4525">
+
+## Read News by tapping the news card
+<img width="394" alt="Captura de pantalla 2024-10-16 a la(s) 9 29 44 a  m" src="https://github.com/user-attachments/assets/fbe165cb-b7b5-4572-b3bf-cf8f650bc90b">
+<img width="389" alt="Captura de pantalla 2024-10-16 a la(s) 9 29 34 a  m" src="https://github.com/user-attachments/assets/d1bb424f-17be-4b17-aad8-79c3d53c3bfa">
+
+## Add or remove news from feed
+<img width="392" alt="add or dismiss news" src="https://github.com/user-attachments/assets/745441dd-24a2-4903-91b6-03cebb234e6c">
+<img width="391" alt="add or dimiss news" src="https://github.com/user-attachments/assets/4b7c6fb0-9f1f-453c-9b47-346e9e546fc4">
+
+## Places where you can look what you like or dismiss
+<img width="392" alt="find what you have saved or delete" src="https://github.com/user-attachments/assets/81eca69f-a1a1-4c66-b47a-0b1e71a07f94">
+<img width="387" alt="find add or dismiss news" src="https://github.com/user-attachments/assets/80ea99ca-5d02-42e4-b3bf-7265aea7d40b">
+
+## Receive push notifications
+<img width="392" alt="receive push notification android" src="https://github.com/user-attachments/assets/58c770a6-1a41-4617-ac32-ec1a150525e5">
+<img width="395" alt="receive push notification" src="https://github.com/user-attachments/assets/0896bd7d-9d0d-4863-a69d-0d777ba074c8">
+
+
