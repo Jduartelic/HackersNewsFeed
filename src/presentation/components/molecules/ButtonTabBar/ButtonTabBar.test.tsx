@@ -22,6 +22,7 @@ import {
 const mockedNavigate = jest.fn();
 const mockedGoBack = jest.fn();
 const mockedToggleDrawer = jest.fn();
+const mockedReplace = jest.fn();
 const mockStateStoreUserActivityData: StateStoreUserActivityData =
   defaultUserActivityContextValues.stateUserActivityData;
 const mockDispatchUserData =
@@ -61,6 +62,7 @@ jest.mock('@react-navigation/native', () => {
         type: 'stack',
       })),
       toggleDrawer: mockedToggleDrawer,
+      replace: mockedReplace,
     }),
     useIsFocused: () => true,
   };
@@ -163,7 +165,7 @@ describe('ButtonTabBar', () => {
     fireEvent.press(buttonComponent);
     await waitFor(
       async () => {
-        expect(mockedNavigate).toHaveBeenCalled();
+        expect(mockedReplace).toHaveBeenCalled();
       },
       {timeout: 1000},
     );
