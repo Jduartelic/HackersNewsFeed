@@ -71,31 +71,27 @@ export function NewsDataReducer(
       };
     case NewsKind.REMOVE_NEWS:
       let deletedList: News = state.state.deletedNewsList;
-      if (action.payload.deletedNewsId && deletedList?.data) {
-        const exist = deletedList?.data.some(
-          item => item.storyId === action.payload.deletedNewsId,
+
+      const existDeletedNews = deletedList?.data.some(
+        item => item.storyId === action.payload.deletedNewsId,
+      );
+
+      if (existDeletedNews) {
+        deletedList.data = deletedList.data.reduce(
+          (prev: NewsData[], current) => {
+            if (current.storyId !== action.payload.deletedNewsId) {
+              prev.push(current);
+            }
+            return prev;
+          },
+          [],
         );
-
-        if (exist) {
-          deletedList.data = state.state.deletedNewsList.data.filter(
-            item => item.storyId !== action.payload.deletedNewsId,
-          );
-        } else {
-          const news = state.state.newsList?.data.find(
-            item => item.storyId === action.payload.deletedNewsId,
-          );
-
-          if (news) {
-            deletedList.data.push(news);
-          }
-        }
       } else {
         const news = state.state.newsList?.data.find(
           item => item.storyId === action.payload.deletedNewsId,
         );
-
         if (news) {
-          deletedList.data = [news];
+          deletedList.data.push(news);
         }
       }
 
@@ -121,31 +117,26 @@ export function NewsDataReducer(
     case NewsKind.ADD_FAVORITES:
       let favoritesList: News = state.state.favoritesNewsList;
 
-      if (action.payload.favoritesNewsId && favoritesList?.data) {
-        const exist = favoritesList?.data.some(
-          item => item.storyId === action.payload.favoritesNewsId,
+      const exist = favoritesList?.data.some(
+        item => item.storyId === action.payload.favoritesNewsId,
+      );
+
+      if (exist) {
+        favoritesList.data = favoritesList.data.reduce(
+          (prev: NewsData[], current) => {
+            if (current.storyId !== action.payload.favoritesNewsId) {
+              prev.push(current);
+            }
+            return prev;
+          },
+          [],
         );
-
-        if (exist) {
-          favoritesList.data = state.state.favoritesNewsList.data.filter(
-            item => item.storyId !== action.payload.favoritesNewsId,
-          );
-        } else {
-          const news = state.state.newsList?.data.find(
-            item => item.storyId === action.payload.favoritesNewsId,
-          );
-
-          if (news) {
-            favoritesList.data.push(news);
-          }
-        }
       } else {
         const news = state.state.newsList?.data.find(
           item => item.storyId === action.payload.favoritesNewsId,
         );
-
         if (news) {
-          favoritesList.data = [news];
+          favoritesList.data.push(news);
         }
       }
 

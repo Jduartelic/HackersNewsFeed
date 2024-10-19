@@ -13,7 +13,7 @@ type HackerNewsFeedNavigationProp =
 
 export const ButtonTabBar = (tabBarProps: BottomTabBarProps) => {
   const {state, navigation} = tabBarProps;
-  const {navigate} = useNavigation<HackerNewsFeedNavigationProp>();
+  const {replace} = useNavigation<HackerNewsFeedNavigationProp>();
   const {dispatchUserActivityData, stateUserActivityData} =
     useContext(UserActivityContext);
 
@@ -39,7 +39,7 @@ export const ButtonTabBar = (tabBarProps: BottomTabBarProps) => {
                 userName: userName,
               },
             });
-            navigate('HomeScreen');
+            replace('HomeScreen');
           }
         }}>
         <Text style={styles.titleButton}>{constants.ONBOARDING.CONTINUE}</Text>
